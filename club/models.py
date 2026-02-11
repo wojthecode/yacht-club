@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.urls import reverse
 
 
 class Role(models.Model):
@@ -82,6 +83,12 @@ class Event(models.Model):
         on_delete=models.SET_NULL,
         related_name="events_created"
     )
+
+    class Meta:
+        ordering = ["date"]
+
+    def get_absolute_url(self):
+        return reverse("club:event-detail", kwargs={"pk": self.pk})
 
 
 class WorkTask(models.Model):

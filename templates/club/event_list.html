@@ -10,7 +10,7 @@
     <h3>{{ event.name}}</h3>
     <h5>{{ event.date }}</h5>
     <p>{{ event.description|linebreaksbr|truncatewords:30 }}</p>
-    <a href="#">Read more >></a>
+    <a href="{{ event.get_absolute_url }}">Read more >></a>
     <hr>
 
   {% endfor %}

@@ -11,3 +11,7 @@ def index(request:HttpRequest) -> HttpResponse:
 
 class EventListView(generic.ListView):
     model = Event
+
+class EventDetailView(generic.DetailView):
+    model = Event
+    
