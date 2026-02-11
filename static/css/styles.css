@@ -1,11 +1,6 @@
 body {
   margin-top: 35px;
-}
-
-.sidebar_logo {
-  width: 100%;
-  padding: 5px;
-  /* height: 100px; */
+  margin-bottom: 15px;
 }
 
 .center {
@@ -18,7 +13,44 @@ body {
   font-weight: bold;
 }
 
-/* SECTION CALENDAR */
+.sidebar_logo {
+  width: 100%;
+  padding: 5px;
+}
+
+.login_form {
+  min-width: 40vw;
+  max-width: 50vw;
+  justify-self: center;
+}
+
+/* #region Content_container */
+
+.content_container {
+  height: calc(100vh - 50px);
+  overflow: auto;
+}
+
+.content_container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.content_container::-webkit-scrollbar-thumb {
+  background: #eee;
+  border-radius: 3px;
+}
+
+.content_container:hover::-webkit-scrollbar {
+  width: 6px;
+}
+
+.content_container:hover::-webkit-scrollbar-thumb {
+  background: #ddd;
+}
+
+/* #endregion */
+
+/* #region Callendar */
 
 .callendar_header {
   font-size: 12px;
@@ -264,11 +296,4 @@ body {
 .calendar > :nth-child(31)::before {
   content: "31";
 }
-
-/* END SECTION CALENDAR */
-
-.login_form {
-  min-width: 40vw;
-  max-width: 50vw;
-  justify-self: center;
-}
+/* #endregion */
