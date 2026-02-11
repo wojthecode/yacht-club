@@ -1,0 +1,55 @@
+{% load static %}
+{% load calendar_filters %}
+
+<div>
+  <a href="{% url 'club:index' %}">
+    <img src="{% static 'images/logo.png' %}" class="sidebar_logo" />
+  </a>
+</div>
+<br>
+<div class="p-3">
+
+  <div class="pr-1">
+    <h6 class="center bold">January</h6>
+    <table class="callendar_header">
+      <tr class="callendar_header__row">
+        <td class="calendar_header__col">Mo</td>
+        <td class="calendar_header__col">Tu</td>
+        <td class="calendar_header__col">We</td>
+        <td class="calendar_header__col">Th</td>
+        <td class="calendar_header__col">Fr</td>
+        <td class="calendar_header__col">Sa</td>
+        <td class="calendar_header__col">Su</td>
+      </tr>
+    </table>  
+  </div>
+
+  {% now "Y-m-t" as cur_month %}
+
+  <div class="calendar calendar--start-day-{{ cur_month|first_day }} calendar--month-length-{% now 't' %}">
+
+    {%now "d" as today %}
+    {% for day in 31|range_list %}
+
+      <div class="
+        calendar__day
+
+        {% if today|add:'0' == day %}
+          calendar__day calendar__active
+        {% endif %}
+
+        {% if day in cur_month|planed_events %}
+          calendar__day calendar__planed
+        {% endif %}
+
+      "></div>
+
+    {% endfor %}
+  </div>
+
+  {% comment %} <div>
+    {% now "l" %} <br>
+    {% now "d \o\f M Y" %}
+  </div> {% endcomment %}
+
+</div>

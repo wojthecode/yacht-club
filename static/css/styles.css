@@ -1,0 +1,274 @@
+body {
+  margin-top: 35px;
+}
+
+.sidebar_logo {
+  width: 100%;
+  padding: 5px;
+  /* height: 100px; */
+}
+
+.center {
+  text-align: center;
+}
+.justify {
+  text-align: justify;
+}
+.bold {
+  font-weight: bold;
+}
+
+/* SECTION CALENDAR */
+
+.callendar_header {
+  font-size: 12px;
+  width: 100%;
+  text-align: center;
+}
+.callendar_header__row > :nth-child(6) {
+  color: grey;
+}
+.callendar_header__row > :nth-child(7) {
+  color: darkred;
+}
+
+.calendar_header__col {
+  width: calc(100% / 7);
+}
+
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  direction: ltr;
+  background-color: #fff;
+  gap: 3px;
+  width: 100%;
+  font-size: 12px;
+}
+.calendar__day {
+  box-sizing: border-box;
+  display: flex;
+  padding: 2px;
+  width: calc((100% / 7) - 3px);
+  aspect-ratio: 1 / 1.5;
+  background-color: #B6D1B3;
+  align-items: center;
+  justify-content: center;
+  transition: border 0.5s;
+  transition-timing-function: ease;
+}
+.calendar__day:hover {
+  border: 1px solid #D12F2F;
+  transform: scale(1.05);
+}
+
+.calendar__planed {
+  font-weight: bolder;
+  text-decoration: underline;
+}
+.calendar__planed:hover {
+  border: 1px solid #D12F2F;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.calendar__active {
+  background: #B6D1B3;
+  box-shadow: inset 0 0 12px #5A90A5;
+}
+.calendar__active:hover {
+  border: 1px solid #D12F2F;
+  transform: scale(1.05);
+}
+
+.calendar--start-day-mon > :first-child {
+  margin-left: 0px;
+}
+.calendar--start-day-mon > :nth-child(7n+6) {
+  color: grey;
+}
+.calendar--start-day-mon > :nth-child(7n+7) {
+  color: darkred;
+}
+
+.calendar--start-day-tue > :first-child {
+  margin-left: calc(((100% / 7) * 1));
+}
+.calendar--start-day-tue > :nth-child(7n+5) {
+  color: grey;
+}
+.calendar--start-day-tue > :nth-child(7n+6) {
+  color: darkred;
+}
+
+.calendar--start-day-wed > :first-child {
+  margin-left: calc(((100% / 7) * 2));
+}
+.calendar--start-day-wed > :nth-child(7n+4) {
+  color: grey;
+}
+.calendar--start-day-wed > :nth-child(7n+5) {
+  color: darkred;
+}
+
+.calendar--start-day-thu > :first-child {
+  margin-left: calc(((100% / 7) * 3));
+}
+.calendar--start-day-thu > :nth-child(7n+3) {
+  color: grey;
+}
+.calendar--start-day-thu > :nth-child(7n+4) {
+  color: darkred;
+}
+
+.calendar--start-day-fri > :first-child {
+  margin-left: calc(((100% / 7) * 4));
+}
+.calendar--start-day-fri > :nth-child(7n+2) {
+  color: grey;
+}
+.calendar--start-day-fri > :nth-child(7n+3) {
+  color: darkred;
+}
+
+.calendar--start-day-sat > :first-child {
+  margin-left: calc(((100% / 7) * 5));
+}
+.calendar--start-day-sat > :nth-child(7n+1) {
+  color: grey;
+}
+.calendar--start-day-sat > :nth-child(7n+2) {
+  color: darkred;
+}
+
+.calendar--start-day-sun > :first-child {
+  margin-left: calc(((100% / 7) * 6));
+}
+.calendar--start-day-sun > :nth-child(7n) {
+  color: grey;
+}
+.calendar--start-day-sun > :nth-child(7n+1) {
+  color: darkred;
+}
+
+.calendar--month-length-28 > :nth-last-child(-n+3) {
+  visibility: hidden;
+  height: 0;
+  margin-top: -1px;
+}
+.calendar--month-length-29 > :nth-last-child(-n+2) {
+  visibility: hidden;
+  height: 0;
+  margin-top: -1px;
+}
+.calendar--month-length-30 > :nth-last-child(-n+1) {
+  visibility: hidden;
+  height: 0;
+  margin-top: -1px;
+}
+.calendar--month-length-31 > :nth-last-child(-n+0) {
+  visibility: hidden;
+  height: 0;
+  margin-top: -1px;
+}
+.calendar > :nth-child(1)::before {
+  content: "1";
+}
+.calendar > :nth-child(2)::before {
+  content: "2";
+}
+.calendar > :nth-child(3)::before {
+  content: "3";
+}
+.calendar > :nth-child(4)::before {
+  content: "4";
+}
+.calendar > :nth-child(5)::before {
+  content: "5";
+}
+.calendar > :nth-child(6)::before {
+  content: "6";
+}
+.calendar > :nth-child(7)::before {
+  content: "7";
+}
+.calendar > :nth-child(8)::before {
+  content: "8";
+}
+.calendar > :nth-child(9)::before {
+  content: "9";
+}
+.calendar > :nth-child(10)::before {
+  content: "10";
+}
+.calendar > :nth-child(11)::before {
+  content: "11";
+}
+.calendar > :nth-child(12)::before {
+  content: "12";
+}
+.calendar > :nth-child(13)::before {
+  content: "13";
+}
+.calendar > :nth-child(14)::before {
+  content: "14";
+}
+.calendar > :nth-child(15)::before {
+  content: "15";
+}
+.calendar > :nth-child(16)::before {
+  content: "16";
+}
+.calendar > :nth-child(17)::before {
+  content: "17";
+}
+.calendar > :nth-child(18)::before {
+  content: "18";
+}
+.calendar > :nth-child(19)::before {
+  content: "19";
+}
+.calendar > :nth-child(20)::before {
+  content: "20";
+}
+.calendar > :nth-child(21)::before {
+  content: "21";
+}
+.calendar > :nth-child(22)::before {
+  content: "22";
+}
+.calendar > :nth-child(23)::before {
+  content: "23";
+}
+.calendar > :nth-child(24)::before {
+  content: "24";
+}
+.calendar > :nth-child(25)::before {
+  content: "25";
+}
+.calendar > :nth-child(26)::before {
+  content: "26";
+}
+.calendar > :nth-child(27)::before {
+  content: "27";
+}
+.calendar > :nth-child(28)::before {
+  content: "28";
+}
+.calendar > :nth-child(29)::before {
+  content: "29";
+}
+.calendar > :nth-child(30)::before {
+  content: "30";
+}
+.calendar > :nth-child(31)::before {
+  content: "31";
+}
+
+/* END SECTION CALENDAR */
+
+.login_form {
+  min-width: 40vw;
+  max-width: 50vw;
+  justify-self: center;
+}
