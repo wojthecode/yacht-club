@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 class="center">Upcoming Work Tasks</h1>
+  <br>
+
+  {% for task in worktask_list %}
+
+    
+    <h3>{{ task.name}}</h3>
+    <h5>{{ task.date }}</h5>
+    <p>{{ task.description|linebreaksbr|truncatewords:30 }}</p>
+    <a href="#">Read more >></a>
+    <hr>
+
+  {% endfor %}
+
+{% endblock %}
