@@ -112,4 +112,4 @@ class WorkTask(models.Model):
         ordering = ["date"]
 
     def get_absolute_url(self):
-        return reverse("club:work_task-detail", kwargs={"pk": self.pk})
+        return reverse("club:worktask-detail", kwargs={"pk": self.pk})

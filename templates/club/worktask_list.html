@@ -4,13 +4,13 @@
   <h1 class="center">Upcoming Work Tasks</h1>
   <br>
 
-  {% for task in worktask_list %}
+  {% for worktask in worktask_list %}
 
     
-    <h3>{{ task.name}}</h3>
-    <h5>{{ task.date }}</h5>
-    <p>{{ task.description|linebreaksbr|truncatewords:30 }}</p>
-    <a href="{{ task.get_absolute_url }}">Read more >></a>
+    <h3>{{ worktask.name}}</h3>
+    <h5>{{ worktask.date }}</h5>
+    <p>{{ worktask.description|linebreaksbr|truncatewords:30 }}</p>
+    <a href="{{ worktask.get_absolute_url }}">Read more >></a>
     <hr>
 
   {% endfor %}
