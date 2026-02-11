@@ -1,4 +1,7 @@
 *.odt
+*.sqlite3
+*.bkp
 venv
 .vscode
 **__pycache__
+templates/old
