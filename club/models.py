@@ -75,13 +75,13 @@ class Event(models.Model):
     location = models.CharField(max_length=128)
     participiants = models.ManyToManyField(
         to=Member,
-        related_name="events_participant"
+        related_name="event_participant"
     )
     created_by = models.ForeignKey(
         to=Member,
         null=True,
         on_delete=models.SET_NULL,
-        related_name="events_created"
+        related_name="event_created"
     )
 
     class Meta:
@@ -99,11 +99,17 @@ class WorkTask(models.Model):
     min_crew = models.IntegerField()
     participiants = models.ManyToManyField(
         to=Member,
-        related_name="worktaasks_participant"
+        related_name="worktaask_participant"
     )
     created_by = models.ForeignKey(
         to=Member,
         null=True,
         on_delete=models.SET_NULL,
-        related_name="worktasks_created"
+        related_name="worktask_created"
     )
+
+    class Meta:
+        ordering = ["date"]
+
+    def get_absolute_url(self):
+        return reverse("club:work_task-detail", kwargs={"pk": self.pk})

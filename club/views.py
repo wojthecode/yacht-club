@@ -19,3 +19,7 @@ class EventDetailView(generic.DetailView):
 
 class WorkTaskListView(generic.ListView):
     model = WorkTask
+
+
+class WorkTaskDetailView(generic.DetailView):
+    model = WorkTask

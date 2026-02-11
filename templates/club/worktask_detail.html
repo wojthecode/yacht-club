@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="center">{{ worktask.name }}</h1>
+
+<p>Date: {{ worktask.date }}</p>
+<p>Location: {{ worktask.location }}</p>
+
+<hr>
+
+<p>{{ worktask.description|linebreaksbr }}</p>
+
+{% endblock %}
