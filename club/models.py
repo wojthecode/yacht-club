@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 from django.urls import reverse
+from decimal import Decimal
 
 
 class Role(models.Model):
@@ -11,7 +13,7 @@ class Role(models.Model):
         return self.name
 
 
-class SilingPermission(models.Model):
+class SailingPermission(models.Model):
     name = models.CharField(max_length=64, unique=True)
 
     def __str__(self):
@@ -26,8 +28,8 @@ class Member(AbstractUser):
         on_delete=models.SET_NULL,
         related_name="members",
     )
-    siling_permission = models.ForeignKey(
-        to=SilingPermission,
+    sailing_permission = models.ForeignKey(
+        to=SailingPermission,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -50,6 +52,13 @@ class Member(AbstractUser):
 
 
 class Boat(models.Model):
+    CATEGORIES = [
+        ("A", "A (Ocean)"),
+        ("B", "B (Offshore)"),
+        ("C", "C (Inshore)"),
+        ("D", "D (Sheltered Waters)"),
+    ]
+
     name = models.CharField(max_length=64, unique=True)
     owner = models.ManyToManyField(
         to=Member,
@@ -62,10 +71,45 @@ class Boat(models.Model):
         related_name="boats_keeped"
     )
     club_owner = models.BooleanField(default=False)
-    type = models.CharField(max_length=64)
-    lenght = models.IntegerField()
-    crew_min = models.IntegerField()
-    crew_max = models.IntegerField()
+
+    model = models.CharField(max_length=64)
+    rigging = models.CharField(max_length=64)
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORIES,
+        default="B",
+    )
+    sail_area = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal("0.00"))]
+    )
+    length = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal("0.00"))]
+    )
+    beam = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal("0.00"))]
+    )
+    draft = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal("0.00"))]
+    )
+    crew_min = models.IntegerField(validators=[MinValueValidator(1)])
+    crew_max = models.IntegerField(validators=[MinValueValidator(crew_min)])
+
+    engine = models.CharField(max_length=64)
+    description = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["name"]
+
+    def get_absolute_url(self):
+        return reverse("club:boat-detail", kwargs={"pk": self.pk})
 
 
 class Event(models.Model):
@@ -73,7 +117,7 @@ class Event(models.Model):
     description = models.TextField()
     date = models.DateTimeField()
     location = models.CharField(max_length=128)
-    participiants = models.ManyToManyField(
+    participants = models.ManyToManyField(
         to=Member,
         related_name="event_participant"
     )
@@ -97,9 +141,9 @@ class WorkTask(models.Model):
     date = models.DateTimeField()
     location = models.CharField(max_length=128)
     min_crew = models.IntegerField()
-    participiants = models.ManyToManyField(
+    participants = models.ManyToManyField(
         to=Member,
-        related_name="worktaask_participant"
+        related_name="worktask_participant"
     )
     created_by = models.ForeignKey(
         to=Member,
