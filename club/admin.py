@@ -2,13 +2,13 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 
-from club.models import Boat, Member, Event, Role, SilingPermission, WorkTask
+from club.models import Boat, Member, Event, Role, SailingPermission, WorkTask
 
 
 @admin.register(Member)
 class MemberAdmin(UserAdmin):
     list_display = (
-        "username", "first_name", "last_name", "role", "siling_permission"
+        "username", "first_name", "last_name", "role", "sailing_permission"
     )
     list_filter = ["role", ]
     add_fieldsets = (
@@ -31,7 +31,7 @@ class MemberAdmin(UserAdmin):
                         "first_name",
                         "last_name",
                         "role",
-                        "siling_permission",
+                        "sailing_permission",
                     )
                 },
             ),
@@ -56,7 +56,7 @@ class MemberAdmin(UserAdmin):
                         "first_name",
                         "last_name",
                         "role",
-                        "siling_permission",
+                        "sailing_permission",
                     )
                 },
             ),
@@ -69,14 +69,14 @@ class AdminRole(admin.ModelAdmin):
     list_display = ("name", "management_rights")
 
 
-@admin.register(SilingPermission)
-class AdminSilingPermission(admin.ModelAdmin):
+@admin.register(SailingPermission)
+class AdminSailingPermission(admin.ModelAdmin):
     list_display = ("name",)
 
 
 @admin.register(Boat)
 class AdminBoat(admin.ModelAdmin):
-    list_display = ("name", "lenght", "club_owner")
+    list_display = ("name", "length", "club_owner")
 
 
 @admin.register(Event)

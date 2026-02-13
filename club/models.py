@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
+from django.forms import ValidationError
 from django.urls import reverse
 from decimal import Decimal
 
@@ -100,7 +101,7 @@ class Boat(models.Model):
         validators=[MinValueValidator(Decimal("0.00"))]
     )
     crew_min = models.IntegerField(validators=[MinValueValidator(1)])
-    crew_max = models.IntegerField(validators=[MinValueValidator(crew_min)])
+    crew_max = models.IntegerField()
 
     engine = models.CharField(max_length=64)
     description = models.TextField(blank=True, null=True)
@@ -108,26 +109,38 @@ class Boat(models.Model):
     class Meta:
         ordering = ["name"]
 
+    def clean(self):
+        super().clean()
+        if self.crew_max < self.crew_min:
+            raise ValidationError(
+                "crew_max must be greater or equal to crew_min"
+            )
+
     def get_absolute_url(self):
         return reverse("club:boat-detail", kwargs={"pk": self.pk})
 
 
-class Event(models.Model):
+class BaseActivity(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField()
     date = models.DateTimeField()
     location = models.CharField(max_length=128)
     participants = models.ManyToManyField(
         to=Member,
-        related_name="event_participant"
+        related_name="%(class)s_participant"
     )
     created_by = models.ForeignKey(
         to=Member,
         null=True,
         on_delete=models.SET_NULL,
-        related_name="event_created"
+        related_name="%(class)s_created"
     )
 
+    class Meta():
+        abstract = True
+
+
+class Event(BaseActivity):
     class Meta:
         ordering = ["date"]
 
@@ -135,22 +148,8 @@ class Event(models.Model):
         return reverse("club:event-detail", kwargs={"pk": self.pk})
 
 
-class WorkTask(models.Model):
-    name = models.CharField(max_length=128)
-    description = models.TextField()
-    date = models.DateTimeField()
-    location = models.CharField(max_length=128)
-    min_crew = models.IntegerField()
-    participants = models.ManyToManyField(
-        to=Member,
-        related_name="worktask_participant"
-    )
-    created_by = models.ForeignKey(
-        to=Member,
-        null=True,
-        on_delete=models.SET_NULL,
-        related_name="worktask_created"
-    )
+class WorkTask(BaseActivity):
+    min_crew = models.IntegerField(validators=[MinValueValidator(1)])
 
     class Meta:
         ordering = ["date"]
