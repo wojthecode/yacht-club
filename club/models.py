@@ -107,7 +107,7 @@ class Boat(models.Model):
     description = models.TextField(blank=True, null=True)
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["-club_owner", "category"]
 
     def clean(self):
         super().clean()

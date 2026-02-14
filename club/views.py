@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import generic
 
-from club.models import Event, WorkTask
+from club.models import Boat, Event, WorkTask
 
 
 def index(request:HttpRequest) -> HttpResponse:
@@ -23,3 +23,7 @@ class WorkTaskListView(generic.ListView):
 
 class WorkTaskDetailView(generic.DetailView):
     model = WorkTask
+
+
+class BoatListView(generic.ListView):
+    model = Boat

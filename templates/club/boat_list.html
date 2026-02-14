@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <h1 class="center">Our Boats</h1>
+  
+
+  {% for boat in boat_list %}
+
+    <div class="boat_list">
+
+      <div class="boat_list__element">
+
+        <h3>{{ boat.name}}</h3>
+        
+        <p>Category: {{ boat.get_category_display }}</p>
+        <p>Length {{ boat.length }} m</p>
+        <p>Sail area: {{ boat.sail_area }} m<sup>2</sup></p>
+        <p>Crew: {{ boat.crew_max }} persons</p>    
+      
+        <a href="#">Read more >></a>
+      
+      </div>
+      <div class="boat_list__element">
+      
+        {% if boat.image %}
+
+        {% else %}
+
+          <img src="{% static 'images/default_boat.png' %}" alt="default boat image" class="boat_list__image">
+
+        {% endif %}
+      
+      </div>
+      <hr>
+    </div>
+
+
+
+  {% endfor %}
+
+{% endblock %}
