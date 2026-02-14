@@ -61,15 +61,17 @@ class Boat(models.Model):
     ]
 
     name = models.CharField(max_length=64, unique=True)
-    owner = models.ManyToManyField(
+    owner = models.ForeignKey(
         to=Member,
+        null=True,
         blank=True,
-        related_name="boats_owned"
+        on_delete=models.SET_NULL,
+        related_name="boats_owned",
     )
     keeper = models.ManyToManyField(
         to=Member,
         blank=True,
-        related_name="boats_keeped"
+        related_name="boats_keeped",
     )
     club_owner = models.BooleanField(default=False)
 

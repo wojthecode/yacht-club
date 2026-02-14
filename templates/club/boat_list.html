@@ -16,7 +16,15 @@
         <p>Category: {{ boat.get_category_display }}</p>
         <p>Length {{ boat.length }} m</p>
         <p>Sail area: {{ boat.sail_area }} m<sup>2</sup></p>
-        <p>Crew: {{ boat.crew_max }} persons</p>    
+        <p>Crew: {{ boat.crew_max }} persons</p>
+
+        <p>
+          {% if boat.club_owner %}
+            Club boat
+          {% else %}
+            Shipowner: {{ boat.owner }}
+          {% endif %}
+        </p>
       
         <a href="#">Read more >></a>
       

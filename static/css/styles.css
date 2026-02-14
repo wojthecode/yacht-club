@@ -24,6 +24,40 @@ body {
   justify-self: center;
 }
 
+/* #region Boat_list */
+
+.boat_list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-bottom: 2px solid #5A90A5;
+}
+
+.boat_list:nth-child(odd) {
+  flex-direction: row-reverse;
+}
+
+.boat_list:last-child {
+  border-bottom: 0px;
+}
+
+.boat_list__element {
+  width: 50%;
+  padding-inline: 5%;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  position:relative;
+}
+
+
+.boat_list__image {
+  width: 250px;
+  aspect-ratio: 1 / 1;
+  border-radius: 250px;
+}
+
+/* #endregion */
+
 /* #region Content_container */
 
 .content_container {
