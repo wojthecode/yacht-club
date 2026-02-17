@@ -171,15 +171,41 @@ body {
   transform: scale(1.05);
 }
 
-.calendar__planed {
+.calendar__planned {
   font-weight: bolder;
   text-decoration: underline;
 }
-.calendar__planed:hover {
+.calendar__planned:hover {
   border: 1px solid #D12F2F;
   transform: scale(1.05);
   cursor: pointer;
   z-index: 1;
+}
+
+.popup {
+  position: absolute;
+  top: calc(100% + 1px);
+  right: 0px;
+  width: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px;
+  text-align: center;
+  color: black;
+  background-color: #B6D1B3;
+  border: 1px solid #D12F2F;
+  z-index: 1;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s;
+  transition-timing-function: ease-in;
+}
+.popup:hover{
+  text-decoration: underline;
+}
+.calendar__planned:hover .popup {
+  opacity: 1;
+  visibility: visible;
 }
 
 .calendar__active {

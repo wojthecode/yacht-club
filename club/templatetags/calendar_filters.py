@@ -18,7 +18,7 @@ def range_list(value):
     return range(1, int(value) + 1)
 
 @register.filter
-def planed_events(value):
+def planned_events(value):
     year, month, month_len = value.split("-")
 
     start_day = date(int(year), int(month), 1)

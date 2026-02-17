@@ -35,14 +35,24 @@
         calendar__day
 
         {% if today|add:'0' == day %}
-          calendar__day calendar__active
+          calendar__active
         {% endif %}
 
-        {% if day in cur_month|planed_events %}
-          calendar__day calendar__planed
+        {% if day in cur_month|planned_events %}
+          calendar__planned
         {% endif %}
 
-      "></div>
+      ">
+      
+        {% if day in cur_month|planned_events %}
+          <a href="{% url 'club:event-list' %}">
+            <div class="popup">
+              Planned events
+            </div>
+          </a>
+        {% endif %}
+      
+      </div>
 
     {% endfor %}
   </div>
