@@ -27,3 +27,7 @@ class WorkTaskDetailView(generic.DetailView):
 
 class BoatListView(generic.ListView):
     model = Boat
+
+
+class BoatDetailView(generic.DetailView):
+    model = Boat

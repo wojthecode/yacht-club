@@ -107,6 +107,7 @@ class Boat(models.Model):
 
     engine = models.CharField(max_length=64)
     description = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to="boats/", blank=True, null=True)
 
     class Meta:
         ordering = ["-club_owner", "category"]

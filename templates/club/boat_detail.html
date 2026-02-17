@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<h1 class="center">{{ boat.name }}</h1>
+
+<br>
+
+<p class="justify boat_detail__description">{{ boat.description }}</p>
+
+<br><br>
+
+  <div class="boat_detail">
+
+    <div class="boat_detail__element">
+
+      <p>Model: {{ boat.model }}</p>
+      <p> Rigging: {{ boat.rigging }}</p>
+      <p>Category: {{ boat.get_category_display }}</p>
+      <p>Length {{ boat.length }} m</p>
+      <p>Beam: {{ boat.beam }}</p>
+      <p>Draft: {{ boat.draft }}</p>
+      <p>Sail area: {{ boat.sail_area }} m<sup>2</sup></p>
+      <p>Crew: {{ boat.crew_min}} - {{ boat.crew_max }} persons</p> 
+
+      <p>
+        {% if boat.club_owner %}
+          Club boat
+        {% else %}
+          Shipowner: {{ boat.owner }}
+        {% endif %}
+      </p>
+
+    </div>
+
+    <div class="boat_detail__element">
+      
+        {% if boat.image %}
+
+          <img src="{{ boat.image.url }}" alt="boat image" class="boat_detail__image boat_detail__image-default">
+
+        {% else %}
+
+          <img img src="{% static 'images/placeholder_boat_detail.png' %}" alt="placeholder image" class="boat_detail__image">
+
+        {% endif %}
+      
+      </div>
+  </div>
+
+
+
+{% endblock %}

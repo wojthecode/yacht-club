@@ -3,6 +3,11 @@ body {
   margin-bottom: 15px;
 }
 
+.base_width {
+  max-width: 1280px;
+  min-width: 900px;
+}
+
 .center {
   text-align: center;
 }
@@ -46,15 +51,52 @@ body {
   padding-inline: 5%;
   padding-top: 25px;
   padding-bottom: 25px;
-  position:relative;
 }
 
 
 .boat_list__image {
   width: 250px;
+  margin-top: 20px;
   aspect-ratio: 1 / 1;
   border-radius: 250px;
 }
+
+/* #endregion */
+
+/* #region Boat_detail */
+
+.boat_detail {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.boat_detail__description {
+  font-size: 19px;
+}
+
+.boat_detail__element {
+  padding-inline: 3%;
+}
+
+.boat_detail__element:first-child {
+  width: 40%;
+}
+
+.boat_detail__element:last-child {
+  width: 60%;
+}
+
+.boat_detail__image {
+  width: 100%;
+  aspect-ratio: 9 / 12;
+  object-fit: cover;
+  border-radius: 25px;
+}
+
+/* .boat_detail__image-default {
+  border-radius: 200px;
+} */
 
 /* #endregion */
 
@@ -122,6 +164,7 @@ body {
   justify-content: center;
   transition: border 0.5s;
   transition-timing-function: ease;
+  position: relative;
 }
 .calendar__day:hover {
   border: 1px solid #D12F2F;
@@ -136,6 +179,7 @@ body {
   border: 1px solid #D12F2F;
   transform: scale(1.05);
   cursor: pointer;
+  z-index: 1;
 }
 
 .calendar__active {

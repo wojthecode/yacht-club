@@ -27,18 +27,18 @@
           {% endif %}
         </p>
       
-        <a href="#">Read more >></a>
+        <a href="{{ boat.get_absolute_url }}">Read more >></a>
       
       </div>
       <div class="boat_list__element">
       
         {% if boat.image %}
 
-          <img src="{{ boat.image.url }}" alt="default boat image" class="boat_list__image">
+          <img src="{{ boat.image.url }}" alt="boat image" class="boat_list__image">
 
         {% else %}
 
-          <img src="{% static 'images/placeholder_boat_list.png' %}" alt="default boat image" class="boat_list__image">
+          <img src="{% static 'images/placeholder_boat_list.png' %}" alt="placeholder image" class="boat_list__image">
 
         {% endif %}
       
