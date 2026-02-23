@@ -130,6 +130,7 @@ class BaseActivity(models.Model):
     location = models.CharField(max_length=128)
     participants = models.ManyToManyField(
         to=Member,
+        blank=True,
         related_name="%(class)s_participant"
     )
     created_by = models.ForeignKey(

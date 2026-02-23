@@ -7,9 +7,27 @@
   <br>
   <p class="justify">Embrace the spirit of adventure with Kraken Offshore Yacht Club—your home port for exploring the vast oceans. We specialize in advanced maritime training, professional yacht maintenance, and organizing world-class sailing events. Whether you are looking for a competitive racing crew or a secure berth in our hangar, you will always find fair winds at Kraken.</p>
 
-  <h2 class="center">Upcoming Events</h2>
-  <p>
-    events
-  </p>
+  <h4 class="center">We've got <strong>{{ num_boats }}</strong> boats and <strong>{{ num_members }}</strong> members</h4>
+
+  <br>
+
+  <h4 class="center bold">Join the crew and be part of the adventure!</h4>
+
+  <br>
+  <hr>
+
+  <h3 class="center">Upcoming Events</h3>
+
+  {% if upcoming %}
+    {% for event in upcoming %}
+      <p>
+        {{ event.date }}
+        <br>
+        <a href="{{ event.get_absolute_url }}" class="clean_link">{{ event.name }}</a>
+      </p>
+    {% endfor %}
+  {% else %}
+    No events planned yet.
+  {% endif %}
 
 {% endblock %}
