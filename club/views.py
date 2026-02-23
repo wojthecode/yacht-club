@@ -2,6 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django import forms
 from datetime import date
 
 from club.models import Boat, Event, Member, WorkTask
@@ -34,6 +35,11 @@ class EventCreateView(LoginRequiredMixin, generic.CreateView):
     model = Event
     fields = ("name", "description", "date", "location")
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields["date"].widget = forms.DateInput(attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M")
+        return form
+
     def form_valid(self, form):
        form.instance.created_by = self.request.user
        return super().form_valid(form)
@@ -42,6 +48,11 @@ class EventCreateView(LoginRequiredMixin, generic.CreateView):
 class EventUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Event
     fields = ("name", "description", "date", "location")
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields["date"].widget = forms.DateInput(attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M")
+        return form
 
 
 class WorkTaskListView(LoginRequiredMixin, generic.ListView):
