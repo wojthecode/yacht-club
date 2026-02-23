@@ -4,7 +4,7 @@
 
 <h1 class="center">{{ worktask.name }}</h1>
 
-<p>Date: {{ worktask.date }}</p>
+<p>Date: {{ worktask.date|date:"D, d N Y, H:i" }}</p>
 <p>Location: {{ worktask.location }}</p>
 
 <hr>
