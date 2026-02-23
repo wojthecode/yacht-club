@@ -39,6 +39,11 @@ class EventCreateView(LoginRequiredMixin, generic.CreateView):
        return super().form_valid(form)
 
 
+class EventUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Event
+    fields = ("name", "description", "date", "location")
+
+
 class WorkTaskListView(LoginRequiredMixin, generic.ListView):
     model = WorkTask
 
