@@ -29,6 +29,16 @@ class EventListView(generic.ListView):
 class EventDetailView(generic.DetailView):
     model = Event
 
+
+class EventCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Event
+    fields = ("name", "description", "date", "location")
+
+    def form_valid(self, form):
+       form.instance.created_by = self.request.user
+       return super().form_valid(form)
+
+
 class WorkTaskListView(LoginRequiredMixin, generic.ListView):
     model = WorkTask
 

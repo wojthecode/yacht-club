@@ -17,6 +17,16 @@ body {
 .bold {
   font-weight: bold;
 }
+.clean_link {
+  color: #5A90A5;
+}
+.clean_link:hover {
+  color: #5A90A5;
+}
+.invites {
+  text-align: right;
+  font-style: italic;
+}
 
 .sidebar_logo {
   width: 100%;
