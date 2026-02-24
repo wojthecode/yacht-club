@@ -3,21 +3,29 @@
 
 {% block content %}
 
-  <h1>{{ object|yesno:"Update,Create"}} Event</h1>
+  <h1>{{ object|yesno:"Update,Create"}} {{ activity }}</h1>
 
-  <form action="" method="post" novalidate>
-    {% csrf_token %}
+  {% if user.role.management_rights %}
 
-    {{ form|crispy }}
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
 
-    <button type="submit" value="submit" class="btn btn-primary rounded-pill px-2 py-0">
-      {{ object|yesno:"Update,Create"}} 
-    </button>
+      {{ form|crispy }}
 
-    <button type="button" onclick="history.back()" class="btn btn-primary rounded-pill px-2 py-0">
-      Cancel
-    </button>
+      <button type="submit" value="submit" class="btn btn-primary rounded-pill px-2 py-0">
+        {{ object|yesno:"Update,Create"}} 
+      </button>
 
-  </form>
+      <button type="button" onclick="history.back()" class="btn btn-primary rounded-pill px-2 py-0">
+        Cancel
+      </button>
+
+    </form>
+
+  {% else %}
+    <br><br><hr>
+    <h4 class="center">You don't have permission to add {{ activity }}</h4>
+    <hr>
+  {% endif %}
 
 {% endblock %}

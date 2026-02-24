@@ -66,10 +66,20 @@ class EventCreateView(BaseActivityCreateView):
     model = Event
     fields = ("name", "description", "date", "location")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["activity"] = "Event"
+        return context
+
 
 class EventUpdateView(BaseActivityUpdateView):
     model = Event
     fields = ("name", "description", "date", "location")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["activity"] = "Event"
+        return context
 
 
 class WorkTaskListView(LoginRequiredMixin, BaseActivityListView):
@@ -84,10 +94,20 @@ class WorkTaskCreateView(BaseActivityCreateView):
     model = WorkTask
     fields = ("name", "description", "date", "location", "min_crew")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["activity"] = "Work Task"
+        return context
+
 
 class WorkTaskUpdateteView(BaseActivityUpdateView):
     model = WorkTask
     fields = ("name", "description", "date", "location", "min_crew")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["activity"] = "Work Task"
+        return context
 
 
 class BoatListView(generic.ListView):
