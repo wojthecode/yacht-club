@@ -1,3 +1,5 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import generic
@@ -25,6 +27,12 @@ def index(request:HttpRequest) -> HttpResponse:
 
 class EventListView(generic.ListView):
     model = Event
+    paginate_by = 4
+
+    def get_queryset(self):
+        today = date.today()
+        queryset = super().get_queryset().filter(date__gte=today)
+        return queryset
 
 
 class EventDetailView(generic.DetailView):
@@ -57,6 +65,12 @@ class EventUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class WorkTaskListView(LoginRequiredMixin, generic.ListView):
     model = WorkTask
+    paginate_by = 4
+
+    def get_queryset(self):
+        today = date.today()
+        queryset = super().get_queryset().filter(date__gte=today)
+        return queryset
 
 
 class WorkTaskDetailView(LoginRequiredMixin, generic.DetailView):
@@ -65,6 +79,7 @@ class WorkTaskDetailView(LoginRequiredMixin, generic.DetailView):
 
 class BoatListView(generic.ListView):
     model = Boat
+    paginate_by = 4
 
 
 class BoatDetailView(generic.DetailView):
