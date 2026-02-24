@@ -52,7 +52,7 @@ body {
   flex-direction: row-reverse;
 }
 
-.boat_list:last-child {
+.boat_list:last-of-type {
   border-bottom: 0px;
 }
 

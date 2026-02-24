@@ -1,5 +1,3 @@
-from typing import Any
-from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import generic
@@ -24,9 +22,7 @@ def index(request:HttpRequest) -> HttpResponse:
 
     return render(request, "club/index.html", context=context)
 
-
-class EventListView(generic.ListView):
-    model = Event
+class BaseActivityListView(generic.ListView):
     paginate_by = 4
 
     def get_queryset(self):
@@ -35,13 +31,8 @@ class EventListView(generic.ListView):
         return queryset
 
 
-class EventDetailView(generic.DetailView):
-    model = Event
-
-
-class EventCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Event
-    fields = ("name", "description", "date", "location")
+class BaseActivityCreateView(LoginRequiredMixin, generic.CreateView):
+    template_name = "club/base_activity_form.html"
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -53,28 +44,42 @@ class EventCreateView(LoginRequiredMixin, generic.CreateView):
        return super().form_valid(form)
 
 
-class EventUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Event
-    fields = ("name", "description", "date", "location")
-
+class BaseActivityUpdateView(LoginRequiredMixin, generic.UpdateView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.fields["date"].widget = forms.DateInput(attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M")
         return form
 
 
-class WorkTaskListView(LoginRequiredMixin, generic.ListView):
-    model = WorkTask
-    paginate_by = 4
+class EventListView(BaseActivityListView):
+    model = Event
 
-    def get_queryset(self):
-        today = date.today()
-        queryset = super().get_queryset().filter(date__gte=today)
-        return queryset
+
+class EventDetailView(generic.DetailView):
+    model = Event
+
+
+class EventCreateView(BaseActivityCreateView):
+    model = Event
+    fields = ("name", "description", "date", "location")
+
+
+class EventUpdateView(BaseActivityUpdateView):
+    model = Event
+    fields = ("name", "description", "date", "location")
+
+
+class WorkTaskListView(LoginRequiredMixin, BaseActivityListView):
+    model = WorkTask
 
 
 class WorkTaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = WorkTask
+
+
+class WorkTaskCreateView(BaseActivityCreateView):
+    model = WorkTask
+    fields = ("name", "description", "date", "location", "min_crew")
 
 
 class BoatListView(generic.ListView):
