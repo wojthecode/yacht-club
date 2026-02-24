@@ -22,6 +22,7 @@ def index(request:HttpRequest) -> HttpResponse:
 
     return render(request, "club/index.html", context=context)
 
+
 class BaseActivityListView(generic.ListView):
     paginate_by = 4
 
@@ -45,6 +46,8 @@ class BaseActivityCreateView(LoginRequiredMixin, generic.CreateView):
 
 
 class BaseActivityUpdateView(LoginRequiredMixin, generic.UpdateView):
+    template_name = "club/base_activity_form.html"
+
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.fields["date"].widget = forms.DateInput(attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M")
@@ -78,6 +81,11 @@ class WorkTaskDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class WorkTaskCreateView(BaseActivityCreateView):
+    model = WorkTask
+    fields = ("name", "description", "date", "location", "min_crew")
+
+
+class WorkTaskUpdateteView(BaseActivityUpdateView):
     model = WorkTask
     fields = ("name", "description", "date", "location", "min_crew")
 
