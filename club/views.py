@@ -9,6 +9,8 @@ from datetime import date
 from club.models import Boat, Event, Member, WorkTask
 
 
+### Home Page View ###
+
 def index(request:HttpRequest) -> HttpResponse:
     today = date.today()
     upcoming = list(Event.objects.filter(date__gte=today)[:5])
@@ -24,6 +26,8 @@ def index(request:HttpRequest) -> HttpResponse:
     return render(request, "club/index.html", context=context)
 
 
+### Base Activity Views ###
+
 class BaseActivityListView(generic.ListView):
     paginate_by = 4
 
@@ -38,7 +42,9 @@ class BaseActivityCreateView(LoginRequiredMixin, generic.CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields["date"].widget = forms.DateInput(attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M")
+        form.fields["date"].widget = forms.DateInput(
+            attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M"
+        )
         return form
 
     def form_valid(self, form):
@@ -51,8 +57,19 @@ class BaseActivityUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields["date"].widget = forms.DateInput(attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M")
+        form.fields["date"].widget = forms.DateInput(
+            attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M"
+        )
         return form
+
+
+### Event Views ###
+
+class EventContextMixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs) # type: ignore
+        context["activity"] = "Event"
+        return context
 
 
 class EventListView(BaseActivityListView):
@@ -63,34 +80,30 @@ class EventDetailView(generic.DetailView):
     model = Event
 
 
-class EventCreateView(BaseActivityCreateView):
+class EventCreateView(EventContextMixin, BaseActivityCreateView):
     model = Event
     fields = ("name", "description", "date", "location")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["activity"] = "Event"
-        return context
 
-
-class EventUpdateView(BaseActivityUpdateView):
+class EventUpdateView(EventContextMixin, BaseActivityUpdateView):
     model = Event
     fields = ("name", "description", "date", "location")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["activity"] = "Event"
-        return context
 
-
-class EventDeleteView(LoginRequiredMixin, generic.DeleteView):
+class EventDeleteView(
+        LoginRequiredMixin, EventContextMixin, generic.DeleteView
+    ):
     model = Event
     template_name = "club/activity_confirm_delete.html"
     success_url = reverse_lazy("club:event-list")
 
+
+### Work Task Wiews ###
+
+class WorkTaskContextMixin:
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["activity"] = "Event"
+        context = super().get_context_data(**kwargs) # type: ignore
+        context["activity"] = "Work Task"
         return context
 
 
@@ -102,36 +115,25 @@ class WorkTaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = WorkTask
 
 
-class WorkTaskCreateView(BaseActivityCreateView):
+class WorkTaskCreateView(WorkTaskContextMixin, BaseActivityCreateView):
     model = WorkTask
     fields = ("name", "description", "date", "location", "min_crew")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["activity"] = "Work Task"
-        return context
 
-
-class WorkTaskUpdateteView(BaseActivityUpdateView):
+class WorkTaskUpdateteView(WorkTaskContextMixin, BaseActivityUpdateView):
     model = WorkTask
     fields = ("name", "description", "date", "location", "min_crew")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["activity"] = "Work Task"
-        return context
 
-
-class WorkTaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+class WorkTaskDeleteView(
+        LoginRequiredMixin, WorkTaskContextMixin, generic.DeleteView
+    ):
     model = WorkTask
     success_url = reverse_lazy("club:worktask-list")
     template_name = "club/activity_confirm_delete.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["activity"] = "Work Task"
-        return context
 
+### Boat Views ###
 
 class BoatListView(generic.ListView):
     model = Boat
