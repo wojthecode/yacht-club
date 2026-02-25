@@ -1,9 +1,10 @@
-from django.http import HttpRequest, HttpResponse
+from django import forms
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django import forms
 from datetime import date
 
 from club.models import Boat, Event, Member, WorkTask
@@ -98,6 +99,18 @@ class EventDeleteView(
     success_url = reverse_lazy("club:event-list")
 
 
+@login_required
+def toggle_event_participation(request, pk):
+    event = Event.objects.get(id=pk)
+    member = Member.objects.get(id=request.user.id)
+    
+    if event.participants.filter(pk=member.pk).exists():
+        event.participants.remove(member)
+    else:
+        event.participants.add(member)
+    return HttpResponseRedirect(reverse_lazy("club:event-detail", args=[pk]))
+
+
 ### Work Task Wiews ###
 
 class WorkTaskContextMixin:
@@ -131,6 +144,18 @@ class WorkTaskDeleteView(
     model = WorkTask
     success_url = reverse_lazy("club:worktask-list")
     template_name = "club/activity_confirm_delete.html"
+
+
+@login_required
+def toggle_worktask_participation(request, pk):
+    worktask = WorkTask.objects.get(id=pk)
+    member = Member.objects.get(id=request.user.id)
+
+    if worktask.participants.filter(pk=member.pk).exists():
+        worktask.participants.remove(member)
+    else:
+        worktask.participants.add(member)
+    return HttpResponseRedirect(reverse_lazy("club:worktask-detail", args=[pk]))
 
 
 ### Boat Views ###
