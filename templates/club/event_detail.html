@@ -4,13 +4,39 @@
 
 <h1 class="center">{{ event.name }}</h1>
 
-<p>Date: {{ event.date|date:"D, d N Y, H:i" }}</p>
+<hr>
+
+<p>
+  Date: {{ event.date|date:"D, d N Y, H:i" }}
+
+  {% if user.is_authenticated %}
+
+    {% if user in event.participants.all %}
+      <a href="#" class="join_leave btn btn-success rounded-pill px-2 py-0">Join event</a>
+    {% else %}
+      <a href="#" class="join_leave btn btn-danger rounded-pill px-2 py-0"> Leave event</a>
+    {% endif %}
+
+  {% endif %}
+</p>
 <p>Location: {{ event.location }}</p>
 
 <hr>
 
 <p>{{ event.description|linebreaksbr }}</p>
 
-<p class="invites">invites, {{ event.created_by }}</p>
+
+<p class="invites">
+
+  {% if user.role.management_rights %}
+
+    <a href="{% url 'club:event-update' pk=event.id %}" class="update_button btn btn-primary rounded-pill px-3 py-0">Edit</a>
+
+    <a href="#" class="delete_button btn btn-danger rounded-pill px-3 py-0">Delete</a>
+
+  {% endif %}
+
+  invites, {{ event.created_by }}
+</p>
 
 {% endblock %}

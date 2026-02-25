@@ -4,11 +4,37 @@
 
 <h1 class="center">{{ worktask.name }}</h1>
 
-<p>Date: {{ worktask.date|date:"D, d N Y, H:i" }}</p>
+<p>
+  Date: {{ worktask.date|date:"D, d N Y, H:i" }}
+
+  {% if user.is_authenticated %}
+
+    {% if user in event.participants.all %}
+      <a href="#" class="join_leave btn btn-success rounded-pill px-2 py-0">Join event</a>
+    {% else %}
+      <a href="#" class="join_leave btn btn-danger rounded-pill px-2 py-0"> Leave event</a>
+    {% endif %}
+
+  {% endif %}
+</p>
 <p>Location: {{ worktask.location }}</p>
 
 <hr>
 
 <p>{{ worktask.description|linebreaksbr }}</p>
+
+
+<p class="invites">
+
+  {% if user.role.management_rights %}
+
+    <a href="{% url 'club:worktask-update' pk=worktask.id %}" class="update_button btn btn-primary rounded-pill px-3 py-0">Edit</a>
+
+    <a href="#" class="delete_button btn btn-danger rounded-pill px-3 py-0">Delete</a>
+
+  {% endif %}
+
+  invites, {{ worktask.created_by }}
+</p>
 
 {% endblock %}

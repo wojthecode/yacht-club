@@ -8,6 +8,41 @@ body {
   min-width: 900px;
 }
 
+.sidebar_logo {
+  width: 100%;
+  padding: 5px;
+}
+
+/* #region Buttons */
+
+.add_button {
+  position: absolute;
+  right: 25px;
+  top: 10px;
+  font-size: 20px;
+}
+.update_button {
+  position: absolute;
+  left: 30px;
+  font-size: 15px;
+  font-style: normal;
+}
+.delete_button {
+  position: absolute;
+  left: 100px;
+  font-size: 15px;
+  font-style: normal;
+}
+.join_leave {
+  position: absolute;
+  right: 25px;
+  /* top: 150px; */
+}
+
+/* #endregion */
+
+/* #region Text formating */
+
 .center {
   text-align: center;
 }
@@ -26,18 +61,20 @@ body {
 .invites {
   text-align: right;
   font-style: italic;
+  margin-top: 25px;
 }
 
-.sidebar_logo {
-  width: 100%;
-  padding: 5px;
-}
+/* #endregion */
+
+/* #region Forms */
 
 .login_form {
   min-width: 40vw;
   max-width: 50vw;
   justify-self: center;
 }
+
+/* #endregion */
 
 /* #region Boat_list */
 

@@ -4,6 +4,12 @@
   <h1 class="center">Upcoming Work Tasks</h1>
   <br>
 
+  {% if user.role.management_rights %}
+
+    <a href="{% url 'club:worktask-create' %}" class="add_button btn btn-success rounded-pill px-2 py-0">+</a>
+
+  {% endif %}
+
   {% for worktask in worktask_list %}
 
     
