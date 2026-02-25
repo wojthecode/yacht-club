@@ -30,7 +30,7 @@
 
     <a href="{% url 'club:worktask-update' pk=worktask.id %}" class="update_button btn btn-primary rounded-pill px-3 py-0">Edit</a>
 
-    <a href="#" class="delete_button btn btn-danger rounded-pill px-3 py-0">Delete</a>
+    <a href="{% url 'club:worktask-delete' pk=worktask.id %}" class="delete_button btn btn-danger rounded-pill px-3 py-0">Delete</a>
 
   {% endif %}
 

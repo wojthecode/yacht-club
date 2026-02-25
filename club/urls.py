@@ -6,10 +6,12 @@ from club.views import (
     EventDetailView,
     EventCreateView,
     EventUpdateView,
+    EventDeleteView,
     WorkTaskListView,
     WorkTaskDetailView,
     WorkTaskCreateView,
     WorkTaskUpdateteView,
+    WorkTaskDeleteView,
     BoatListView,
     BoatDetailView,
 )
@@ -22,9 +24,11 @@ urlpatterns = [
 
     path("events/create/", EventCreateView.as_view(), name="event-create"),
     path("events/update/<int:pk>/", EventUpdateView.as_view(), name="event-update"),
+    path("events/delete/<int:pk>/", EventDeleteView.as_view(), name="event-delete"),
 
     path("work_tasks/", WorkTaskListView.as_view(), name="worktask-list"),
     path("work_tasks/<int:pk>/", WorkTaskDetailView.as_view(), name="worktask-detail"),
+    path("work_tasks/delete/<int:pk>/", WorkTaskDeleteView.as_view(), name="worktask-delete"),
 
     path("work_tasks/create/", WorkTaskCreateView.as_view(), name="worktask-create"),
     path("work_tasks/update/<int:pk>/", WorkTaskUpdateteView.as_view(), name="worktask-update"),

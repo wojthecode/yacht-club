@@ -1,5 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django import forms
@@ -82,6 +83,17 @@ class EventUpdateView(BaseActivityUpdateView):
         return context
 
 
+class EventDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Event
+    template_name = "club/activity_confirm_delete.html"
+    success_url = reverse_lazy("club:event-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["activity"] = "Event"
+        return context
+
+
 class WorkTaskListView(LoginRequiredMixin, BaseActivityListView):
     model = WorkTask
 
@@ -103,6 +115,17 @@ class WorkTaskCreateView(BaseActivityCreateView):
 class WorkTaskUpdateteView(BaseActivityUpdateView):
     model = WorkTask
     fields = ("name", "description", "date", "location", "min_crew")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["activity"] = "Work Task"
+        return context
+
+
+class WorkTaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = WorkTask
+    success_url = reverse_lazy("club:worktask-list")
+    template_name = "club/activity_confirm_delete.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
