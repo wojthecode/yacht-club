@@ -16,6 +16,7 @@ from club.views import (
     toggle_worktask_participation,
     BoatListView,
     BoatDetailView,
+    BoatCreateView,
 )
 
 
@@ -76,6 +77,7 @@ urlpatterns = [
 
     path("boats/", BoatListView.as_view(), name="boat-list"),
     path("boats/<int:pk>/", BoatDetailView.as_view(), name="boat-detail"),
+    path("boats/create/", BoatCreateView.as_view(), name="boat-create"),
 ]
 
 app_name = "club"

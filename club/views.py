@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
@@ -7,7 +8,8 @@ from django.urls import reverse_lazy
 from django.views import generic
 from datetime import date
 
-from club.models import Boat, Event, Member, WorkTask
+from club.models import Boat, Event, WorkTask
+from club.forms import BoatForm
 
 
 ### Home Page View ###
@@ -16,7 +18,7 @@ def index(request:HttpRequest) -> HttpResponse:
     today = date.today()
     upcoming = list(Event.objects.filter(date__gte=today)[:5])
     num_boats = Boat.objects.count()
-    num_members = Member.objects.count()
+    num_members = get_user_model().objects.count()
 
     context = {
         "upcoming": upcoming,
@@ -102,7 +104,7 @@ class EventDeleteView(
 @login_required
 def toggle_event_participation(request, pk):
     event = Event.objects.get(id=pk)
-    member = Member.objects.get(id=request.user.id)
+    member = get_user_model().objects.get(id=request.user.id)
     
     if event.participants.filter(pk=member.pk).exists():
         event.participants.remove(member)
@@ -149,7 +151,7 @@ class WorkTaskDeleteView(
 @login_required
 def toggle_worktask_participation(request, pk):
     worktask = WorkTask.objects.get(id=pk)
-    member = Member.objects.get(id=request.user.id)
+    member = get_user_model().objects.get(id=request.user.id)
 
     if worktask.participants.filter(pk=member.pk).exists():
         worktask.participants.remove(member)
@@ -167,3 +169,13 @@ class BoatListView(generic.ListView):
 
 class BoatDetailView(generic.DetailView):
     model = Boat
+
+
+class BoatCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Boat
+    form_class = BoatForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs

@@ -3,7 +3,12 @@
 
 {% block content %}
   <h1 class="center">Our Boats</h1>
-  
+
+  {% if user.role %}
+
+    <a href="{% url 'club:boat-create' %}" class="add_button btn btn-success rounded-pill px-2 py-0">Add</a>
+
+  {% endif %}
 
   {% for boat in boat_list %}
 
