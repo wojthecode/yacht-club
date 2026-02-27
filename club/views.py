@@ -70,7 +70,7 @@ class BaseActivityUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class EventContextMixin:
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs) # type: ignore
+        context = super().get_context_data(**kwargs)    # type: ignore
         context["activity"] = "Event"
         return context
 
@@ -117,7 +117,7 @@ def toggle_event_participation(request, pk):
 
 class WorkTaskContextMixin:
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs) # type: ignore
+        context = super().get_context_data(**kwargs)    # type: ignore
         context["activity"] = "Work Task"
         return context
 
@@ -162,6 +162,7 @@ def toggle_worktask_participation(request, pk):
 
 ### Boat Views ###
 
+
 class BoatListView(generic.ListView):
     model = Boat
     paginate_by = 4
@@ -179,3 +180,14 @@ class BoatCreateView(LoginRequiredMixin, generic.CreateView):
         kwargs = super().get_form_kwargs()
         kwargs["user"] = self.request.user
         return kwargs
+
+
+class BoatUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Boat
+    form_class = BoatForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+

@@ -27,6 +27,19 @@
       <p>
         {% if boat.club_owner %}
           Club boat
+          <br><br>
+
+          {% if boat.keeper.count > 0 %}
+
+            Keeper{{ boat.keeper.count|pluralize:"s" }}:
+
+            {% for keeper in boat.keeper.all %}
+              <br>
+              {{ keeper }}
+            {% endfor %}
+
+          {% endif %}
+
         {% else %}
           Shipowner: {{ boat.owner }}
         {% endif %}
@@ -35,7 +48,7 @@
     </div>
 
     <div class="boat_detail__element">
-      
+
         {% if boat.image %}
 
           <img src="{{ boat.image.url }}" alt="boat image" class="boat_detail__image boat_detail__image-default">
@@ -48,6 +61,17 @@
       
       </div>
   </div>
+
+<br><br>
+
+
+{% if user.role.management_rights or boat.owner == user %}
+
+  <a href="{% url 'club:boat-update' pk=boat.id %}" class="update_button btn btn-primary rounded-pill px-3 py-0">Edit</a>
+
+  <a href="#" class="delete_button btn btn-danger rounded-pill px-3 py-0">Delete</a>
+
+{% endif %}
 
 
 

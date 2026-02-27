@@ -31,7 +31,18 @@
   {% endif %}
 
   {% if user.role.management_rights %}
-    <script src="{% static 'scripts/boat_form.js' %}" id="boat_form" data-user_id="{{ user.pk }}"></script>
+    <script src="{% static 'scripts/boat_form.js' %}" id="boat_form"
+      {% if object %}
+        {% if boat.club_owner %}
+          data-club_owner=true
+          data-user_id="{{ user.pk }}"
+        {% else %}
+          data-user_id="{{ boat.owner.pk}}"
+        {% endif %}
+      {% else %}
+        data-user_id="{{ user.pk }}"
+      {% endif %}
+    ></script>
   {% endif %}
 
 {% endblock %}
