@@ -69,10 +69,9 @@
 
   <a href="{% url 'club:boat-update' pk=boat.id %}" class="update_button btn btn-primary rounded-pill px-3 py-0">Edit</a>
 
-  <a href="#" class="delete_button btn btn-danger rounded-pill px-3 py-0">Delete</a>
+  <a href="{% url 'club:boat-delete' pk=boat.id %}" class="delete_button btn btn-danger rounded-pill px-3 py-0">Delete</a>
 
 {% endif %}
-
 
 
 {% endblock %}

@@ -190,3 +190,9 @@ class BoatUpdateView(
     ):
     model = Boat
     form_class = BoatForm
+
+
+class BoatDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Boat
+    success_url = reverse_lazy("club:boat-list")
+    template_name = "club/activity_confirm_delete.html"

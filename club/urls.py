@@ -18,6 +18,7 @@ from club.views import (
     BoatDetailView,
     BoatCreateView,
     BoatUpdateView,
+    BoatDeleteView,
 )
 
 
@@ -54,11 +55,6 @@ urlpatterns = [
         name="worktask-detail"
     ),
     path(
-        "work_tasks/delete/<int:pk>/",
-        WorkTaskDeleteView.as_view(),
-        name="worktask-delete"
-    ),
-    path(
         "work_tasks/create/",
         WorkTaskCreateView.as_view(),
         name="worktask-create"
@@ -67,6 +63,11 @@ urlpatterns = [
         "work_tasks/update/<int:pk>/",
         WorkTaskUpdateteView.as_view(),
         name="worktask-update"
+    ),
+    path(
+        "work_tasks/delete/<int:pk>/",
+        WorkTaskDeleteView.as_view(),
+        name="worktask-delete"
     ),
     path(
         "work_tasks/<int:pk>/toggle_worktask_participation",
@@ -83,6 +84,11 @@ urlpatterns = [
         "boats/update/<int:pk>",
         BoatUpdateView.as_view(),
         name="boat-update"
+    ),
+    path(
+        "boats/delete/<int:pk>/",
+        BoatDeleteView.as_view(),
+        name="boat-delete"
     ),
 ]
 
