@@ -162,6 +162,12 @@ def toggle_worktask_participation(request, pk):
 
 ### Boat Views ###
 
+class BoatFormUserMixin:
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()      # type: ignore
+        kwargs["user"] = self.request.user      # type: ignore
+        return kwargs
+
 
 class BoatListView(generic.ListView):
     model = Boat
@@ -172,22 +178,15 @@ class BoatDetailView(generic.DetailView):
     model = Boat
 
 
-class BoatCreateView(LoginRequiredMixin, generic.CreateView):
+class BoatCreateView(
+        BoatFormUserMixin, LoginRequiredMixin, generic.CreateView
+    ):
     model = Boat
     form_class = BoatForm
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["user"] = self.request.user
-        return kwargs
 
-
-class BoatUpdateView(LoginRequiredMixin, generic.UpdateView):
+class BoatUpdateView(
+        BoatFormUserMixin, LoginRequiredMixin, generic.UpdateView
+    ):
     model = Boat
     form_class = BoatForm
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["user"] = self.request.user
-        return kwargs
-
