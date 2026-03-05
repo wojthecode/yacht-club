@@ -19,6 +19,7 @@ from club.views import (
     BoatCreateView,
     BoatUpdateView,
     BoatDeleteView,
+    MemberListView,
 )
 
 
@@ -90,6 +91,10 @@ urlpatterns = [
         BoatDeleteView.as_view(),
         name="boat-delete"
     ),
+
+    ### Members ###
+
+    path("members/", MemberListView.as_view(), name="member-list"),
 ]
 
 app_name = "club"

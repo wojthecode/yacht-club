@@ -1,3 +1,5 @@
+/* #region General */
+
 body {
   margin-top: 35px;
   margin-bottom: 15px;
@@ -12,6 +14,64 @@ body {
   width: 100%;
   padding: 5px;
 }
+
+/* #endregion */
+
+/* #region Text formating */
+
+.center {
+  text-align: center;
+}
+.justify {
+  text-align: justify;
+}
+.bold {
+  font-weight: bold;
+}
+.darkred {
+  color: darkred;
+}
+.clean_link {
+  color: #5A90A5;
+}
+.clean_link:hover {
+  color: #5A90A5;
+}
+.invites {
+  text-align: right;
+  font-style: italic;
+  margin-top: 25px;
+}
+
+/* #endregion */
+
+/* #region Content_container */
+
+.content_container {
+  height: calc(100vh - 50px);
+  overflow: auto;
+}
+
+.content_container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.content_container::-webkit-scrollbar-thumb {
+  background: #eee;
+  border-radius: 3px;
+}
+
+.content_container:hover::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.content_container:hover::-webkit-scrollbar-thumb {
+  background: #ddd;
+}
+
+/* #endregion */
 
 /* #region Buttons */
 
@@ -36,32 +96,6 @@ body {
 .join_leave {
   position: absolute;
   right: 25px;
-  /* top: 150px; */
-}
-
-/* #endregion */
-
-/* #region Text formating */
-
-.center {
-  text-align: center;
-}
-.justify {
-  text-align: justify;
-}
-.bold {
-  font-weight: bold;
-}
-.clean_link {
-  color: #5A90A5;
-}
-.clean_link:hover {
-  color: #5A90A5;
-}
-.invites {
-  text-align: right;
-  font-style: italic;
-  margin-top: 25px;
 }
 
 /* #endregion */
@@ -105,6 +139,7 @@ body {
   width: 250px;
   margin-top: 20px;
   aspect-ratio: 1 / 1;
+  object-fit: cover;
   border-radius: 250px;
 }
 
@@ -136,39 +171,21 @@ body {
 
 .boat_detail__image {
   width: 100%;
-  aspect-ratio: 9 / 12;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   border-radius: 25px;
 }
 
-/* .boat_detail__image-default {
-  border-radius: 200px;
-} */
-
 /* #endregion */
 
-/* #region Content_container */
+/* #region Members */
 
-.content_container {
-  height: calc(100vh - 50px);
-  overflow: auto;
+.members_table {
+  width: calc(100% - 50px);
+  margin: 15px;
 }
-
-.content_container::-webkit-scrollbar {
-  width: 6px;
-}
-
-.content_container::-webkit-scrollbar-thumb {
-  background: #eee;
-  border-radius: 3px;
-}
-
-.content_container:hover::-webkit-scrollbar {
-  width: 6px;
-}
-
-.content_container:hover::-webkit-scrollbar-thumb {
-  background: #ddd;
+.members_table__cell {
+  padding: 10px;
 }
 
 /* #endregion */

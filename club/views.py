@@ -196,3 +196,10 @@ class BoatDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Boat
     success_url = reverse_lazy("club:boat-list")
     template_name = "club/boat_confirm_delete.html"
+
+
+### Member Views ###
+
+class MemberListView(LoginRequiredMixin, generic.ListView):
+    model = get_user_model()
+    paginate_by = 10
