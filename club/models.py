@@ -6,6 +6,11 @@ from django.urls import reverse
 from decimal import Decimal
 
 
+def user_upload_dir(instance, filename):
+    username = instance.username
+    return f"avatars/{username}/{filename}"
+
+
 class Role(models.Model):
     name = models.CharField(max_length=64, unique=True)
     management_rights = models.BooleanField(default=False)
@@ -41,6 +46,12 @@ class Member(AbstractUser):
         unique=True,
         null=True,
         blank=True
+    )
+    phone_visibility = models.BooleanField(default=True)
+    avatar = models.ImageField(
+        upload_to=user_upload_dir,
+        blank=True,
+        null=True
     )
 
     class Meta:

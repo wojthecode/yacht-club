@@ -68,11 +68,11 @@
 
         {% if member.avatar %}
 
-          <img src="{{ member.avatar.url }}" alt="avatar" class="">
+          <img src="{{ member.avatar.url }}" alt="avatar" class="member_detail__avatar">
 
         {% else %}
 
-          <img img src="{% static 'images/placeholder_avatar.png' %}" alt="placeholder avatar" class="member_detail__avatar">
+          <img img src="{% static 'images/placeholder_avatar.png' %}" alt="placeholder avatar" class="member_detail__placeholder">
 
         {% endif %}
       

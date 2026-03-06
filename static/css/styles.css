@@ -214,6 +214,13 @@ body {
 .member_detail__avatar {
   width: 200px;
   aspect-ratio: 1 / 1;  
+  object-fit: cover;
+  border: 5px solid #113D56;
+  border-radius: 100px;
+}
+.member_detail__placeholder {
+  width: 200px;
+  aspect-ratio: 1 / 1;  
   object-fit: fill;
   border-radius: 100px;
 }
