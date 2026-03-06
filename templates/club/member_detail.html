@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<h1 class="center">{{ member }}</h1>
+
+<br><br>
+
+  <div class="member_detail">
+
+    <div class="member_detail__column">
+
+
+      <table class="member_detail__table">
+        <tr>
+          <td class="member_detail__table-cell">Role:</td>
+          <td class="member_detail__table-cell">{{ member.role }}</td>
+        </tr>
+        <tr>
+          <td class="member_detail__table-cell">Phone:</td>
+          <td class="member_detail__table-cell">
+            {% if member.phone %}
+              {{ member.phone }}
+            {% else %}
+              - - - 
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td class="member_detail__table-cell">E-mail:</td>
+          <td class="member_detail__table-cell">{{ member.email }}</td>
+        </tr>
+
+        {% if member.boats_owned %}
+            <tr>
+            <td class="member_detail__table-cell">My boat{{ member.boats_owned.count|pluralize:"s" }}:</td>
+            <td class="member_detail__table-cell">
+              {% for boat in member.boats_owned.all %}
+
+                <a href="{{ boat.get_absolute_url }}">{{ boat.name }}</a>
+                <br>
+
+              {% endfor %}
+            </td>
+          </tr>
+        {% endif %}
+
+        {% if member.boats_keeped %}
+            <tr>
+            <td class="member_detail__table-cell">Boat{{ member.boats_keeped.count|pluralize:"s" }} keeped:</td>
+            <td class="member_detail__table-cell">
+              {% for boat in member.boats_keeped.all %}
+
+                <a href="{{ boat.get_absolute_url }}">{{ boat.name }}</a>
+                <br>
+
+              {% endfor %}
+            </td>
+          </tr>
+        {% endif %}
+
+      </table>
+
+    </div>
+
+    <div class="member_detail__column">
+
+        {% if member.avatar %}
+
+          <img src="{{ member.avatar.url }}" alt="avatar" class="">
+
+        {% else %}
+
+          <img img src="{% static 'images/placeholder_avatar.png' %}" alt="placeholder avatar" class="member_detail__avatar">
+
+        {% endif %}
+      
+    </div>
+
+  </div>
+  <br><br><hr><br>
+  <div>
+
+    {% if comming_events %}
+      <h4>Signed to event{{ comming_events.count|pluralize:"s" }}:</h4>
+
+      {% for event in comming_events.all %}
+        <p>{{ event.name }} <i>@ {{ event.date }}</i></p>
+      {% endfor %}
+
+    {% endif %}
+
+
+  </div>
+  <div>
+
+    {% if comming_worktask %}
+      <h4>Signed to work task{{ comming_worktask.count|pluralize:"s" }}:</h4>
+
+      {% for worktask in comming_worktask.all %}
+        <p>{{ worktask.name }} <i>@ {{ worktask.date }}</i></p>
+      {% endfor %}
+
+    {% endif %}
+
+
+  </div>
+
+
+{% endblock %}

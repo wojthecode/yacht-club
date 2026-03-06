@@ -188,6 +188,36 @@ body {
   padding: 10px;
 }
 
+.member_detail {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.member_detail__column {
+  padding-inline: 5%;
+  width: 50%;
+}
+.member_detail__column:last-child {
+  display: flex;
+  justify-content: right;
+}
+
+.member_detail__table {
+  width: 100%;
+}
+.member_detail__table-cell {
+  width: 50%;
+  padding-block: 5px;
+  vertical-align: top;
+}
+
+.member_detail__avatar {
+  width: 200px;
+  aspect-ratio: 1 / 1;  
+  object-fit: fill;
+  border-radius: 100px;
+}
+
 /* #endregion */
 
 /* #region Callendar */

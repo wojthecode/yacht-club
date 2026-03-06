@@ -50,6 +50,9 @@ class Member(AbstractUser):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+    def get_absolute_url(self):
+        return reverse("club:member-detail", kwargs={"pk": self.pk})
+
 
 
 class Boat(models.Model):

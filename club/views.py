@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -203,3 +204,22 @@ class BoatDeleteView(LoginRequiredMixin, generic.DeleteView):
 class MemberListView(LoginRequiredMixin, generic.ListView):
     model = get_user_model()
     paginate_by = 10
+
+
+class MemberDetailView(LoginRequiredMixin, generic.DetailView):
+    model = get_user_model()
+
+    def get_context_data(self, **kwargs):
+        today = date.today()
+        context = super().get_context_data(**kwargs)
+        context["comming_events"] = (
+            self.object.event_participant.filter( # type: ignore
+                date__gte=today
+            )
+        )
+        context["comming_worktask"] = (
+            self.object.worktask_participant.filter( # type: ignore
+                date__gte=today
+            )
+        )
+        return context
