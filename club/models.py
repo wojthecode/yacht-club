@@ -57,6 +57,8 @@ class Member(AbstractUser):
     class Meta:
         verbose_name = "member"
         verbose_name_plural = "members"
+        ordering = ["last_name", "first_name"]
+        permissions = [("active_member", "Member is active")]
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

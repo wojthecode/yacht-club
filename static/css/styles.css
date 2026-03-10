@@ -15,6 +15,10 @@ body {
   padding: 5px;
 }
 
+.no_permissions {
+  padding-top: 100px;
+}
+
 /* #endregion */
 
 /* #region Text formating */

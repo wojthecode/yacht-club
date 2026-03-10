@@ -1,16 +1,69 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.shortcuts import redirect, render
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 from datetime import date
 
 from club.models import Boat, Event, WorkTask
 from club.forms import BoatForm, MemberCreationForm
+
+
+### Mixins ###
+
+class ActiveRequiredMixin(PermissionRequiredMixin):
+    permission_required = "club.active_member"
+    raise_exception = False
+
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:      # type: ignore
+            login_url = reverse("login")
+            next = self.request.get_full_path()         # type: ignore
+            return redirect(f"{login_url}?next={next}")
+        
+        page = self.request.path.split("/")[1]          # type: ignore
+        NAME = {
+            "work_tasks": "Work Tasks",
+            "members": "Members",
+            "boats": "Boat Create",
+        }
+
+        return render(
+            self.request,                               # type: ignore
+            "club/no_permissions.html",
+            {
+                "from_url": NAME.get(page, "None"),
+            },
+            status=403
+        )
+
+
+class EventContextMixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)    # type: ignore
+        context["activity"] = "Event"
+        return context
+
+
+class WorkTaskContextMixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)    # type: ignore
+        context["activity"] = "Work Task"
+        return context
+
+
+class FormLoggedUserMixin:
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()      # type: ignore
+        kwargs["user"] = self.request.user      # type: ignore
+        return kwargs
 
 
 ### Home Page View ###
@@ -69,13 +122,6 @@ class BaseActivityUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 ### Event Views ###
 
-class EventContextMixin:
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)    # type: ignore
-        context["activity"] = "Event"
-        return context
-
-
 class EventListView(BaseActivityListView):
     model = Event
 
@@ -95,7 +141,7 @@ class EventUpdateView(EventContextMixin, BaseActivityUpdateView):
 
 
 class EventDeleteView(
-        LoginRequiredMixin, EventContextMixin, generic.DeleteView
+        ActiveRequiredMixin, EventContextMixin, generic.DeleteView
     ):
     model = Event
     template_name = "club/activity_confirm_delete.html"
@@ -116,18 +162,11 @@ def toggle_event_participation(request, pk):
 
 ### Work Task Wiews ###
 
-class WorkTaskContextMixin:
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)    # type: ignore
-        context["activity"] = "Work Task"
-        return context
-
-
-class WorkTaskListView(LoginRequiredMixin, BaseActivityListView):
+class WorkTaskListView(ActiveRequiredMixin, BaseActivityListView):
     model = WorkTask
 
 
-class WorkTaskDetailView(LoginRequiredMixin, generic.DetailView):
+class WorkTaskDetailView(ActiveRequiredMixin, generic.DetailView):
     model = WorkTask
 
 
@@ -163,13 +202,6 @@ def toggle_worktask_participation(request, pk):
 
 ### Boat Views ###
 
-class BoatFormUserMixin:
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()      # type: ignore
-        kwargs["user"] = self.request.user      # type: ignore
-        return kwargs
-
-
 class BoatListView(generic.ListView):
     model = Boat
     paginate_by = 4
@@ -180,14 +212,14 @@ class BoatDetailView(generic.DetailView):
 
 
 class BoatCreateView(
-        BoatFormUserMixin, LoginRequiredMixin, generic.CreateView
+        FormLoggedUserMixin, ActiveRequiredMixin, generic.CreateView
     ):
     model = Boat
     form_class = BoatForm
 
 
 class BoatUpdateView(
-        BoatFormUserMixin, LoginRequiredMixin, generic.UpdateView
+        FormLoggedUserMixin, LoginRequiredMixin, generic.UpdateView
     ):
     model = Boat
     form_class = BoatForm
@@ -201,14 +233,7 @@ class BoatDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 ### Member Views ###
 
-class MemberFormUserMixin:
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()      # type: ignore
-        kwargs["user"] = self.request.user      # type: ignore
-        return kwargs
-
-
-class MemberListView(LoginRequiredMixin, generic.ListView):
+class MemberListView(ActiveRequiredMixin, generic.ListView):
     model = get_user_model()
     paginate_by = 10
 
@@ -233,7 +258,7 @@ class MemberDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class MemberCreateView(
-        MemberFormUserMixin, generic.CreateView
+        FormLoggedUserMixin, generic.CreateView
     ):
     model = get_user_model()
     form_class = MemberCreationForm
