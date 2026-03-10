@@ -1,7 +1,6 @@
 from django.urls import path
 
 from club.views import (
-    MemberDetailView,
     index,
     EventListView,
     EventDetailView,
@@ -21,6 +20,8 @@ from club.views import (
     BoatUpdateView,
     BoatDeleteView,
     MemberListView,
+    MemberDetailView,
+    MemberCreateView,
 )
 
 
@@ -101,6 +102,7 @@ urlpatterns = [
         MemberDetailView.as_view(),
         name="member-detail"
     ),
+    path("members/create/", MemberCreateView.as_view(), name="member-create"),
 ]
 
 app_name = "club"

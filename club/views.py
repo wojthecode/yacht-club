@@ -10,7 +10,7 @@ from django.views import generic
 from datetime import date
 
 from club.models import Boat, Event, WorkTask
-from club.forms import BoatForm
+from club.forms import BoatForm, MemberCreationForm
 
 
 ### Home Page View ###
@@ -201,6 +201,13 @@ class BoatDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 ### Member Views ###
 
+class MemberFormUserMixin:
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()      # type: ignore
+        kwargs["user"] = self.request.user      # type: ignore
+        return kwargs
+
+
 class MemberListView(LoginRequiredMixin, generic.ListView):
     model = get_user_model()
     paginate_by = 10
@@ -223,3 +230,10 @@ class MemberDetailView(LoginRequiredMixin, generic.DetailView):
             )
         )
         return context
+
+
+class MemberCreateView(
+        MemberFormUserMixin, generic.CreateView
+    ):
+    model = get_user_model()
+    form_class = MemberCreationForm

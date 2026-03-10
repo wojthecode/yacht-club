@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+
+  <h1>{{ object|yesno:"Update,Create"}} {{ activity }}</h1>
+
+
+  <form action=""
+        method="post"
+        enctype="multipart/form-data"
+        novalidate>
+
+    {% csrf_token %}
+  
+
+    {% if user.role.management_rights %}
+      {{ form.is_active|as_crispy_field }}
+    {% endif %}
+
+
+    {% for field in form %}
+      {% if field.name not in "is_active phone_visibility avatar" %}
+
+        {{ field|as_crispy_field }}
+
+      {% else %}
+        {% if field.name == "phone_visibility" %}
+
+          <div class="custom-control custom-switch mb-3">
+              <input type="checkbox"
+                    class="custom-control-input"
+                    id="{{ form.phone_visibility.id_for_label }}"
+                    name="{{ form.phone_visibility.name }}"
+                    {% if form.phone_visibility.value %}checked{% endif %}>
+              <label class="custom-control-label"
+                    for="{{ form.phone_visibility.id_for_label }}"
+                    id="id_label_phone_visibility"></label>
+          </div>
+
+        {% endif %}
+        {% if field.name == "avatar" %}
+
+          <div id="div_id_avatar" class="form-group">
+            <label for="{{ form.avatar.id_for_label }}" class="">
+              Avatar
+            </label>
+
+            <div class="custom-file">
+              <input type="file"
+                    name="{{ form.avatar.name }}"
+                    class="custom-file-input clearablefileinput"
+                    accept="image/*"
+                    id="{{ form.avatar.id_for_label }}">
+              <label class="custom-file-label"
+                    for="{{ form.avatar.id_for_label }}"
+                    id="id_filename">Choose file</label>
+            </div>
+          </div>
+
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  
+
+    <button type="submit"
+            value="submit"
+            class="btn btn-primary rounded-pill px-2 py-0">
+      {{ object|yesno:"Update,Create"}} 
+    </button>
+
+    <button type="button"
+            onclick="history.back()"
+            class="btn btn-primary rounded-pill px-2 py-0">
+      Cancel
+    </button>
+
+  </form>
+
+
+    {% load static %}
+    <script src="{% static 'scripts/member_form.js' %}"></script>
+
+
+{% endblock %}
