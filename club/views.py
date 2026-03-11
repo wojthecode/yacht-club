@@ -277,7 +277,7 @@ class MemberCreateView(
 def toggle_active_member(request, pk):
 
     if request.user.role.management_rights:
-            
+
         member = get_user_model().objects.get(pk=pk)
         permission = Permission.objects.get(codename="active_member")
 
@@ -288,4 +288,4 @@ def toggle_active_member(request, pk):
             member.user_permissions.add(permission)
             member.save()
 
-    return HttpResponseRedirect(reverse_lazy("club:member-list"))
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
