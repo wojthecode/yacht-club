@@ -22,6 +22,7 @@ from club.views import (
     MemberListView,
     MemberDetailView,
     MemberCreateView,
+    toggle_active_member,
 )
 
 
@@ -103,6 +104,11 @@ urlpatterns = [
         name="member-detail"
     ),
     path("members/create/", MemberCreateView.as_view(), name="member-create"),
+    path(
+        "members/<int:pk>/toggle_active_member",
+        toggle_active_member,
+        name="toggle-active-member"
+    ),
 ]
 
 app_name = "club"

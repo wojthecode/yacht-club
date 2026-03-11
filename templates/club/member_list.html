@@ -6,7 +6,7 @@
 
   {% if user.role.management_rights %}
 
-    <a href="{% url 'club:boat-create' %}" class="add_button btn btn-success rounded-pill px-2 py-0">Add</a>
+    <a href="{% url 'club:member-create' %}" class="add_button btn btn-success rounded-pill px-2 py-0">Add</a>
 
   {% endif %}
 
@@ -15,6 +15,11 @@
       <th class="members_table__cell">Name</th>
       <th class="members_table__cell">Role</th>
       <th class="members_table__cell">Profile</th>
+
+      {% if user.role.management_rights %}
+        <th class="members_table_cell">Is Active</th>
+      {% endif %}
+
     </tr>
 
     {% for member in member_list %}
@@ -24,11 +29,39 @@
           <td class="members_table__cell">{{ member}}</td>
           <td class="members_table__cell">{{ member.role }}</td>
           <td class="members_table__cell"><a href="{{ member.get_absolute_url }}">See profile</a></td>
-        </tr>
+              
+          {% if user.role.management_rights %}
+            <td class="members_table_cell">
 
+              {% if member.is_active_member %}
+
+                <a href="{% url 'club:toggle-active-member' pk=member.id %}">
+                  <div class="members_toggle_active_base">
+                    <div class="members_toggle_active_track">
+                      <div class="members_toggle_active_switch members_toggle_active_switch-on">
+                      </div>
+                    </div>
+                  </div>
+                </a>
+
+              {% else %}
+
+                <a href="{% url 'club:toggle-active-member' pk=member.id %}">
+                  <div class="members_toggle_active_base">
+                    <div class="members_toggle_active_track">
+                      <div class="members_toggle_active_switch members_toggle_active_switch-off">
+                      </div>
+                    </div>
+                  </div>
+                </a>
+
+              {% endif %}
+
+            </td>
+          {% endif %}
+        </tr>
       {% endif %}
     {% endfor %}
-
   </table>
 
 {% endblock %}

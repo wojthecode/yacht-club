@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     PermissionRequiredMixin,
 )
+from django.contrib.auth.models import Permission
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -237,8 +238,16 @@ class MemberListView(ActiveRequiredMixin, generic.ListView):
     model = get_user_model()
     paginate_by = 10
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
 
-class MemberDetailView(LoginRequiredMixin, generic.DetailView):
+        for member in queryset:
+            member.is_active_member = member.has_perm("club.active_member")
+        
+        return queryset
+
+
+class MemberDetailView(ActiveRequiredMixin, generic.DetailView):
     model = get_user_model()
 
     def get_context_data(self, **kwargs):
@@ -262,3 +271,21 @@ class MemberCreateView(
     ):
     model = get_user_model()
     form_class = MemberCreationForm
+
+
+@login_required
+def toggle_active_member(request, pk):
+
+    if request.user.role.management_rights:
+            
+        member = get_user_model().objects.get(pk=pk)
+        permission = Permission.objects.get(codename="active_member")
+
+        if member.has_perm("club.active_member"):
+            member.user_permissions.remove(permission)
+            member.save()
+        else:
+            member.user_permissions.add(permission)
+            member.save()
+
+    return HttpResponseRedirect(reverse_lazy("club:member-list"))

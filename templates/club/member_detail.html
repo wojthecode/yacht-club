@@ -7,19 +7,19 @@
 
 <br><br>
 
-  <div class="member_detail">
+  <div class="members_detail">
 
-    <div class="member_detail__column">
+    <div class="members_detail__column">
 
 
-      <table class="member_detail__table">
+      <table class="members_detail__table">
         <tr>
-          <td class="member_detail__table-cell">Role:</td>
-          <td class="member_detail__table-cell">{{ member.role }}</td>
+          <td class="members_detail__table-cell">Role:</td>
+          <td class="members_detail__table-cell">{{ member.role }}</td>
         </tr>
         <tr>
-          <td class="member_detail__table-cell">Phone:</td>
-          <td class="member_detail__table-cell">
+          <td class="members_detail__table-cell">Phone:</td>
+          <td class="members_detail__table-cell">
             {% if member.phone %}
               {{ member.phone }}
             {% else %}
@@ -28,14 +28,14 @@
           </td>
         </tr>
         <tr>
-          <td class="member_detail__table-cell">E-mail:</td>
-          <td class="member_detail__table-cell">{{ member.email }}</td>
+          <td class="members_detail__table-cell">E-mail:</td>
+          <td class="members_detail__table-cell">{{ member.email }}</td>
         </tr>
 
         {% if member.boats_owned %}
             <tr>
-            <td class="member_detail__table-cell">My boat{{ member.boats_owned.count|pluralize:"s" }}:</td>
-            <td class="member_detail__table-cell">
+            <td class="members_detail__table-cell">My boat{{ member.boats_owned.count|pluralize:"s" }}:</td>
+            <td class="members_detail__table-cell">
               {% for boat in member.boats_owned.all %}
 
                 <a href="{{ boat.get_absolute_url }}">{{ boat.name }}</a>
@@ -48,8 +48,8 @@
 
         {% if member.boats_keeped %}
             <tr>
-            <td class="member_detail__table-cell">Boat{{ member.boats_keeped.count|pluralize:"s" }} keeped:</td>
-            <td class="member_detail__table-cell">
+            <td class="members_detail__table-cell">Boat{{ member.boats_keeped.count|pluralize:"s" }} keeped:</td>
+            <td class="members_detail__table-cell">
               {% for boat in member.boats_keeped.all %}
 
                 <a href="{{ boat.get_absolute_url }}">{{ boat.name }}</a>
@@ -64,15 +64,15 @@
 
     </div>
 
-    <div class="member_detail__column">
+    <div class="members_detail__column">
 
         {% if member.avatar %}
 
-          <img src="{{ member.avatar.url }}" alt="avatar" class="member_detail__avatar">
+          <img src="{{ member.avatar.url }}" alt="avatar" class="members_detail__avatar">
 
         {% else %}
 
-          <img img src="{% static 'images/placeholder_avatar.png' %}" alt="placeholder avatar" class="member_detail__placeholder">
+          <img img src="{% static 'images/placeholder_avatar.png' %}" alt="placeholder avatar" class="members_detail__placeholder">
 
         {% endif %}
       
@@ -107,5 +107,16 @@
 
   </div>
 
+<br><br>
+
+{% comment %} 
+{% if user.role.management_rights or member == user %}
+
+  <a href="{% url 'club:boat-update' pk=boat.id %}" class="update_button btn btn-primary rounded-pill px-3 py-0">Edit</a>
+
+  <a href="{% url 'club:boat-delete' pk=boat.id %}" class="delete_button btn btn-danger rounded-pill px-3 py-0">Delete</a>
+
+{% endif %}
+ {% endcomment %}
 
 {% endblock %}
