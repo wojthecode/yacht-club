@@ -10,14 +10,20 @@
   Date: {{ event.date|date:"D, d N Y, H:i" }}
 
   {% if user.is_authenticated %}
+    {% if not latest %}
+      {% if user in event.participants.all %}
 
-    {% if user in event.participants.all %}
-      <a href="{% url 'club:toggle-event-participation' pk=event.id %}" class="join_leave btn btn-danger rounded-pill px-2 py-0"> Leave event</a>
+        <a href="{% url 'club:toggle-event-participation' pk=event.id %}" class="join_leave btn btn-danger rounded-pill px-2 py-0"> Leave event</a>
+      {% else %}
+
+        <a href="{% url 'club:toggle-event-participation' pk=event.id %}" class="join_leave btn btn-success rounded-pill px-2 py-0">Join event</a>
+      {% endif %}
     {% else %}
-      <a href="{% url 'club:toggle-event-participation' pk=event.id %}" class="join_leave btn btn-success rounded-pill px-2 py-0">Join event</a>
-    {% endif %}
 
+      <span class="join_leave btn btn-secondary rounded-pill px-2 py-0">Event passed</span>
+    {% endif %}
   {% endif %}
+
 </p>
 <p>Location: {{ event.location }}</p>
 

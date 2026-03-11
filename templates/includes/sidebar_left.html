@@ -1,6 +1,8 @@
 <ul class="sidebar-nav list-group">
   {% if user.is_authenticated %}
-    <li class="list-group-item">User: {{ user.get_username }}</li>
+    <li class="list-group-item">
+      User: <a href="{{ user.get_absolute_url }}">{{ user.get_username }}</a>
+    </li>
 
     <li class="list-group-item">
       <form method="post" action="{% url 'logout' %}">
@@ -18,9 +20,53 @@
 
   <br>
 
-  <li class="list-group-item"><a href="{% url 'club:index' %}">Home</a></li>
-  <li class="list-group-item"><a href="{% url 'club:event-list' %}">Events</a></li>
-  <li class="list-group-item"><a href="{% url 'club:worktask-list' %}">Work Tasks</a></li>
-  <li class="list-group-item"><a href="{% url 'club:boat-list' %}">Boats</a></li>
-  <li class="list-group-item"><a href="{% url 'club:member-list' %}">Members</a></li>
+  <li class="list-group-item
+            {{ home|yesno:'list-group-item-primary,' }}
+  ">
+    <a href="{% url 'club:index' %}">Home</a>
+  </li>
+  <li class="list-group-item
+            {{ event_list|yesno:'list-group-item-primary,' }}
+            {{ event|yesno:'list-group-item-primary,' }}
+  ">
+    <a href="{% url 'club:event-list' %}">Events</a>
+  </li>
+
+  {% if event_list or event %}
+    <li class="list-group-item
+              list-group-submenu
+              {{ latest|yesno:'list-group-item-secondary,' }}
+    ">
+      <div class="  grey">&#8627; <a href="{% url 'club:event-archive' %}">Recent</a></div>
+    </li>
+  {% endif %}
+
+  <li class="list-group-item
+            {{ worktask_list|yesno:'list-group-item-primary,' }}
+            {{ worktask|yesno:'list-group-item-primary,' }}
+  ">
+    <a href="{% url 'club:worktask-list' %}">Work Tasks</a>
+  </li>
+
+  {% if worktask_list or worktask %}
+    <li class="list-group-item
+              list-group-submenu
+              {{ latest|yesno:'list-group-item-secondary,' }}
+  ">
+      <div class="  grey">&#8627; <a href="{% url 'club:worktask-archive' %}">Recent</a></div>
+    </li>
+  {% endif %}
+
+  <li class="list-group-item
+            {{ boat_list|yesno:'list-group-item-primary,' }}
+            {{ boat|yesno:'list-group-item-primary,' }}
+  ">
+    <a href="{% url 'club:boat-list' %}">Boats</a>
+  </li>
+  <li class="list-group-item
+            {{ member_list|yesno:'list-group-item-primary,' }}
+            {{ member|yesno:'list-group-item-primary,' }}
+  ">
+    <a href="{% url 'club:member-list' %}">Members</a>
+  </li>
 </ul>

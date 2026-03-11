@@ -7,12 +7,14 @@ from club.views import (
     EventCreateView,
     EventUpdateView,
     EventDeleteView,
+    EventArchiveIndexView,
     toggle_event_participation,
     WorkTaskListView,
     WorkTaskDetailView,
     WorkTaskCreateView,
     WorkTaskUpdateteView,
     WorkTaskDeleteView,
+    WorkTaskArchiveIndexView,
     toggle_worktask_participation,
     BoatListView,
     BoatDetailView,
@@ -45,6 +47,11 @@ urlpatterns = [
         name="event-delete"
     ),
     path(
+        "events/archive/",
+        EventArchiveIndexView.as_view(),
+        name="event-archive",
+    ),
+    path(
         "events/<int:pk>/toggle_event_participation",
         toggle_event_participation,
         name="toggle-event-participation"
@@ -72,6 +79,11 @@ urlpatterns = [
         "work_tasks/delete/<int:pk>/",
         WorkTaskDeleteView.as_view(),
         name="worktask-delete"
+    ),
+    path(
+        "work_tasks/archive/",
+        WorkTaskArchiveIndexView.as_view(),
+        name="worktask-archive",
     ),
     path(
         "work_tasks/<int:pk>/toggle_worktask_participation",

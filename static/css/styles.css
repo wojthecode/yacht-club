@@ -41,6 +41,9 @@ body {
 .clean_link:hover {
   color: #5A90A5;
 }
+.grey {
+  color: #999;
+}
 .invites {
   text-align: right;
   font-style: italic;
@@ -282,6 +285,23 @@ body {
   position: absolute;
   top: -4px;
   left: 14px;
+}
+
+/* #endregion */
+
+/* #regioin Sidebar */
+
+.list-group-submenu {
+  margin-left: 10px;
+}
+.list-group-submenu::after {
+  content: " ";
+  position: absolute;
+  bottom: -1px;
+  left: -11px;
+  width: 10px;
+  height: 1px;
+  background-color: #00000020;
 }
 
 /* #endregion */

@@ -10,14 +10,20 @@
   Date: {{ worktask.date|date:"D, d N Y, H:i" }}
 
   {% if user.is_authenticated %}
+    {% if not latest %}
+      {% if user in worktask.participants.all %}
 
-    {% if user in worktask.participants.all %}
-      <a href="{% url 'club:toggle-worktask-participation' pk=worktask.id %}" class="join_leave btn btn-danger rounded-pill px-2 py-0"> Leave event</a>
+        <a href="{% url 'club:toggle-worktask-participation' pk=worktask.id %}" class="join_leave btn btn-danger rounded-pill px-2 py-0"> Leave work task</a>
+      {% else %}
+
+        <a href="{% url 'club:toggle-worktask-participation' pk=worktask.id %}" class="join_leave btn btn-success rounded-pill px-2 py-0">Join work task</a>
+      {% endif %}
     {% else %}
-      <a href="{% url 'club:toggle-worktask-participation' pk=worktask.id %}" class="join_leave btn btn-success rounded-pill px-2 py-0">Join event</a>
-    {% endif %}
 
+      <span class="join_leave btn btn-secondary rounded-pill px-2 py-0">Work task passed</span>
+    {% endif %}
   {% endif %}
+
 </p>
 <p>Location: {{ worktask.location }}</p>
 

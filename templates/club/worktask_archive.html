@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 class="center">Recent Work Tasks</h1>
+  <br>
+
+  {% for worktask in latest %}
+
+    <h3>{{ worktask.name}}</h3>
+    <h5>{{ worktask.date|date:"D, d N Y, H:i" }}</h5>
+    <p>{{ worktask.description|linebreaksbr|truncatewords:30 }}</p>
+    <a href="{{ worktask.get_absolute_url }}">Read more >></a>
+    <hr>
+
+  {% endfor %}
+
+{% endblock %}

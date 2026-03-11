@@ -11,7 +11,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from datetime import date
+from datetime import date, datetime
 
 from club.models import Boat, Event, WorkTask
 from club.forms import BoatForm, MemberCreationForm
@@ -79,6 +79,7 @@ def index(request:HttpRequest) -> HttpResponse:
         "upcoming": upcoming,
         "num_boats": num_boats,
         "num_members": num_members,
+        "home": "home",
     }
 
     return render(request, "club/index.html", context=context)
@@ -130,6 +131,24 @@ class EventListView(BaseActivityListView):
 class EventDetailView(generic.DetailView):
     model = Event
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = date.today()
+        event_date = date(*[
+            int(part) 
+            for part 
+            in context["event"].date.strftime("%Y-%m-%d").split("-")
+        ])
+
+        if event_date < today:
+            context["latest"] = "latest"
+
+            print("                                     ---------------------")
+            print("                                     ---------------------")
+            print("                                     ---------------------")
+
+        return context
+
 
 class EventCreateView(EventContextMixin, BaseActivityCreateView):
     model = Event
@@ -147,6 +166,16 @@ class EventDeleteView(
     model = Event
     template_name = "club/activity_confirm_delete.html"
     success_url = reverse_lazy("club:event-list")
+
+
+class EventArchiveIndexView(generic.ArchiveIndexView):
+    model = Event
+    date_field = "date"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["event"] = "event"
+        return context
 
 
 @login_required
@@ -170,6 +199,20 @@ class WorkTaskListView(ActiveRequiredMixin, BaseActivityListView):
 class WorkTaskDetailView(ActiveRequiredMixin, generic.DetailView):
     model = WorkTask
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = date.today()
+        worktask_date = date(*[
+            int(part) 
+            for part 
+            in context["worktask"].date.strftime("%Y-%m-%d").split("-")
+        ])
+
+        if worktask_date < today:
+            context["latest"] = "latest"
+
+        return context
+
 
 class WorkTaskCreateView(WorkTaskContextMixin, BaseActivityCreateView):
     model = WorkTask
@@ -187,6 +230,16 @@ class WorkTaskDeleteView(
     model = WorkTask
     success_url = reverse_lazy("club:worktask-list")
     template_name = "club/activity_confirm_delete.html"
+
+
+class WorkTaskArchiveIndexView(generic.ArchiveIndexView):
+    model = WorkTask
+    date_field = "date"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["worktask"] = "worktask"
+        return context
 
 
 @login_required
