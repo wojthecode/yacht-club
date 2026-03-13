@@ -3,7 +3,7 @@
 
 {% block content %}
 
-  <h1>{{ object|yesno:"Update,Create"}} {{ activity }}</h1>
+  <h1>{{ user.role.management_rights|yesno:"Create User,Sign in"}}</h1>
 
 
   <form action=""
@@ -20,9 +20,14 @@
 
 
     {% for field in form %}
-      {% if field.name not in "is_active phone_visibility avatar" %}
+      {% if field.name not in custom_fields %}
 
         {{ field|as_crispy_field }}
+
+
+        {% if field.name == "password2" %}
+        <hr>
+        {% endif %}
 
       {% else %}
         {% if field.name == "phone_visibility" %}
@@ -37,6 +42,7 @@
                     for="{{ form.phone_visibility.id_for_label }}"
                     id="id_label_phone_visibility"></label>
           </div>
+          <hr>
 
         {% endif %}
         {% if field.name == "avatar" %}

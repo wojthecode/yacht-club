@@ -19,6 +19,14 @@ body {
   padding-top: 100px;
 }
 
+.slim {
+  margin-inline: 0px;
+}
+
+.bottom-5 {
+  margin-bottom: 0px;
+}
+
 /* #endregion */
 
 /* #region Text formating */
@@ -43,6 +51,9 @@ body {
 }
 .grey {
   color: #999;
+}
+.small {
+  font-size: 16px;
 }
 .invites {
   text-align: right;

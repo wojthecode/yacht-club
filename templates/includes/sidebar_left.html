@@ -1,10 +1,10 @@
 <ul class="sidebar-nav list-group">
   {% if user.is_authenticated %}
-    <li class="list-group-item">
+    <li class="list-group-item center">
       User: <a href="{{ user.get_absolute_url }}">{{ user.get_username }}</a>
     </li>
 
-    <li class="list-group-item">
+    <li class="list-group-item center">
       <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit" class="btn btn-primary rounded-pill px-3 py-0 ">
@@ -15,7 +15,15 @@
     </li>
     
   {% else %}
-    <li class="list-group-item"><a href="{% url 'login'%}">Login</a></li>
+
+
+    <li class="list-group-item center">
+      <a href="{% url 'login'%}" class="btn btn-primary rounded-pill px-3 py-0 bottom-5">Login</a>
+    </li>
+
+    <li class="list-group-item center">
+      <span class="small">Or &nbsp;<a href="{% url 'club:member-create' %}">Sign in</a></span>
+    </li>
   {% endif %}
 
   <br>

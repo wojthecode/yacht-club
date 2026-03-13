@@ -54,12 +54,12 @@ class MemberCreationForm(UserCreationForm):
             "is_active",
             "username",
             "email",
+            "phone",
+            "phone_visibility",
             "password1",
             "password2",
             "first_name",
             "last_name",
-            "phone",
-            "phone_visibility",
             "sailing_permission",
             "avatar",
         )
@@ -69,9 +69,9 @@ class MemberCreationForm(UserCreationForm):
         self.user = user
 
         if not (
-            self.user
-            and self.user.role                      # type:ignore
-            and self.user.role.management_rights    # type:ignore
+            self.user.is_authenticated              # type: ignore
+            and self.user.role                      # type: ignore
+            and self.user.role.management_rights    # type: ignore
         ):
             self.fields.pop("is_active")
 
