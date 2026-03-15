@@ -37,11 +37,11 @@
           <td class="members_detail__table-cell"><br>{{ member.sailing_permission.name }}</td>
         </tr>
 
-        {% if member.boats_owned %}
+        {% if boats_owned %}
             <tr>
-            <td class="members_detail__table-cell">My boat{{ member.boats_owned.count|pluralize:"s" }}:</td>
+            <td class="members_detail__table-cell">My boat{{ boats_owned|pluralize:"s" }}:</td>
             <td class="members_detail__table-cell">
-              {% for boat in member.boats_owned.all %}
+              {% for boat in boats_owned %}
 
                 <a href="{{ boat.get_absolute_url }}">{{ boat.name }}</a>
                 <br>
@@ -51,11 +51,11 @@
           </tr>
         {% endif %}
 
-        {% if member.boats_keeped %}
+        {% if boats_keeped %}
             <tr>
-            <td class="members_detail__table-cell">Boat{{ member.boats_keeped.count|pluralize:"s" }} keeped:</td>
+            <td class="members_detail__table-cell">Boat{{ boats_keeped|pluralize:"s" }} keeped:</td>
             <td class="members_detail__table-cell">
-              {% for boat in member.boats_keeped.all %}
+              {% for boat in boats_keeped %}
 
                 <a href="{{ boat.get_absolute_url }}">{{ boat.name }}</a>
                 <br>
@@ -88,9 +88,9 @@
   <div>
 
     {% if comming_events %}
-      <h4>Signed to event{{ comming_events.count|pluralize:"s" }}:</h4>
+      <h4>Signed to event{{ comming_events|pluralize:"s" }}:</h4>
 
-      {% for event in comming_events.all %}
+      {% for event in comming_events %}
         <p>{{ event.name }} <i>@ {{ event.date }}</i></p>
       {% endfor %}
 
@@ -101,9 +101,9 @@
   <div>
 
     {% if comming_worktask %}
-      <h4>Signed to work task{{ comming_worktask.count|pluralize:"s" }}:</h4>
+      <h4>Signed to work task{{ comming_worktask|pluralize:"s" }}:</h4>
 
-      {% for worktask in comming_worktask.all %}
+      {% for worktask in comming_worktask %}
         <p>{{ worktask.name }} <i>@ {{ worktask.date }}</i></p>
       {% endfor %}
 
@@ -114,14 +114,14 @@
 
 <br><br>
 
-{% comment %} 
 {% if user.role.management_rights or member == user %}
 
-  <a href="{% url 'club:boat-update' pk=boat.id %}" class="update_button btn btn-primary rounded-pill px-3 py-0">Edit</a>
+  <a href="{% url 'club:member-update' pk=member.id %}" class="update_button btn btn-primary rounded-pill px-3 py-0">Edit profile</a>
 
+{% comment %} 
   <a href="{% url 'club:boat-delete' pk=boat.id %}" class="delete_button btn btn-danger rounded-pill px-3 py-0">Delete</a>
+ {% endcomment %}
 
 {% endif %}
- {% endcomment %}
 
 {% endblock %}

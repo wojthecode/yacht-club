@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import (
     PermissionRequiredMixin,
 )
 from django.contrib.auth.models import Permission
+from django.db.models import Prefetch
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -295,25 +296,44 @@ class MemberListView(ActiveRequiredMixin, generic.ListView):
         
         return queryset
 
-
 class MemberDetailView(ActiveRequiredMixin, generic.DetailView):
     model = get_user_model()
 
-    def get_context_data(self, **kwargs):
+    def get_queryset(self):
         today = date.today()
+        queryset = super().get_queryset()
+        return (
+            queryset
+            .select_related("role", "sailing_permission")
+            .prefetch_related(
+                "boats_keeped", "boats_owned",
+                Prefetch(
+                    "event_participant",
+                    queryset=Event.objects.filter(date__gte=today),
+                ),
+                Prefetch(
+                    "worktask_participant",
+                    queryset=WorkTask.objects.filter(date__gte=today),
+                ),
+            )
+        )
+
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         member = context.get("member")
         user = self.request.user
 
-        context["comming_events"] = (
-            self.object.event_participant.filter(       # type: ignore
-                date__gte=today
-            )
+        context["comming_events"] = list(
+            self.object.event_participant.all()         # type: ignore
         )
-        context["comming_worktask"] = (
-            self.object.worktask_participant.filter(    # type: ignore
-                date__gte=today
-            )
+        context["comming_worktask"] = list(
+            self.object.worktask_participant.all()      # type: ignore
+        )
+        context["boats_owned"] = list(
+            self.object.boats_owned.all()               # type: ignore
+        )
+        context["boats_keeped"] = list(
+            self.object.boats_keeped.all()              # type: ignore
         )
         context["phone_visible"] = member.phone and (   # type: ignore
             member.phone_visibility                     # type: ignore
