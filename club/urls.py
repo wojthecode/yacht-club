@@ -24,6 +24,7 @@ from club.views import (
     MemberListView,
     MemberDetailView,
     MemberCreateView,
+    MemberUpdateView,
     toggle_active_member,
 )
 
@@ -97,7 +98,7 @@ urlpatterns = [
     path("boats/<int:pk>/", BoatDetailView.as_view(), name="boat-detail"),
     path("boats/create/", BoatCreateView.as_view(), name="boat-create"),
     path(
-        "boats/update/<int:pk>",
+        "boats/update/<int:pk>/",
         BoatUpdateView.as_view(),
         name="boat-update"
     ),
@@ -116,6 +117,11 @@ urlpatterns = [
         name="member-detail"
     ),
     path("members/create/", MemberCreateView.as_view(), name="member-create"),
+    path(
+        "members/update/<int:pk>/",
+        MemberUpdateView.as_view(),
+        name="member-update"
+    ),
     path(
         "members/<int:pk>/toggle_active_member",
         toggle_active_member,

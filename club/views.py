@@ -11,10 +11,10 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from datetime import date, datetime
+from datetime import date
 
 from club.models import Boat, Event, WorkTask
-from club.forms import BoatForm, MemberCreationForm
+from club.forms import BoatForm, MemberCreationForm, MemberUpdateForm
 
 
 ### Mixins ###
@@ -302,28 +302,49 @@ class MemberDetailView(ActiveRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         today = date.today()
         context = super().get_context_data(**kwargs)
+        member = context.get("member")
+        user = self.request.user
+
         context["comming_events"] = (
-            self.object.event_participant.filter( # type: ignore
+            self.object.event_participant.filter(       # type: ignore
                 date__gte=today
             )
         )
         context["comming_worktask"] = (
-            self.object.worktask_participant.filter( # type: ignore
+            self.object.worktask_participant.filter(    # type: ignore
                 date__gte=today
             )
         )
+        context["phone_visible"] = member.phone and (   # type: ignore
+            member.phone_visibility                     # type: ignore
+            or user.role.management_rights              # type: ignore
+            or member == user
+            )
         return context
 
 
 class MemberCreateView(
         FormLoggedUserMixin, generic.CreateView
     ):
-    model = get_user_model()
     form_class = MemberCreationForm
+    model = get_user_model()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["custom_fields"] = ["is_active", "phone_visibility", "avatar"]
+        context["custom_fields"] = ["is_active", "phone_visibility", "avatar", "password"]
+        return context
+
+
+class MemberUpdateView(
+        FormLoggedUserMixin,
+        generic.UpdateView
+    ):
+    form_class = MemberUpdateForm
+    model = get_user_model()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["custom_fields"] = ["is_active", "phone_visibility", "avatar", "password"]
         return context
 
 

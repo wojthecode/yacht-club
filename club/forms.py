@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.forms import ValidationError
 
 from club.models import Boat
@@ -71,6 +71,58 @@ class MemberCreationForm(UserCreationForm):
         if not (
             self.user.is_authenticated              # type: ignore
             and self.user.role                      # type: ignore
+            and self.user.role.management_rights    # type: ignore
+        ):
+            self.fields.pop("is_active")
+
+    def clean_phone(self):
+        return validate_phone_number(self.cleaned_data["phone"])
+
+    def save(self):
+        obj = super().save(commit=False)
+
+        if (
+            "is_active" not in self.fields
+            and not self.user
+        ):
+            obj.is_active = False
+
+        obj.save()
+        return obj
+
+
+class MemberUpdateForm(UserChangeForm):
+    email = forms.EmailField(label="E-mail")
+    phone = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "type": "tel",
+                "placeholder": "+01 234567890"
+            }
+        ),
+        required=True
+    )
+
+    class Meta(UserCreationForm.Meta):  # type: ignore
+        model = get_user_model()
+        fields = (
+            "is_active",
+            "username",
+            "email",
+            "phone",
+            "phone_visibility",
+            "first_name",
+            "last_name",
+            "sailing_permission",
+            "avatar",
+        )
+    
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+        if not (
+            self.user.role                          # type: ignore
             and self.user.role.management_rights    # type: ignore
         ):
             self.fields.pop("is_active")

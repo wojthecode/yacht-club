@@ -20,7 +20,7 @@
         <tr>
           <td class="members_detail__table-cell">Phone:</td>
           <td class="members_detail__table-cell">
-            {% if member.phone %}
+            {% if phone_visible %}
               {{ member.phone }}
             {% else %}
               - - - 
@@ -30,6 +30,11 @@
         <tr>
           <td class="members_detail__table-cell">E-mail:</td>
           <td class="members_detail__table-cell">{{ member.email }}</td>
+        </tr>
+
+        <tr>
+          <td class="members_detail__table-cell">Sailing<br>permission:</td>
+          <td class="members_detail__table-cell"><br>{{ member.sailing_permission.name }}</td>
         </tr>
 
         {% if member.boats_owned %}
