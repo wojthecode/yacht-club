@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import (
     PermissionRequiredMixin,
 )
 from django.contrib.auth.models import Permission
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Exists, OuterRef, Q
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -59,6 +59,15 @@ class WorkTaskContextMixin:
         context = super().get_context_data(**kwargs)    # type: ignore
         context["activity"] = "Work Task"
         return context
+    
+
+class ActivityDetailQueryMixin():
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()                     # type: ignore
+            .select_related("created_by")
+        )
 
 
 class FormLoggedUserMixin:
@@ -129,7 +138,7 @@ class EventListView(BaseActivityListView):
     model = Event
 
 
-class EventDetailView(generic.DetailView):
+class EventDetailView(ActivityDetailQueryMixin, generic.DetailView):
     model = Event
 
     def get_context_data(self, **kwargs):
@@ -168,6 +177,7 @@ class EventDeleteView(
 class EventArchiveIndexView(generic.ArchiveIndexView):
     model = Event
     date_field = "date"
+    paginate_by = 8
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -193,7 +203,9 @@ class WorkTaskListView(ActiveRequiredMixin, BaseActivityListView):
     model = WorkTask
 
 
-class WorkTaskDetailView(ActiveRequiredMixin, generic.DetailView):
+class WorkTaskDetailView(
+        ActivityDetailQueryMixin, ActiveRequiredMixin, generic.DetailView
+    ):
     model = WorkTask
 
     def get_context_data(self, **kwargs):
@@ -229,9 +241,10 @@ class WorkTaskDeleteView(
     template_name = "club/activity_confirm_delete.html"
 
 
-class WorkTaskArchiveIndexView(generic.ArchiveIndexView):
+class WorkTaskArchiveIndexView(ActiveRequiredMixin, generic.ArchiveIndexView):
     model = WorkTask
     date_field = "date"
+    paginate_by = 8
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -248,18 +261,29 @@ def toggle_worktask_participation(request, pk):
         worktask.participants.remove(member)
     else:
         worktask.participants.add(member)
-    return HttpResponseRedirect(reverse_lazy("club:worktask-detail", args=[pk]))
+    return HttpResponseRedirect(
+        reverse_lazy("club:worktask-detail", args=[pk])
+    )
 
 
 ### Boat Views ###
 
 class BoatListView(generic.ListView):
     model = Boat
-    paginate_by = 4
+    paginate_by = 3
+    queryset = Boat.objects.all().select_related("owner")
 
 
 class BoatDetailView(generic.DetailView):
     model = Boat
+
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .select_related("owner")
+            .prefetch_related("keeper")
+        )
 
 
 class BoatCreateView(
@@ -289,12 +313,23 @@ class MemberListView(ActiveRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        is_active_perm = Permission.objects.filter(
+            codename="active_member"
+        )
 
-        for member in queryset:
-            member.is_active_member = member.has_perm("club.active_member")
-        
+        queryset = (
+            super()
+            .get_queryset()
+            .exclude(username="admin")
+            .select_related("role")
+            .annotate(
+                is_active_member=Exists(
+                    is_active_perm.filter(user=OuterRef("pk"))
+                )
+            )
+        )
         return queryset
+
 
 class MemberDetailView(ActiveRequiredMixin, generic.DetailView):
     model = get_user_model()

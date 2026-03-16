@@ -23,44 +23,41 @@
     </tr>
 
     {% for member in member_list %}
-      {% if member.username != "admin" %}
+      <tr>
+        <td class="members_table__cell">{{ member}}</td>
+        <td class="members_table__cell">{{ member.role }}</td>
+        <td class="members_table__cell"><a href="{{ member.get_absolute_url }}">See profile</a></td>
+            
+        {% if user.role.management_rights %}
+          <td class="members_table_cell">
 
-        <tr>
-          <td class="members_table__cell">{{ member}}</td>
-          <td class="members_table__cell">{{ member.role }}</td>
-          <td class="members_table__cell"><a href="{{ member.get_absolute_url }}">See profile</a></td>
-              
-          {% if user.role.management_rights %}
-            <td class="members_table_cell">
+            {% if member.is_active_member %}
 
-              {% if member.is_active_member %}
-
-                <a href="{% url 'club:toggle-active-member' pk=member.id %}">
-                  <div class="members_toggle_active_base">
-                    <div class="members_toggle_active_track">
-                      <div class="members_toggle_active_switch members_toggle_active_switch-on">
-                      </div>
+              <a href="{% url 'club:toggle-active-member' pk=member.id %}">
+                <div class="members_toggle_active_base">
+                  <div class="members_toggle_active_track">
+                    <div class="members_toggle_active_switch members_toggle_active_switch-on">
                     </div>
                   </div>
-                </a>
+                </div>
+              </a>
 
-              {% else %}
+            {% else %}
 
-                <a href="{% url 'club:toggle-active-member' pk=member.id %}">
-                  <div class="members_toggle_active_base">
-                    <div class="members_toggle_active_track">
-                      <div class="members_toggle_active_switch members_toggle_active_switch-off">
-                      </div>
+              <a href="{% url 'club:toggle-active-member' pk=member.id %}">
+                <div class="members_toggle_active_base">
+                  <div class="members_toggle_active_track">
+                    <div class="members_toggle_active_switch members_toggle_active_switch-off">
                     </div>
                   </div>
-                </a>
+                </div>
+              </a>
 
-              {% endif %}
+            {% endif %}
 
-            </td>
-          {% endif %}
-        </tr>
-      {% endif %}
+          </td>
+        {% endif %}
+      </tr>
     {% endfor %}
   </table>
 
