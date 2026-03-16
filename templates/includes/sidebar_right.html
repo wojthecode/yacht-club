@@ -38,18 +38,20 @@
           calendar__active
         {% endif %}
 
-        {% if day in cur_month|planned_events %}
+        {% if day in planned_events %}
           calendar__planned
         {% endif %}
 
       ">
       
-        {% if day in cur_month|planned_events %}
-          <a href="{% url 'club:event-list' %}">
-            <div class="popup">
-              Planned events
-            </div>
-          </a>
+        {% if day in planned_events %}
+          <div class="popup">
+            {% for event in planned_events|get_items:day %}
+            <a href="{{ event.get_absolute_url }}" class="popup_link">
+              {{ event.date|date:"G:i" }} - {{ event.name }}
+            </a>
+            {% endfor %}
+          </div>
         {% endif %}
       
       </div>
