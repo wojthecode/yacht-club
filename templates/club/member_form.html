@@ -13,9 +13,7 @@
     {% else %}
       Sign in
     {% endif %}
-
   </h1>
-
 
   <form action=""
         method="post"
@@ -23,12 +21,6 @@
         novalidate>
 
     {% csrf_token %}
-  
-
-    {% if user.role.management_rights %}
-      {{ form.is_active|as_crispy_field }}
-    {% endif %}
-
 
     {% for field in form %}
       {% if field.name not in custom_fields %}

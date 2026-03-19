@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.forms import ValidationError
 
-from club.models import Boat
+from club.models import Boat, Role
 
 
 class BoatForm(forms.ModelForm):
@@ -37,6 +37,8 @@ class BoatForm(forms.ModelForm):
 
 
 class MemberCreationForm(UserCreationForm):
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
     email = forms.EmailField(label="E-mail")
     phone = forms.CharField(
         widget=forms.TextInput(
@@ -51,15 +53,15 @@ class MemberCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):  # type: ignore
         model = get_user_model()
         fields = (
-            "is_active",
             "username",
+            "first_name",
+            "last_name",
+            "role",
             "email",
             "phone",
             "phone_visibility",
             "password1",
             "password2",
-            "first_name",
-            "last_name",
             "sailing_permission",
             "avatar",
         )
@@ -73,7 +75,7 @@ class MemberCreationForm(UserCreationForm):
             and self.user.role                      # type: ignore
             and self.user.role.management_rights    # type: ignore
         ):
-            self.fields.pop("is_active")
+            self.fields.pop("role")
 
     def clean_phone(self):
         return validate_phone_number(self.cleaned_data["phone"])
@@ -82,16 +84,18 @@ class MemberCreationForm(UserCreationForm):
         obj = super().save(commit=False)
 
         if (
-            "is_active" not in self.fields
-            and not self.user
+            "role" not in self.fields
+            and not self.user.is_authenticated      # type: ignore
         ):
-            obj.is_active = False
+            obj.role = Role.objects.get(name="Member")
 
         obj.save()
         return obj
 
 
 class MemberUpdateForm(UserChangeForm):
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
     email = forms.EmailField(label="E-mail")
     phone = forms.CharField(
         widget=forms.TextInput(
@@ -106,13 +110,13 @@ class MemberUpdateForm(UserChangeForm):
     class Meta(UserCreationForm.Meta):  # type: ignore
         model = get_user_model()
         fields = (
-            "is_active",
             "username",
+            "first_name",
+            "last_name",
+            "role",
             "email",
             "phone",
             "phone_visibility",
-            "first_name",
-            "last_name",
             "sailing_permission",
             "avatar",
         )
@@ -125,22 +129,10 @@ class MemberUpdateForm(UserChangeForm):
             self.user.role                          # type: ignore
             and self.user.role.management_rights    # type: ignore
         ):
-            self.fields.pop("is_active")
+            self.fields.pop("role")
 
     def clean_phone(self):
         return validate_phone_number(self.cleaned_data["phone"])
-
-    def save(self):
-        obj = super().save(commit=False)
-
-        if (
-            "is_active" not in self.fields
-            and not self.user
-        ):
-            obj.is_active = False
-
-        obj.save()
-        return obj
 
 
 def validate_phone_number(phone: str):
