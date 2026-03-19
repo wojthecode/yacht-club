@@ -107,7 +107,7 @@
 
         {% if member %}
           <a href="{% url 'password_change' %}" class="edit_profile btn btn-warning rounded-pill px-2 py-0">Change password</a>
-          <a href="{% url 'club:member-update' pk=member.id %}" class="edit_profile btn btn-danger rounded-pill px-2 py-0">Delete profile</a>
+          <a href="{% url 'club:member-delete' pk=member.id %}" class="edit_profile btn btn-danger rounded-pill px-2 py-0">Delete profile</a>
         {% endif %}
 
       </div>

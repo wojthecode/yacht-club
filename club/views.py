@@ -403,6 +403,12 @@ class MemberUpdateView(
         return context
 
 
+class MemberDeleteView(generic.DeleteView):
+    model = get_user_model()
+    success_url = reverse_lazy("club:index")
+    template_name = "club/member_confirm_delete.html"
+
+
 @login_required
 def toggle_active_member(request, pk):
 

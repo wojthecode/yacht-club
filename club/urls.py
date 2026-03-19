@@ -1,6 +1,7 @@
 from django.urls import path
 
 from club.views import (
+    MemberDeleteView,
     index,
     EventListView,
     EventDetailView,
@@ -121,6 +122,11 @@ urlpatterns = [
         "members/update/<int:pk>/",
         MemberUpdateView.as_view(),
         name="member-update"
+    ),
+    path(
+        "members/delete/<int:pk>/",
+        MemberDeleteView.as_view(),
+        name="member-delete"
     ),
     path(
         "members/<int:pk>/toggle_active_member",
