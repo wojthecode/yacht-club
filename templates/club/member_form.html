@@ -87,19 +87,31 @@
         {% endif %}
       {% endif %}
     {% endfor %}
-  
 
-    <button type="submit"
-            value="submit"
-            class="btn btn-primary rounded-pill px-2 py-0">
-      {{ object|yesno:"Update,Create"}} 
-    </button>
+    <div class="member_form__buttons">
+      <div>
 
-    <button type="button"
-            onclick="history.back()"
-            class="btn btn-primary rounded-pill px-2 py-0">
-      Cancel
-    </button>
+        <button type="submit"
+                value="submit"
+                class="btn btn-primary rounded-pill px-2 py-0">
+          {{ object|yesno:"Update,Create"}} 
+        </button>
+        <button type="button"
+                onclick="history.back()"
+                class="btn btn-primary rounded-pill px-2 py-0">
+          Cancel
+        </button>
+
+      </div>
+      <div>
+
+        {% if member %}
+          <a href="{% url 'password_change' %}" class="edit_profile btn btn-warning rounded-pill px-2 py-0">Change password</a>
+          <a href="{% url 'club:member-update' pk=member.id %}" class="edit_profile btn btn-danger rounded-pill px-2 py-0">Delete profile</a>
+        {% endif %}
+
+      </div>
+    </div>
 
   </form>
 

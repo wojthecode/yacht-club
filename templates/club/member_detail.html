@@ -3,15 +3,12 @@
 
 {% block content %}
 
-<h1 class="center">{{ member }}</h1>
+  <h1 class="center">{{ member }}</h1>
 
-<br><br>
+  <br><br>
 
   <div class="members_detail">
-
     <div class="members_detail__column">
-
-
       <table class="members_detail__table">
         <tr>
           <td class="members_detail__table-cell">Role:</td>
@@ -31,10 +28,15 @@
           <td class="members_detail__table-cell">E-mail:</td>
           <td class="members_detail__table-cell">{{ member.email }}</td>
         </tr>
-
         <tr>
           <td class="members_detail__table-cell">Sailing<br>permission:</td>
-          <td class="members_detail__table-cell"><br>{{ member.sailing_permission.name }}</td>
+          <td class="members_detail__table-cell"><br>
+            {% if member.sailing_permission %}
+              {{ member.sailing_permission.name }}
+            {% else %}
+              - - - 
+            {% endif %}
+          </td>
         </tr>
 
         {% if boats_owned %}
@@ -42,10 +44,8 @@
             <td class="members_detail__table-cell">My boat{{ boats_owned|pluralize:"s" }}:</td>
             <td class="members_detail__table-cell">
               {% for boat in boats_owned %}
-
                 <a href="{{ boat.get_absolute_url }}">{{ boat.name }}</a>
                 <br>
-
               {% endfor %}
             </td>
           </tr>
@@ -56,72 +56,62 @@
             <td class="members_detail__table-cell">Boat{{ boats_keeped|pluralize:"s" }} keeped:</td>
             <td class="members_detail__table-cell">
               {% for boat in boats_keeped %}
-
                 <a href="{{ boat.get_absolute_url }}">{{ boat.name }}</a>
                 <br>
-
               {% endfor %}
             </td>
           </tr>
         {% endif %}
-
       </table>
-
     </div>
 
     <div class="members_detail__column">
-
         {% if member.avatar %}
-
           <img src="{{ member.avatar.url }}" alt="avatar" class="members_detail__avatar">
-
         {% else %}
-
           <img img src="{% static 'images/placeholder_avatar.png' %}" alt="placeholder avatar" class="members_detail__placeholder">
+        {% endif %}
+    </div>
+  </div>
+
+  <div class="member_detail__edit_button">
+  
+        {% if user.role.management_rights or member == user %}
+
+          <a href="{% url 'club:member-update' pk=member.id %}" class="edit_profile btn btn-primary rounded-pill px-3 py-0">Edit profile</a>
 
         {% endif %}
-      
-    </div>
-
+  
   </div>
-  <br><br><hr><br>
-  <div>
 
+  <hr><br>
+
+  <div>
     {% if comming_events %}
       <h4>Signed to event{{ comming_events|pluralize:"s" }}:</h4>
-
       {% for event in comming_events %}
-        <p>{{ event.name }} <i>@ {{ event.date }}</i></p>
+        <p>
+          <a href="{{ event.get_absolute_url }}">
+            {{ event.name }} <i>@ {{ event.date }}</i>
+          </a>
+        </p>
       {% endfor %}
-
     {% endif %}
-
-
   </div>
-  <div>
 
+  <div>
     {% if comming_worktask %}
       <h4>Signed to work task{{ comming_worktask|pluralize:"s" }}:</h4>
-
       {% for worktask in comming_worktask %}
-        <p>{{ worktask.name }} <i>@ {{ worktask.date }}</i></p>
+        <p>
+          <a href="{{ worktask.get_absolute_url }}">
+            {{ worktask.name }} <i>@ {{ worktask.date }}</i>
+          </a>
+        </p>
       {% endfor %}
-
     {% endif %}
-
-
   </div>
 
-<br><br>
-
-{% if user.role.management_rights or member == user %}
-
-  <a href="{% url 'club:member-update' pk=member.id %}" class="update_button btn btn-primary rounded-pill px-3 py-0">Edit profile</a>
-
-{% comment %} 
-  <a href="{% url 'club:boat-delete' pk=boat.id %}" class="delete_button btn btn-danger rounded-pill px-3 py-0">Delete</a>
- {% endcomment %}
-
-{% endif %}
+  <br><br>
 
 {% endblock %}

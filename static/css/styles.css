@@ -115,6 +115,13 @@ body {
   position: absolute;
   right: 25px;
 }
+.edit_profile {
+  /* display: block; */
+  position: relative;
+  align-self: right;
+  right: 0px;
+  bottom: 0px;
+}
 
 /* #endregion */
 
@@ -241,6 +248,19 @@ body {
   height: 200px;
   object-fit: fill;
   border-radius: 100px;
+}
+
+.member_detail__edit_button {
+  display: flex;
+  padding-top: 14px;
+  padding-bottom: 10px;
+  justify-content: flex-end;
+  height: 50px;
+}
+
+.member_form__buttons {
+  display: flex;
+  justify-content: space-between;
 }
 
 .members_toggle_active_base {
