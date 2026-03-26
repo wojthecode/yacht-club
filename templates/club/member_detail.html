@@ -76,9 +76,15 @@
 
   <div class="member_detail__edit_button">
   
-        {% if user.role.management_rights or member == user %}
+        {% if user.role.management_rights %}
 
           <a href="{% url 'club:member-update' pk=member.id %}" class="edit_profile btn btn-primary rounded-pill px-3 py-0">Edit profile</a>
+
+        {% endif %}
+  
+        {% if member == user %}
+
+          <a href="{% url 'club:profile-update' %}" class="edit_profile btn btn-primary rounded-pill px-3 py-0">Edit profile</a>
 
         {% endif %}
   

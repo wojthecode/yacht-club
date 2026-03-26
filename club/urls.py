@@ -1,8 +1,6 @@
 from django.urls import path
 
 from club.views import (
-    MemberDeleteView,
-    MemberProfileView,
     index,
     EventListView,
     EventDetailView,
@@ -27,7 +25,10 @@ from club.views import (
     MemberDetailView,
     MemberCreateView,
     MemberUpdateView,
+    MemberDeleteView,
     toggle_active_member,
+    MemberProfileUpdateView,
+    MemberProfileView,
 )
 
 
@@ -138,7 +139,10 @@ urlpatterns = [
     ### Profile ###
 
     path("profile/", MemberProfileView.as_view(), name="profile"),
-
+    path(
+        "profile/update/",
+        MemberProfileUpdateView.as_view(),
+        name="profile-update"),
 ]
 
 app_name = "club"

@@ -397,9 +397,16 @@ class MemberCreateView(
         context = super().get_context_data(**kwargs)
         context["custom_fields"] = ["is_active", "phone_visibility", "avatar", "password"]
         return context
+    
+    def get_success_url(self):
+        if self.request.user.is_authenticated:
+            url = super().get_success_url()
+        else:
+            url = reverse("club:profile")
+        return url
 
 
-class MemberUpdateView(
+class MemberUpdateBaseView(
         FormLoggedUserMixin,
         generic.UpdateView
     ):
@@ -410,6 +417,22 @@ class MemberUpdateView(
         context = super().get_context_data(**kwargs)
         context["custom_fields"] = ["is_active", "phone_visibility", "avatar", "password"]
         return context
+
+
+class MemberUpdateView(
+        LoginRequiredMixin,
+        MemberUpdateBaseView
+    ):
+    pass
+
+
+class MemberProfileUpdateView(
+        LoginRequiredMixin,
+        MemberUpdateBaseView
+    ):
+    success_url = reverse_lazy("club:profile")
+    def get_object(self):
+        return self.request.user
 
 
 class MemberDeleteView(generic.DeleteView):
