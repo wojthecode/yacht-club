@@ -29,6 +29,7 @@ from club.views import (
     toggle_active_member,
     MemberProfileUpdateView,
     MemberProfileView,
+    MemberProfileDeleteView,
 )
 
 
@@ -143,6 +144,10 @@ urlpatterns = [
         "profile/update/",
         MemberProfileUpdateView.as_view(),
         name="profile-update"),
+    path(
+        "profile/delete",
+        MemberProfileDeleteView.as_view(),
+        name="profile-delete"),
 ]
 
 app_name = "club"

@@ -1,3 +1,5 @@
+from urllib import request
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -8,7 +10,7 @@ from django.contrib.auth.mixins import (
 from django.contrib.auth.models import Permission
 from django.db.models import Prefetch, Exists, OuterRef, Q
 from django.db.models.query import QuerySet
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
@@ -47,6 +49,18 @@ class ActiveRequiredMixin(PermissionRequiredMixin):
         )
 
 
+class ManagementRightsRequiredMixin(LoginRequiredMixin):
+    def dispatch(self, *args, **kwargs):
+        if not self.request.user.role.management_rights:    # type: ignore
+            return render(
+                self.request,                               # type: ignore
+                "club/403.html",
+                status=403
+            )
+        else:
+            return super().dispatch(*args, **kwargs)
+
+
 class EventContextMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)    # type: ignore
@@ -75,6 +89,11 @@ class FormLoggedUserMixin:
         kwargs = super().get_form_kwargs()      # type: ignore
         kwargs["user"] = self.request.user      # type: ignore
         return kwargs
+
+
+class ProfileGetUserObjectMixin(LoginRequiredMixin):
+    def get_object(self):
+        return self.request.user                # type: ignore
 
 
 ### Home Page View ###
@@ -306,7 +325,9 @@ class BoatDeleteView(LoginRequiredMixin, generic.DeleteView):
     template_name = "club/boat_confirm_delete.html"
 
 
-### Member Views ###
+### Member ###
+
+###### => Base Views ###
 
 class MemberListView(ActiveRequiredMixin, generic.ListView):
     model = get_user_model()
@@ -329,6 +350,23 @@ class MemberListView(ActiveRequiredMixin, generic.ListView):
             )
         )
         return queryset
+
+
+class MemberCreateView(FormLoggedUserMixin, generic.CreateView):
+    form_class = MemberCreationForm
+    model = get_user_model()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["custom_fields"] = ["is_active", "phone_visibility", "avatar", "password"]
+        return context
+    
+    def get_success_url(self):
+        if self.request.user.is_authenticated:
+            url = super().get_success_url()
+        else:
+            url = reverse("club:profile")
+        return url
 
 
 class MemberDetailBaseView(generic.DetailView):
@@ -378,38 +416,7 @@ class MemberDetailBaseView(generic.DetailView):
         return context
 
 
-class MemberDetailView(ActiveRequiredMixin, MemberDetailBaseView):
-    pass
-
-
-class MemberProfileView(LoginRequiredMixin, MemberDetailBaseView):
-    def get_object(self):
-        return self.request.user
-
-
-class MemberCreateView(
-        FormLoggedUserMixin, generic.CreateView
-    ):
-    form_class = MemberCreationForm
-    model = get_user_model()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["custom_fields"] = ["is_active", "phone_visibility", "avatar", "password"]
-        return context
-    
-    def get_success_url(self):
-        if self.request.user.is_authenticated:
-            url = super().get_success_url()
-        else:
-            url = reverse("club:profile")
-        return url
-
-
-class MemberUpdateBaseView(
-        FormLoggedUserMixin,
-        generic.UpdateView
-    ):
+class MemberUpdateBaseView(FormLoggedUserMixin, generic.UpdateView):
     form_class = MemberUpdateForm
     model = get_user_model()
 
@@ -419,27 +426,40 @@ class MemberUpdateBaseView(
         return context
 
 
-class MemberUpdateView(
-        LoginRequiredMixin,
-        MemberUpdateBaseView
-    ):
-    pass
-
-
-class MemberProfileUpdateView(
-        LoginRequiredMixin,
-        MemberUpdateBaseView
-    ):
-    success_url = reverse_lazy("club:profile")
-    def get_object(self):
-        return self.request.user
-
-
-class MemberDeleteView(generic.DeleteView):
+class MemberDeleteBaseView(generic.DeleteView):
     model = get_user_model()
     success_url = reverse_lazy("club:index")
     template_name = "club/member_confirm_delete.html"
 
+
+###### => Member Views ###
+
+class MemberDetailView(ActiveRequiredMixin, MemberDetailBaseView):
+    pass
+
+
+class MemberUpdateView(ManagementRightsRequiredMixin, MemberUpdateBaseView):
+    pass
+
+
+class MemberDeleteView(ManagementRightsRequiredMixin, MemberDeleteBaseView):
+    success_url = reverse_lazy("club:member-list")
+
+
+###### => Profile Views ###
+class MemberProfileView(ProfileGetUserObjectMixin, MemberDetailBaseView):
+    pass
+
+
+class MemberProfileUpdateView(ProfileGetUserObjectMixin, MemberUpdateBaseView):
+    success_url = reverse_lazy("club:profile")
+
+
+class MemberProfileDeleteView(ProfileGetUserObjectMixin, MemberDeleteBaseView):
+    pass
+
+
+### Toggle Views ###
 
 @login_required
 def toggle_active_member(request, pk):
