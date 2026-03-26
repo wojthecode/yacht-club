@@ -26,6 +26,7 @@ from club.views import (
     MemberCreateView,
     MemberUpdateView,
     MemberDeleteView,
+    MemberResetPasswordView,
     toggle_active_member,
     MemberProfileUpdateView,
     MemberProfileView,
@@ -130,6 +131,11 @@ urlpatterns = [
         "members/delete/<int:pk>/",
         MemberDeleteView.as_view(),
         name="member-delete"
+    ),
+    path(
+        "members/reset_password/<int:pk>/",
+        MemberResetPasswordView.as_view(),
+        name="reset-password"
     ),
     path(
         "members/<int:pk>/toggle_active_member",

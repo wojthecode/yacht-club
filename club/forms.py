@@ -1,6 +1,10 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import (
+    UserCreationForm,
+    UserChangeForm,
+    SetPasswordForm,
+)
 from django.forms import ValidationError
 
 from club.models import Boat, Role
@@ -133,6 +137,12 @@ class MemberUpdateForm(UserChangeForm):
 
     def clean_phone(self):
         return validate_phone_number(self.cleaned_data["phone"])
+
+
+class PasswordResetForm(SetPasswordForm):
+    class Meta():
+        model = get_user_model()
+        fields = "__all__"
 
 
 def validate_phone_number(phone: str):

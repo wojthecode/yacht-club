@@ -98,12 +98,14 @@
       <div>
 
         {% if member %}
-          <a href="{% url 'password_change' %}" class="edit_profile btn btn-warning rounded-pill px-2 py-0">Change password</a>
-
           {% if user.role.management_rights %}
+
+            <a href="{% url 'club:reset-password' pk=member.id %}" class="edit_profile btn btn-warning rounded-pill px-2 py-0">Reset password</a>
+
             <a href="{% url 'club:member-delete' pk=member.id %}" class="edit_profile btn btn-danger rounded-pill px-2 py-0">Delete profile</a>
 
           {% else %}
+            <a href="{% url 'password_change' %}" class="edit_profile btn btn-warning rounded-pill px-2 py-0">Change password</a>
             <a href="{% url 'club:profile-delete' %}" class="edit_profile btn btn-danger rounded-pill px-2 py-0">Delete profile</a>
 
           {% endif %}

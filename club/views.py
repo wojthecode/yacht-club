@@ -14,7 +14,12 @@ from django.views import generic
 from datetime import date, datetime
 
 from club.models import Boat, Event, WorkTask
-from club.forms import BoatForm, MemberCreationForm, MemberUpdateForm
+from club.forms import (
+    BoatForm,
+    MemberCreationForm,
+    MemberUpdateForm,
+    PasswordResetForm
+)
 
 
 ### Mixins ###
@@ -47,15 +52,10 @@ class ActiveRequiredMixin(PermissionRequiredMixin):
 
 
 class ManagementRightsRequiredMixin(LoginRequiredMixin):
-    def dispatch(self, *args, **kwargs):
-        if not self.request.user.role.management_rights:    # type: ignore
-            return render(
-                self.request,                               # type: ignore
-                "club/403.html",
-                status=403
-            )
-        else:
-            return super().dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.role.management_rights:    # type: ignore
+            return render(request, "club/403.html", status=403)
+        return super().dispatch(request, *args, **kwargs)
 
 
 class EventContextMixin:
@@ -434,6 +434,31 @@ class MemberDeleteBaseView(generic.DeleteView):
     template_name = "club/member_confirm_delete.html"
 
 
+class MemberResetPasswordView(ManagementRightsRequiredMixin, generic.FormView):
+    form_class = PasswordResetForm
+    template_name = "club/password_reset_form.html"
+    success_url = reverse_lazy("club:member-list")
+
+    def dispatch(self, request, *args, **kwargs):
+        self.member = get_user_model().objects.get(pk=self.kwargs["pk"])
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["member"] = self.member
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        user = self.member
+        kwargs["user"] = user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
 ###### => Member Views ###
 
 class MemberDetailView(ActiveRequiredMixin, MemberDetailBaseView):
@@ -449,6 +474,7 @@ class MemberDeleteView(ManagementRightsRequiredMixin, MemberDeleteBaseView):
 
 
 ###### => Profile Views ###
+
 class MemberProfileView(ProfileGetUserObjectMixin, MemberDetailBaseView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
