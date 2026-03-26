@@ -1,5 +1,3 @@
-from urllib import request
-
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -8,13 +6,12 @@ from django.contrib.auth.mixins import (
     PermissionRequiredMixin,
 )
 from django.contrib.auth.models import Permission
-from django.db.models import Prefetch, Exists, OuterRef, Q
-from django.db.models.query import QuerySet
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+from django.db.models import Prefetch, Exists, OuterRef
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from datetime import date
+from datetime import date, datetime
 
 from club.models import Boat, Event, WorkTask
 from club.forms import BoatForm, MemberCreationForm, MemberUpdateForm
@@ -94,6 +91,11 @@ class FormLoggedUserMixin:
 class ProfileGetUserObjectMixin(LoginRequiredMixin):
     def get_object(self):
         return self.request.user                # type: ignore
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)    # type: ignore
+        context["profile"] = "Profile"
+        return context
 
 
 ### Home Page View ###
@@ -448,7 +450,22 @@ class MemberDeleteView(ManagementRightsRequiredMixin, MemberDeleteBaseView):
 
 ###### => Profile Views ###
 class MemberProfileView(ProfileGetUserObjectMixin, MemberDetailBaseView):
-    pass
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = datetime.today().astimezone().replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+        context["comming_events"] = [
+            event 
+            for event 
+            in context["comming_events"] 
+            if event.date >= today]
+        context["comming_worktask"] = [
+            event 
+            for event 
+            in context["comming_worktask"] 
+            if event.date >= today]
+        return context
 
 
 class MemberProfileUpdateView(ProfileGetUserObjectMixin, MemberUpdateBaseView):
