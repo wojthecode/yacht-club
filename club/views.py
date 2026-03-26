@@ -331,7 +331,7 @@ class MemberListView(ActiveRequiredMixin, generic.ListView):
         return queryset
 
 
-class MemberDetailView(ActiveRequiredMixin, generic.DetailView):
+class MemberDetailBaseView(generic.DetailView):
     model = get_user_model()
 
     def get_queryset(self):
@@ -376,6 +376,15 @@ class MemberDetailView(ActiveRequiredMixin, generic.DetailView):
             or member == user
             )
         return context
+
+
+class MemberDetailView(ActiveRequiredMixin, MemberDetailBaseView):
+    pass
+
+
+class MemberProfileView(LoginRequiredMixin, MemberDetailBaseView):
+    def get_object(self):
+        return self.request.user
 
 
 class MemberCreateView(
