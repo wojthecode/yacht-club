@@ -132,6 +132,17 @@ body {
   max-width: 50vw;
   justify-self: center;
 }
+.search_form {
+  position: relative;
+}
+.search_form-input {
+  width: calc(100% - 46px)
+}
+.search_form-button {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
 
 /* #endregion */
 

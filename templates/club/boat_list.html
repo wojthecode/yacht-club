@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 {% load static %}
 
 {% block content %}
@@ -9,6 +10,11 @@
     <a href="{% url 'club:boat-create' %}" class="add_button btn btn-success rounded-pill px-2 py-0">Add</a>
 
   {% endif %}
+
+  <form action="" method="get" class="search_form">
+    {{ search_form|crispy }}
+    <input type="submit" value="&#128270;" class="btn btn-outline-dark search_form-button">
+  </form>
 
   {% for boat in boat_list %}
 

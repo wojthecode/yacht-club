@@ -1,3 +1,5 @@
+from turtle import textinput
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import (
@@ -15,14 +17,14 @@ class BoatForm(forms.ModelForm):
     class Meta:
         model = Boat
         fields = "__all__"
-    
+
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user
 
         if not (
-            self.user.role                          # type:ignore
-            and self.user.role.management_rights    # type:ignore
+            self.user.role                              # type:ignore
+            and self.user.role.management_rights        # type:ignore
         ):
             self.fields.pop("owner")
             self.fields.pop("keeper")
@@ -54,7 +56,7 @@ class MemberCreationForm(UserCreationForm):
         required=True
     )
 
-    class Meta(UserCreationForm.Meta):  # type: ignore
+    class Meta(UserCreationForm.Meta):                  # type: ignore
         model = get_user_model()
         fields = (
             "username",
@@ -69,15 +71,15 @@ class MemberCreationForm(UserCreationForm):
             "sailing_permission",
             "avatar",
         )
-    
+
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user
 
         if not (
-            self.user.is_authenticated              # type: ignore
-            and self.user.role                      # type: ignore
-            and self.user.role.management_rights    # type: ignore
+            self.user.is_authenticated                  # type: ignore
+            and self.user.role                          # type: ignore
+            and self.user.role.management_rights        # type: ignore
         ):
             self.fields.pop("role")
 
@@ -89,7 +91,7 @@ class MemberCreationForm(UserCreationForm):
 
         if (
             "role" not in self.fields
-            and not self.user.is_authenticated      # type: ignore
+            and not self.user.is_authenticated          # type: ignore
         ):
             obj.role = Role.objects.get(name="Member")
 
@@ -111,7 +113,7 @@ class MemberUpdateForm(UserChangeForm):
         required=True
     )
 
-    class Meta(UserCreationForm.Meta):  # type: ignore
+    class Meta(UserCreationForm.Meta):                  # type: ignore
         model = get_user_model()
         fields = (
             "username",
@@ -124,14 +126,14 @@ class MemberUpdateForm(UserChangeForm):
             "sailing_permission",
             "avatar",
         )
-    
+
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user
 
         if not (
-            self.user.role                          # type: ignore
-            and self.user.role.management_rights    # type: ignore
+            self.user.role                              # type: ignore
+            and self.user.role.management_rights        # type: ignore
         ):
             self.fields.pop("role")
 
@@ -145,6 +147,34 @@ class PasswordResetForm(SetPasswordForm):
         fields = "__all__"
 
 
+class BoatSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=64,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Search by boat name...",
+                "class": "search_form-input"
+            }
+        )
+    )
+
+
+class MemberSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=64,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Search by first name or last name...",
+                "class": "search-form-input"
+            }
+        )
+    )
+
+
 def validate_phone_number(phone: str):
     prefix, *number = phone.split(" ")
     valid = []
@@ -154,5 +184,5 @@ def validate_phone_number(phone: str):
 
     if not all(valid):
         raise ValidationError("Phone number must be in format: +01 234567890")
-    
+
     return phone
