@@ -1,0 +1,219 @@
+{% load static %}
+<!-- Navbar -->
+<div class="container position-sticky z-index-sticky top-0">
+  <div class="row">
+    <div class="col-12">
+      <nav class="navbar navbar-expand-lg  blur blur-rounded top-0 z-index-fixed shadow position-absolute my-3 py-1 start-0 end-0 mx-4">
+
+        <div class="container-fluid px-0">
+          <a class="navbar-brand font-weight-bolder ms-sm-3 me-0" href="{% url 'club:index' %}">
+            Yacht Club
+          </a>
+
+          <button class="navbar-toggler shadow-none ms-2 me-0" type="button" data-bs-toggle="collapse" 
+            data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon mt-2">
+              <span class="navbar-toggler-bar bar1"></span>
+              <span class="navbar-toggler-bar bar2"></span>
+              <span class="navbar-toggler-bar bar3"></span>
+            </span>
+          </button>
+
+          <div class="collapse navbar-collapse pt-3 pb-2 py-lg-0" id="navigation">
+
+            <div class="d-flex justify-content-center w-100">
+              <ul class="navbar-nav navbar-nav-hover w-100 w-lg-auto">
+
+                {% comment %} Events {% endcomment %}
+                <li class="auto-height nav-item dropdown dropdown-hover mx-2">
+                  <a class="nav-link ps-2 cursor-pointer d-none d-lg-block"
+                    href="{% url 'club:event-list' %}">
+                    Events
+                    <i class="fa fa-angle-down me-1"></i>
+                  </a>
+
+                  <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center d-lg-none"
+                    href="" id="dropdownMenuEvents" data-bs-toggle="dropdown" aria-expanded="false">
+                    Events
+                    <i class="fa fa-angle-down me-1"></i>
+                  </a>
+
+                  <div class="dropdown-menu dropdown-menu-animation dropdown-md p-3 border-radius-lg mt-0 mt-lg-3 d-lg-none overflow-hidden"
+                    aria-labelledby="dropdownMenuEvents">
+                    <a href="{% url 'club:event-list' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3">Upcomming</span>
+                    </a>
+                    <a href="{% url 'club:event-archive' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3">Recent</span>
+                    </a>
+                  </div>
+
+                  <div class="dropdown-menu dropdown-menu-animation dropdown-md p-3 blur border-radius-lg mt-0 mt-lg-3 d-none d-lg-block">
+                    <a href="{% url 'club:event-list' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3 text-dark">Upcomming</span>
+                    </a>
+                    <a href="{% url 'club:event-archive' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3 text-dark">Recent</span>
+                    </a>
+                  </div>
+                </li>
+
+                {% comment %} Work Tasks {% endcomment %}
+                <li class="auto-height nav-item dropdown dropdown-hover mx-2">
+                  <a class="nav-link ps-2 cursor-pointer d-none d-lg-block"
+                    href="{% url 'club:worktask-list' %}">
+                    Work Tasks
+                    <i class="fa fa-angle-down me-1"></i>
+                  </a>
+
+                  <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center d-lg-none"
+                    href="" id="dropdownMenuWorkTasks" data-bs-toggle="dropdown" aria-expanded="false">
+                    Work Tasks
+                    <i class="fa fa-angle-down me-1"></i>
+                  </a>
+
+                  <div class="dropdown-menu dropdown-menu-animation dropdown-md p-3 border-radius-lg mt-0 mt-lg-3 d-lg-none overflow-hidden"
+                    aria-labelledby="dropdownMenuWorkTasks">
+                    <a href="{% url 'club:worktask-list' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3">Upcomming</span>
+                    </a>
+                    <a href="{% url 'club:worktask-archive' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3">Recent</span>
+                    </a>
+                  </div>
+
+                  <div class="dropdown-menu dropdown-menu-animation dropdown-md p-3 blur border-radius-lg mt-0 mt-lg-3 d-none d-lg-block">
+                    <a href="{% url 'club:worktask-list' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3 text-dark">Upcomming</span>
+                    </a>
+                    <a href="{% url 'club:worktask-archive' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3 text-dark">Recent</span>
+                    </a>
+                  </div>
+                </li>
+
+                {% comment %} Boats {% endcomment %}
+                <li class="nav-item mx-2">
+                  <a class="nav-link ps-2 d-flex cursor-pointer"
+                    href="{% url 'club:boat-list' %}" id="dropdownMenuBoats">
+                    Boats
+                  </a>
+                </li>
+
+                {% comment %} Members {% endcomment %}
+                <li class="nav-item mx-2">
+                  <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center"
+                    href="{% url 'club:member-list' %}" id="dropdownMenuMembers">
+                    Members
+                  </a>
+                </li>
+
+                {% comment %} Account {% endcomment %}
+                <li class="auto-height nav-item dropdown dropdown-hover mx-2">
+                  <a class="nav-link ps-2 cursor-pointer d-none d-lg-block"
+                    href="{% url 'club:profile' %}">
+                    Account
+                    <i class="fa fa-angle-down me-1"></i>
+                  </a>
+
+                  <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center d-lg-none"
+                    href="" id="dropdownMenuAccount" data-bs-toggle="dropdown" aria-expanded="false">
+                    Account
+                    <i class="fa fa-angle-down me-1"></i>
+                  </a>
+
+                  <div div class="dropdown-menu dropdown-menu-animation dropdown-md p-3 border-radius-lg mt-0 mt-lg-3 d-lg-none overflow-hidden"
+                    aria-labelledby="dropdownMenuAccount">
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'club:profile' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3">View Profile</span>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'club:member-create' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3">Sign Up</span>
+                    </a>
+                    {% endif %}
+                  </div>
+
+                  <div class="dropdown-menu dropdown-menu-animation dropdown-md p-3 blur border-radius-lg mt-0 mt-lg-3 d-none d-lg-block">
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'club:profile' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3 text-dark">View Profile</span>
+                    </a>
+                    <form method="post" action="{% url 'logout' %}">
+                      {% csrf_token %}
+                      <button type="submit" class="dropdown-item border-radius-md">
+                        <i class="fa fa-sign-out me-1 text-dark"></i>
+                        <p class="d-inline text-sm z-index-1 font-weight-bold text-dark"
+                          data-bs-toggle="tooltip" data-bs-placement="bottom" title="Logout">
+                          Logout
+                        </p>
+                      </button>
+                      <input type="hidden" name="next" value="{{ next }}">
+                    </form>
+
+                    {% else %}
+                    <a href="{% url 'club:member-create' %}" class="dropdown-item border-radius-md">
+                      <span class="ps-3 text-dark">Sign Up</span>
+                    </a>
+                    {% endif %}
+                  </div>
+                </li>
+
+                {% comment %} Login - Mobile (dropdown menu) {% endcomment %}
+                {% if request.user.is_authenticated %}
+                  <li class="nav-item mx-3 d-lg-none">
+                    <a class="nav-link ps-2 cursor-pointer"
+                      href="{% url 'club:profile' %}" id="dropdownMenuMembers">
+                      <i class="fa fa-user me-1"></i>
+                      <p class="d-inline text-sm z-index-1 font-weight-bold">{{ user.username }}</p>
+                    </a>
+                  </li>
+                {% endif %}
+                <li class="nav-item mx-3 d-lg-none">
+                  {% if request.user.is_authenticated %}
+                    <form method="post" action="{% url 'logout' %}">
+                      {% csrf_token %}
+                      <button type="submit" class="nav-link ps-2 cursor-pointer border-0 bg-transparent">
+                        <i class="fa fa-sign-out me-1"></i>
+                        <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip"
+                          data-bs-placement="bottom" title="Logout">Logout</p>
+                      </button>
+                      <input type="hidden" name="next" value="{{ next }}">
+                    </form>
+                  {% else %}
+                  <a class="nav-link ps-2 cursor-pointer"
+                    href="{% url 'login' %}">
+                    <i class="fa fa-sign-in me-1"></i>
+                    <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip"
+                      data-bs-placement="bottom" title="Login">Login</p>
+                  </a>
+                  {% endif %}
+                </li>
+              </ul>
+            </div>
+
+            {% comment %} Login - Desktop {% endcomment %}
+            <div class="nav-item d-none d-lg-block"> 
+              {% if request.user.is_authenticated %}
+                <a class="nav-link text-nowrap px-0 me-3" href="{% url 'club:profile' %}">
+                  <i class="fa fa-user me-1"></i>
+                  <p class="d-inline text-sm z-index-1 font-weight-bold">{{ user.username }}</p>
+                </a>
+              {% else %}
+                <a class="nav-link text-nowrap px-0 me-3" href="{% url 'login' %}">
+                  <i class="fa fa-sign-in me-1"></i>
+                  <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip"
+                    data-bs-placement="bottom" title="Login">Login</p>
+                </a>
+              {% endif %}
+            </div>
+
+          </div>
+        </div>
+      </nav>
+      <!-- End Navbar -->
+    </div>
+  </div>
+</div>
