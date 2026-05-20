@@ -2,10 +2,11 @@ from datetime import date
 
 from club.models import Event
 
-def clendar_planed_events(request):
 
+def clendar_planed_events(request):
     month = int(date.today().strftime("%m"))
-    events = (Event.objects
+    events = (
+        Event.objects
         .filter(date__month=month)
         .only("date", "name", "id")
     )

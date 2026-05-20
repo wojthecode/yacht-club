@@ -35,4 +35,3 @@ devpatterns = (
 
 if settings.DEBUG:
     urlpatterns += devpatterns + debug_toolbar_urls()
-

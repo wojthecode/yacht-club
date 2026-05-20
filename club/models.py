@@ -67,7 +67,6 @@ class Member(AbstractUser):
         return reverse("club:member-detail", kwargs={"pk": self.pk})
 
 
-
 class Boat(models.Model):
     CATEGORIES = [
         ("A", "A (Ocean)"),

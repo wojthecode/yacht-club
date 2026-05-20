@@ -28,8 +28,8 @@ from club.views import (
     MemberDeleteView,
     MemberResetPasswordView,
     toggle_active_member,
-    MemberProfileUpdateView,
     MemberProfileView,
+    MemberProfileUpdateView,
     MemberProfileDeleteView,
 )
 

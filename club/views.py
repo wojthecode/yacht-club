@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import (
     PermissionRequiredMixin,
 )
 from django.contrib.auth.models import Permission
-from django.db.models import Prefetch, Exists, OuterRef
+from django.db.models import Prefetch, Exists, OuterRef, Q
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
@@ -16,7 +16,9 @@ from datetime import date, datetime
 from club.models import Boat, Event, WorkTask
 from club.forms import (
     BoatForm,
+    BoatSearchForm,
     MemberCreationForm,
+    MemberSearchForm,
     MemberUpdateForm,
     PasswordResetForm
 )
@@ -29,23 +31,24 @@ class ActiveRequiredMixin(PermissionRequiredMixin):
     raise_exception = False
 
     def handle_no_permission(self):
-        if not self.request.user.is_authenticated:      # type: ignore
+        if not self.request.user.is_authenticated:          # type: ignore
             login_url = reverse("login")
-            next = self.request.get_full_path()         # type: ignore
-            return redirect(f"{login_url}?next={next}")
-        
-        page = self.request.path.split("/")[1]          # type: ignore
-        NAME = {
+            redirect_path = self.request.get_full_path()    # type: ignore
+            return redirect(
+                f"{login_url}?next={redirect_path}"
+            )
+
+        page = self.request.path.split("/")[1]              # type: ignore
+        name = {
             "work_tasks": "Work Tasks",
             "members": "Members",
             "boats": "Boat Create",
         }
-
         return render(
-            self.request,                               # type: ignore
+            self.request,                                   # type: ignore
             "club/no_permissions.html",
             {
-                "from_url": NAME.get(page, "None"),
+                "from_url": name.get(page, "None"),
             },
             status=403
         )
@@ -53,66 +56,68 @@ class ActiveRequiredMixin(PermissionRequiredMixin):
 
 class ManagementRightsRequiredMixin(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.role.management_rights:    # type: ignore
-            return render(request, "club/403.html", status=403)
+        if not request.user.role.management_rights:         # type: ignore
+            return render(
+                request,
+                "club/403.html",
+                status=403
+            )
         return super().dispatch(request, *args, **kwargs)
 
 
 class EventContextMixin:
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)    # type: ignore
+        context = super().get_context_data(**kwargs)        # type: ignore
         context["activity"] = "Event"
         return context
 
 
 class WorkTaskContextMixin:
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)    # type: ignore
+        context = super().get_context_data(**kwargs)        # type: ignore
         context["activity"] = "Work Task"
         return context
-    
+
 
 class ActivityDetailQueryMixin():
     def get_queryset(self):
         return (
             super()
-            .get_queryset()                     # type: ignore
+            .get_queryset()                                 # type: ignore
             .select_related("created_by")
         )
 
 
 class FormLoggedUserMixin:
     def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()      # type: ignore
-        kwargs["user"] = self.request.user      # type: ignore
+        kwargs = super().get_form_kwargs()                  # type: ignore
+        kwargs["user"] = self.request.user                  # type: ignore
         return kwargs
 
 
 class ProfileGetUserObjectMixin(LoginRequiredMixin):
     def get_object(self):
-        return self.request.user                # type: ignore
-    
+        return self.request.user                            # type: ignore
+
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)    # type: ignore
+        context = super().get_context_data(**kwargs)        # type: ignore
         context["profile"] = "Profile"
         return context
 
 
 ### Home Page View ###
 
-def index(request:HttpRequest) -> HttpResponse:
+def index(request: HttpRequest) -> HttpResponse:
     today = date.today()
     upcoming = list(Event.objects.filter(date__gte=today)[:5])
     num_boats = Boat.objects.count()
     num_members = get_user_model().objects.count()
-
     context = {
         "upcoming": upcoming,
         "num_boats": num_boats,
         "num_members": num_members,
         "home": "home",
     }
-
     return render(request, "club/index.html", context=context)
 
 
@@ -133,13 +138,14 @@ class BaseActivityCreateView(LoginRequiredMixin, generic.CreateView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.fields["date"].widget = forms.DateInput(
-            attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M"
+            attrs={"type": "datetime-local"},
+            format="%Y-%m-%dT%H:%M"
         )
         return form
 
     def form_valid(self, form):
-       form.instance.created_by = self.request.user
-       return super().form_valid(form)
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
 
 
 class BaseActivityUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -148,7 +154,8 @@ class BaseActivityUpdateView(LoginRequiredMixin, generic.UpdateView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.fields["date"].widget = forms.DateInput(
-            attrs={"type": "datetime-local"}, format="%Y-%m-%dT%H:%M"
+            attrs={"type": "datetime-local"},
+            format="%Y-%m-%dT%H:%M"
         )
         return form
 
@@ -165,15 +172,8 @@ class EventDetailView(ActivityDetailQueryMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         today = date.today()
-        event_date = date(*[
-            int(part) 
-            for part 
-            in context["event"].date.strftime("%Y-%m-%d").split("-")
-        ])
-
-        if event_date < today:
+        if context["event"].date.date() < today:
             context["latest"] = "latest"
-
         return context
 
 
@@ -189,7 +189,7 @@ class EventUpdateView(EventContextMixin, BaseActivityUpdateView):
 
 class EventDeleteView(
         ActiveRequiredMixin, EventContextMixin, generic.DeleteView
-    ):
+):
     model = Event
     template_name = "club/activity_confirm_delete.html"
     success_url = reverse_lazy("club:event-list")
@@ -210,7 +210,7 @@ class EventArchiveIndexView(generic.ArchiveIndexView):
 def toggle_event_participation(request, pk):
     event = Event.objects.get(id=pk)
     member = get_user_model().objects.get(id=request.user.id)
-    
+
     if event.participants.filter(pk=member.pk).exists():
         event.participants.remove(member)
     else:
@@ -225,22 +225,17 @@ class WorkTaskListView(ActiveRequiredMixin, BaseActivityListView):
 
 
 class WorkTaskDetailView(
-        ActivityDetailQueryMixin, ActiveRequiredMixin, generic.DetailView
-    ):
+        ActivityDetailQueryMixin,
+        ActiveRequiredMixin,
+        generic.DetailView
+):
     model = WorkTask
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         today = date.today()
-        worktask_date = date(*[
-            int(part) 
-            for part 
-            in context["worktask"].date.strftime("%Y-%m-%d").split("-")
-        ])
-
-        if worktask_date < today:
+        if context["worktask"].date.date() < today:
             context["latest"] = "latest"
-
         return context
 
 
@@ -256,7 +251,7 @@ class WorkTaskUpdateteView(WorkTaskContextMixin, BaseActivityUpdateView):
 
 class WorkTaskDeleteView(
         LoginRequiredMixin, WorkTaskContextMixin, generic.DeleteView
-    ):
+):
     model = WorkTask
     success_url = reverse_lazy("club:worktask-list")
     template_name = "club/activity_confirm_delete.html"
@@ -294,6 +289,23 @@ class BoatListView(generic.ListView):
     paginate_by = 3
     queryset = Boat.objects.all().select_related("owner")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_form"] = BoatSearchForm(
+            initial={"name": name}
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        form = BoatSearchForm(self.request.GET)
+        if form.is_valid():
+            queryset = queryset.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
+        return queryset
+
 
 class BoatDetailView(generic.DetailView):
     model = Boat
@@ -308,15 +320,19 @@ class BoatDetailView(generic.DetailView):
 
 
 class BoatCreateView(
-        FormLoggedUserMixin, ActiveRequiredMixin, generic.CreateView
-    ):
+        FormLoggedUserMixin,
+        ActiveRequiredMixin,
+        generic.CreateView
+):
     model = Boat
     form_class = BoatForm
 
 
 class BoatUpdateView(
-        FormLoggedUserMixin, LoginRequiredMixin, generic.UpdateView
-    ):
+        FormLoggedUserMixin,
+        LoginRequiredMixin,
+        generic.UpdateView
+):
     model = Boat
     form_class = BoatForm
 
@@ -335,11 +351,18 @@ class MemberListView(ActiveRequiredMixin, generic.ListView):
     model = get_user_model()
     paginate_by = 10
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name", "")
+        context["search_form"] = MemberSearchForm(
+            initial={"name": name}
+        )
+        return context
+
     def get_queryset(self):
         is_active_perm = Permission.objects.filter(
             codename="active_member"
         )
-
         queryset = (
             super()
             .get_queryset()
@@ -351,6 +374,14 @@ class MemberListView(ActiveRequiredMixin, generic.ListView):
                 )
             )
         )
+        form = MemberSearchForm(self.request.GET)
+        if form.is_valid():
+            parts = form.cleaned_data["name"].split()
+            for part in parts:
+                queryset = queryset.filter(
+                    Q(first_name__icontains=part)
+                    | Q(last_name__icontains=part)
+                )
         return queryset
 
 
@@ -360,9 +391,11 @@ class MemberCreateView(FormLoggedUserMixin, generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["custom_fields"] = ["is_active", "phone_visibility", "avatar", "password"]
+        context["custom_fields"] = [
+            "is_active", "phone_visibility", "avatar", "password"
+        ]
         return context
-    
+
     def get_success_url(self):
         if self.request.user.is_authenticated:
             url = super().get_success_url()
@@ -399,22 +432,22 @@ class MemberDetailBaseView(generic.DetailView):
         user = self.request.user
 
         context["comming_events"] = list(
-            self.object.event_participant.all()         # type: ignore
+            self.object.event_participant.all()             # type: ignore
         )
         context["comming_worktask"] = list(
-            self.object.worktask_participant.all()      # type: ignore
+            self.object.worktask_participant.all()          # type: ignore
         )
         context["boats_owned"] = list(
-            self.object.boats_owned.all()               # type: ignore
+            self.object.boats_owned.all()                   # type: ignore
         )
         context["boats_keeped"] = list(
-            self.object.boats_keeped.all()              # type: ignore
+            self.object.boats_keeped.all()                  # type: ignore
         )
-        context["phone_visible"] = member.phone and (   # type: ignore
-            member.phone_visibility                     # type: ignore
-            or user.role.management_rights              # type: ignore
+        context["phone_visible"] = member.phone and (       # type: ignore
+            member.phone_visibility                         # type: ignore
+            or user.role.management_rights                  # type: ignore
             or member == user
-            )
+        )
         return context
 
 
@@ -424,7 +457,9 @@ class MemberUpdateBaseView(FormLoggedUserMixin, generic.UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["custom_fields"] = ["is_active", "phone_visibility", "avatar", "password"]
+        context["custom_fields"] = [
+            "is_active", "phone_visibility", "avatar", "password"
+        ]
         return context
 
 
@@ -434,7 +469,10 @@ class MemberDeleteBaseView(generic.DeleteView):
     template_name = "club/member_confirm_delete.html"
 
 
-class MemberResetPasswordView(ManagementRightsRequiredMixin, generic.FormView):
+class MemberResetPasswordView(
+    ManagementRightsRequiredMixin,
+    generic.FormView
+):
     form_class = PasswordResetForm
     template_name = "club/password_reset_form.html"
     success_url = reverse_lazy("club:member-list")
@@ -482,23 +520,29 @@ class MemberProfileView(ProfileGetUserObjectMixin, MemberDetailBaseView):
             hour=0, minute=0, second=0, microsecond=0
         )
         context["comming_events"] = [
-            event 
-            for event 
-            in context["comming_events"] 
+            event
+            for event
+            in context["comming_events"]
             if event.date >= today]
         context["comming_worktask"] = [
-            event 
-            for event 
-            in context["comming_worktask"] 
+            event
+            for event
+            in context["comming_worktask"]
             if event.date >= today]
         return context
 
 
-class MemberProfileUpdateView(ProfileGetUserObjectMixin, MemberUpdateBaseView):
+class MemberProfileUpdateView(
+    ProfileGetUserObjectMixin,
+    MemberUpdateBaseView
+):
     success_url = reverse_lazy("club:profile")
 
 
-class MemberProfileDeleteView(ProfileGetUserObjectMixin, MemberDeleteBaseView):
+class MemberProfileDeleteView(
+    ProfileGetUserObjectMixin,
+    MemberDeleteBaseView
+):
     pass
 
 
@@ -506,9 +550,7 @@ class MemberProfileDeleteView(ProfileGetUserObjectMixin, MemberDeleteBaseView):
 
 @login_required
 def toggle_active_member(request, pk):
-
     if request.user.role.management_rights:
-
         member = get_user_model().objects.get(pk=pk)
         permission = Permission.objects.get(codename="active_member")
 
@@ -518,5 +560,4 @@ def toggle_active_member(request, pk):
         else:
             member.user_permissions.add(permission)
             member.save()
-
     return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))

@@ -17,6 +17,7 @@ def first_day(value):
 def range_list(value):
     return range(1, int(value) + 1)
 
+
 @register.filter
 def get_items(value, key):
     return value.get(key)
