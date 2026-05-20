@@ -1,9 +1,37 @@
 /* #region General */
 
-body {
-  margin-top: 35px;
-  margin-bottom: 15px;
+.container-fixed {
+  margin-top: 5%;
+  margin-bottom: 15%;
+  min-height: auto;
+  width: 100vw;
 }
+
+.border_text {
+  text-shadow: /* 0 0 2px #015; */
+    -0.1px -0.1px 3px #015,
+    0.1px -0.1px 3px #015,
+    -0.1px 0.1px 3px #015,
+    0.1px 0.1px 3px #015;
+}
+
+.mt-n13 {
+  margin-top: -18rem !important;
+}
+
+@media(max-height: 1024px) and (min-width: 768px) {
+  .page-header.min-vh-75 {
+    min-height: 768px !important;
+  }
+}
+
+@media(max-height: 920px) and (max-width: 767px) {
+  .page-header.min-vh-75 {
+    min-height: 690px !important;
+  }
+}
+
+
 
 .base_width {
   max-width: 1280px;
@@ -334,22 +362,7 @@ body {
 
 /* #endregion */
 
-/* #region Sidebar */
 
-.list-group-submenu {
-  margin-left: 10px;
-}
-.list-group-submenu::after {
-  content: " ";
-  position: absolute;
-  bottom: -1px;
-  left: -11px;
-  width: 10px;
-  height: 1px;
-  background-color: #00000020;
-}
-
-/* #endregion */
 
 /* #region Callendar */
 
