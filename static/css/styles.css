@@ -51,6 +51,10 @@
   height: 50px;
 }
 
+.last-none:last-of-type {
+  display: none;
+}
+
 
 
 .base_width {

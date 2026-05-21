@@ -1,17 +1,35 @@
-{% extends "base.html" %}
+{% extends "bases/base_activity.html" %}
+{% load static %}
 
-{% block content %}
-  <h1 class="center">Recent Club Events</h1>
-  <br>
 
-  {% for event in latest %}
+{% block activity_image %}
+  style="background-image: url('{% static 'img/bg/sunset.jpg' %}'); background-position: center 65%"
+{% endblock activity_image %}
 
-    <h3>{{ event.name}}</h3>
-    <h5>{{ event.date|date:"D, d N Y, H:i" }}</h5>
-    <p>{{ event.description|linebreaksbr|truncatewords:30 }}</p>
-    <a href="{{ event.get_absolute_url }}">Read more >></a>
-    <hr>
+{% block activity_title %}
+  Recent Club Events
+{% endblock activity_title %}
 
-  {% endfor %}
+{% block activity_content %}
 
-{% endblock %}
+  <div class="col-lg-12 z-index-2 border-radius-xl mt-n9 mx-auto py-5 blur shadow-blur carousel">
+    {% if latest %}
+      <div class="container">
+        <div class="mx-auto col-lg-9 activity">
+
+          {% for event in latest %}
+            <h3>{{ event.name}}</h3>
+            <h5>{{ event.date|date:"D, d N Y, H:i" }}</h5>
+            <p>{{ event.description|linebreaksbr|truncatewords:30 }}</p>
+            <a href="{{ event.get_absolute_url }}">Read more >></a>
+            <hr class="horizontal dark last-none py-1 my-4">
+          {% endfor %}
+
+        </div>
+      </div>
+    {% else %}
+      <h4 class="text-center pt-8 pb-8">There are no recent events</h4>
+    {% endif %}
+  </div>
+
+{% endblock activity_content %}
