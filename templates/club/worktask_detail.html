@@ -1,48 +1,67 @@
-{% extends "base.html" %}
-
-{% block content %}
-
-<h1 class="center">{{ worktask.name }}</h1>
-
-<hr>
-
-<p>
-  Date: {{ worktask.date|date:"D, d N Y, H:i" }}
-
-  {% if user.is_authenticated %}
-    {% if not latest %}
-      {% if user in worktask.participants.all %}
-
-        <a href="{% url 'club:toggle-worktask-participation' pk=worktask.id %}" class="join_leave btn btn-danger rounded-pill px-2 py-0"> Leave work task</a>
-      {% else %}
-
-        <a href="{% url 'club:toggle-worktask-participation' pk=worktask.id %}" class="join_leave btn btn-success rounded-pill px-2 py-0">Join work task</a>
-      {% endif %}
-    {% else %}
-
-      <span class="join_leave btn btn-secondary rounded-pill px-2 py-0">Work task passed</span>
-    {% endif %}
-  {% endif %}
-
-</p>
-<p>Location: {{ worktask.location }}</p>
-
-<hr>
-
-<p>{{ worktask.description|linebreaksbr }}</p>
+{% extends "bases/base_activity.html" %}
+{% load static %}
 
 
-<p class="invites">
+{% block activity_image %}
+  style="background-image: url('{% static 'img/bg/hull.png' %}'); background-position: center 45%"
+{% endblock activity_image %}
 
-  {% if user.role.management_rights %}
+{% block activity_header %}{% endblock activity_header %}
 
-    <a href="{% url 'club:worktask-update' pk=worktask.id %}" class="update_button btn btn-primary rounded-pill px-3 py-0">Edit</a>
+{% block activity_content %}
 
-    <a href="{% url 'club:worktask-delete' pk=worktask.id %}" class="delete_button btn btn-danger rounded-pill px-3 py-0">Delete</a>
+  <div class="col-lg-12 z-index-2 border-radius-xl mt-n12 mx-auto py-3 blur shadow-blur">
+    <div class="container">
+      <div class="mx-auto col-lg-9">
 
-  {% endif %}
+        <h2 class="text-center py-4">{{ worktask.name }}</h2>
 
-  invites, {{ worktask.created_by }}
-</p>
+        <div class="d-flex flex-wrap">
+          <p class="w-md-50 w-100 font-italic">Date: {{ worktask.date|date:"D, d N Y, H:i" }}</p>
+          <p class="w-md-50 w-100 font-italic text-md-end">Location: {{ worktask.location }}</p>
 
-{% endblock %}
+          <span class="w-md-50 w-100">
+            {% if user.is_authenticated %}
+              {% if not latest %}
+                {% if user in worktask.participants.all %}
+
+                  <a href="{% url 'club:toggle-worktask-participation' pk=worktask.id %}" class="btn bg-gradient-danger rounded-pill px-3 py-1"> Leave work task</a>
+                {% else %}
+
+                  <a href="{% url 'club:toggle-worktask-participation' pk=worktask.id %}" class="btn bg-gradient-success rounded-pill px-3 py-1">Join work task</a>
+                {% endif %}
+              {% else %}
+
+                <span class="btn disabled bg-gradient-secondary rounded-pill px-3 py-1">Work task passed</span>
+              {% endif %}
+            {% endif %}
+          </span>
+        </div>
+
+        <hr class="horizontal dark py-1 mt-n1">
+
+        <p class="text-justify">{{ worktask.description|linebreaksbr }}</p>
+
+        <div class="d-flex flex-wrap-reverse flex-sm-nowrap py-2 pt-sm-4">
+          <div class="w-100 w-sm-50">
+            {% if user.role.management_rights %}
+
+              <a href="{% url 'club:worktask-update' pk=worktask.id %}" class="btn bg-gradient-primary rounded-pill px-3 py-1 my-2 me-2">Edit</a>
+
+              <a href="{% url 'club:worktask-delete' pk=worktask.id %}" class="btn bg-gradient-danger rounded-pill px-3 py-1 my-2">Delete</a>
+
+            {% endif %}
+          </div>
+          <div class="w-100 w-sm-50">
+
+            <p class="text-end font-italic">
+              invites, {{ worktask.created_by }}
+            </p>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock activity_content %}
