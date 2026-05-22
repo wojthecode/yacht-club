@@ -244,9 +244,17 @@ class WorkTaskDetailView(
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         today = date.today()
+        context["half_crew"] = context["worktask"].min_crew / 2
         if context["worktask"].date.date() < today:
             context["latest"] = "latest"
         return context
+
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .prefetch_related("participants")
+        )
 
 
 class WorkTaskCreateView(WorkTaskContextMixin, BaseActivityCreateView):

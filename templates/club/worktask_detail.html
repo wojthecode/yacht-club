@@ -36,6 +36,24 @@
               {% endif %}
             {% endif %}
           </span>
+
+          <span class="w-md-50 w-100 text-md-end mb-3">
+            <span class="text-bold text-sm me-2">
+              Crew needed: {{ worktask.participants.all.count }} / {{ worktask.min_crew}}
+            </span>
+
+            <i class="fa-solid fa-users text-gradient text-lg
+              {% if worktask.participants.all.count >= worktask.min_crew %}
+                text-success
+              {% elif worktask.participants.all.count >= half_crew %}
+                text-info
+              {% elif worktask.participants.all.count == 0 %}
+                text-danger
+              {% else %}
+                text-warning
+              {% endif %}
+            "></i>
+          </span>
         </div>
 
         <hr class="horizontal dark py-1 mt-n1">
