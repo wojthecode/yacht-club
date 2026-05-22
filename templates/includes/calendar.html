@@ -1,0 +1,52 @@
+{% load static %}
+{% load calendar_filters %}
+
+
+<div class="p-3">
+  <div class="pr-1">
+    <h6 class="text-center text-bold text-dark">{% now "F" %}</h6>
+    <table class="w-100 text-center text-xs">
+      <tr>
+        <th class="text-dark">Mo</td>
+        <th class="text-dark">Tu</td>
+        <th class="text-dark">We</td>
+        <th class="text-dark">Th</td>
+        <th class="text-dark">Fr</td>
+        <th class="text-secondary">Sa</td>
+        <th class="text-danger">Su</td>
+      </tr>
+    </table>  
+  </div>
+
+  {% now "Y-m-t" as cur_month %}
+
+  <div class="calendar
+    calendar--start-day-{{ cur_month|first_day }}
+    calendar--month-length-{% now 't' %}">
+
+    {%now "d" as today %}
+    {% for day in 31|range_list %}
+
+      <div class="calendar__day text-dark
+        {% if today|add:'0' == day %}
+          calendar__active
+        {% endif %}
+        {% if day in planned_events %}
+          calendar__planned
+        {% endif %}
+      ">
+      
+        {% if day in planned_events %}
+          <div class="popup">
+            {% for event in planned_events|get_items:day %}
+            <a href="{{ event.get_absolute_url }}"
+              class="popup_link text-dark text-sm">
+              {{ event.date|date:"G:i" }} - {{ event.name }}
+            </a>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>

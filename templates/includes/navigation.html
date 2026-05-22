@@ -109,6 +109,19 @@
                   </a>
                 </li>
 
+                {% comment %} Calendar {% endcomment %}
+                <li class="auto-height nav-item dropdown dropdown-hover mx-2 d-none d-lg-block">
+                  <a class="nav-link ps-2 cursor-pointer"
+                    href="#" data-bs-toggle="dropdown">
+                    Calendar
+                    <i class="fa fa-angle-down me-1"></i>
+                  </a>
+
+                  <div class="dropdown-menu dropdown-menu-animation dropdown-md p-3 blur border-radius-lg mt-0 mt-lg-3">
+                    {% include 'includes/calendar.html' %}
+                  </div>
+                </li>
+
                 {% comment %} Account {% endcomment %}
                 <li class="auto-height nav-item dropdown dropdown-hover mx-2">
                   <a class="nav-link ps-2 cursor-pointer d-none d-lg-block"
