@@ -65,10 +65,24 @@ class ManagementRightsRequiredMixin(LoginRequiredMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
+class BoatManagePermissionMixin(LoginRequiredMixin):
+    def dispatch(self, request, *args, **kwargs):
+        boat_to_delete = kwargs
+        member_boats = list(
+            request.user.boats_owned.values("pk")       # type: ignore
+        )
+        if (request.user.role.management_rights         # type: ignore
+            or boat_to_delete in member_boats):
+            return super().dispatch(request, *args, **kwargs)
+
+        return render(request, "club/403.html", status=403)
+
+
 class EventContextMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)        # type: ignore
         context["activity"] = "Event"
+        print(context)
         return context
 
 
@@ -112,11 +126,12 @@ def index(request: HttpRequest) -> HttpResponse:
     upcoming = list(Event.objects.filter(date__gte=today)[:5])
     num_boats = Boat.objects.count()
     num_members = get_user_model().objects.count()
+    num_events = Event.objects.filter(date__gte=today).count()
     context = {
         "upcoming": upcoming,
         "num_boats": num_boats,
         "num_members": num_members,
-        "home": "home",
+        "num_events": num_events,
     }
     return render(request, "club/index.html", context=context)
 
@@ -133,7 +148,7 @@ class BaseActivityListView(generic.ListView):
 
 
 class BaseActivityCreateView(LoginRequiredMixin, generic.CreateView):
-    template_name = "club/base_activity_form.html"
+    template_name = "club/activity_form.html"
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -149,7 +164,7 @@ class BaseActivityCreateView(LoginRequiredMixin, generic.CreateView):
 
 
 class BaseActivityUpdateView(LoginRequiredMixin, generic.UpdateView):
-    template_name = "club/base_activity_form.html"
+    template_name = "club/activity_form.html"
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -188,7 +203,7 @@ class EventUpdateView(EventContextMixin, BaseActivityUpdateView):
 
 
 class EventDeleteView(
-        ActiveRequiredMixin, EventContextMixin, generic.DeleteView
+        ManagementRightsRequiredMixin, EventContextMixin, generic.DeleteView
 ):
     model = Event
     template_name = "club/activity_confirm_delete.html"
@@ -199,11 +214,6 @@ class EventArchiveIndexView(generic.ArchiveIndexView):
     model = Event
     date_field = "date"
     paginate_by = 8
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["event"] = "event"
-        return context
 
 
 @login_required
@@ -250,7 +260,7 @@ class WorkTaskUpdateteView(WorkTaskContextMixin, BaseActivityUpdateView):
 
 
 class WorkTaskDeleteView(
-        LoginRequiredMixin, WorkTaskContextMixin, generic.DeleteView
+        ManagementRightsRequiredMixin, WorkTaskContextMixin, generic.DeleteView
 ):
     model = WorkTask
     success_url = reverse_lazy("club:worktask-list")
@@ -261,11 +271,6 @@ class WorkTaskArchiveIndexView(ActiveRequiredMixin, generic.ArchiveIndexView):
     model = WorkTask
     date_field = "date"
     paginate_by = 8
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["worktask"] = "worktask"
-        return context
 
 
 @login_required
@@ -330,14 +335,14 @@ class BoatCreateView(
 
 class BoatUpdateView(
         FormLoggedUserMixin,
-        LoginRequiredMixin,
+        BoatManagePermissionMixin,
         generic.UpdateView
 ):
     model = Boat
     form_class = BoatForm
 
 
-class BoatDeleteView(LoginRequiredMixin, generic.DeleteView):
+class BoatDeleteView(BoatManagePermissionMixin, generic.DeleteView):
     model = Boat
     success_url = reverse_lazy("club:boat-list")
     template_name = "club/boat_confirm_delete.html"
@@ -409,6 +414,9 @@ class MemberDetailBaseView(generic.DetailView):
 
     def get_queryset(self):
         today = date.today()
+        is_active_perm = Permission.objects.filter(
+            codename="active_member"
+        )
         queryset = super().get_queryset()
         return (
             queryset
@@ -423,6 +431,11 @@ class MemberDetailBaseView(generic.DetailView):
                     "worktask_participant",
                     queryset=WorkTask.objects.filter(date__gte=today),
                 ),
+            )
+            .annotate(
+                is_active_member=Exists(
+                    is_active_perm.filter(user=OuterRef("pk"))
+                )
             )
         )
 
