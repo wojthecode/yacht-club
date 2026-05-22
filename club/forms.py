@@ -1,5 +1,3 @@
-from turtle import textinput
-
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import (
@@ -155,7 +153,6 @@ class BoatSearchForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Search by boat name...",
-                "class": "search_form-input"
             }
         )
     )
@@ -169,7 +166,6 @@ class MemberSearchForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Search by first name or last name...",
-                "class": "search-form-input"
             }
         )
     )
