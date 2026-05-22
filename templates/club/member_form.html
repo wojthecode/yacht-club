@@ -88,7 +88,7 @@
     {% endfor %}
 
     <div class="d-flex flex-wrap">
-      <div class="w-100 w-sm-50">
+      <div class="w-100 w-sm-40">
 
         <button type="submit"
                 value="submit"
@@ -102,7 +102,7 @@
         </button>
 
       </div>
-      <div class="d-flex justify-content-start justify-content-sm-end w-100 w-sm-50">
+      <div class="d-flex justify-content-start justify-content-sm-end w-100 w-sm-60">
 
         {% if member == user %}
           <a href="{% url 'club:profile-delete' %}"
@@ -111,6 +111,10 @@
           </a>
         {% else %}
           {% if member %}
+            <a href="{% url 'club:reset-password' pk=member.id %}"
+              class="btn bg-gradient-warning rounded-pill px-3 py-1 me-2">
+              Change password
+            </a>
             <a href="{% url 'club:member-delete' pk=member.id %}"
               class="btn bg-gradient-danger rounded-pill px-3 py-1">
               Delete account
