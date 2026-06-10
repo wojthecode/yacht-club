@@ -71,8 +71,10 @@ class BoatManagePermissionMixin(LoginRequiredMixin):
         member_boats = list(
             request.user.boats_owned.values("pk")       # type: ignore
         )
-        if (request.user.role.management_rights         # type: ignore
-            or boat_to_delete in member_boats):
+        if (
+            request.user.role.management_rights         # type: ignore
+            or boat_to_delete in member_boats
+        ):
             return super().dispatch(request, *args, **kwargs)
 
         return render(request, "club/403.html", status=403)

@@ -2,20 +2,20 @@
 {% load calendar_filters %}
 
 
-<div class="p-3">
-  <div class="pr-1">
+<div class="px-3 py-1">
+  <div class="pb-1">
     <h6 class="text-center text-bold text-dark">{% now "F" %}</h6>
-    <table class="w-100 text-center text-xs">
-      <tr>
-        <th class="text-dark">Mo</td>
-        <th class="text-dark">Tu</td>
-        <th class="text-dark">We</td>
-        <th class="text-dark">Th</td>
-        <th class="text-dark">Fr</td>
-        <th class="text-secondary">Sa</td>
-        <th class="text-danger">Su</td>
-      </tr>
-    </table>  
+    <div class="w-100 d-flex flex-nowrap justify-content-around text-center text-xs">
+
+      <div class="w-10 text-bold text-dark">Mo</div>
+      <div class="w-10 text-bold text-dark">Tu</div>
+      <div class="w-10 text-bold text-dark">We</div>
+      <div class="w-10 text-bold text-dark">Th</div>
+      <div class="w-10 text-bold text-dark">Fr</div>
+      <div class="w-10 text-bold text-secondary">Sa</div>
+      <div class="w-10 text-bold text-danger">Su</div>
+
+    </div>  
   </div>
 
   {% now "Y-m-t" as cur_month %}
@@ -27,7 +27,7 @@
     {%now "d" as today %}
     {% for day in 31|range_list %}
 
-      <div class="calendar__day text-dark
+      <div class="calendar__day
         {% if today|add:'0' == day %}
           calendar__active
         {% endif %}
