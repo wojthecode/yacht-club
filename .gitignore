@@ -1,9 +1,8 @@
 *.odt
 *.sqlite3
-*.json
 *.bkp
 venv
 .vscode
+.flake8
 **__pycache__
-media/
-templates/old
+/media/
