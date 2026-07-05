@@ -68,13 +68,16 @@ class ManagementRightsRequiredMixin(LoginRequiredMixin):
 
 class BoatManagePermissionMixin(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
-        boat_to_delete = kwargs
+        if not request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+
+        boat_to_manage = kwargs
         member_boats = list(
             request.user.boats_owned.values("pk")       # type: ignore
         )
         if (
             request.user.role.management_rights         # type: ignore
-            or boat_to_delete in member_boats
+            or boat_to_manage in member_boats
         ):
             return super().dispatch(request, *args, **kwargs)
 
@@ -289,6 +292,13 @@ class WorkTaskArchiveIndexView(ActiveRequiredMixin, generic.ArchiveIndexView):
 def toggle_worktask_participation(request, pk):
     worktask = get_object_or_404(WorkTask, id=pk)
     member = get_user_model().objects.get(id=request.user.id)
+
+    if not member.has_perm("club.active_member"):
+        return render(
+                request,
+                "club/403.html",
+                status=403
+            )
 
     if worktask.participants.filter(pk=member.pk).exists():
         worktask.participants.remove(member)
