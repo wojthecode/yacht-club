@@ -1,4 +1,6 @@
+from datetime import date, datetime
 from django import forms
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import (
@@ -8,10 +10,9 @@ from django.contrib.auth.mixins import (
 from django.contrib.auth.models import Permission
 from django.db.models import Prefetch, Exists, OuterRef, Q
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from datetime import date, datetime
 
 from club.models import Boat, Event, WorkTask
 from club.forms import (
@@ -84,7 +85,6 @@ class EventContextMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)        # type: ignore
         context["activity"] = "Event"
-        print(context)
         return context
 
 
@@ -216,11 +216,12 @@ class EventArchiveIndexView(generic.ArchiveIndexView):
     model = Event
     date_field = "date"
     paginate_by = 8
+    allow_empty = True
 
 
 @login_required
 def toggle_event_participation(request, pk):
-    event = Event.objects.get(id=pk)
+    event = get_object_or_404(Event, id=pk)
     member = get_user_model().objects.get(id=request.user.id)
 
     if event.participants.filter(pk=member.pk).exists():
@@ -281,11 +282,12 @@ class WorkTaskArchiveIndexView(ActiveRequiredMixin, generic.ArchiveIndexView):
     model = WorkTask
     date_field = "date"
     paginate_by = 8
+    allow_empty = True
 
 
 @login_required
 def toggle_worktask_participation(request, pk):
-    worktask = WorkTask.objects.get(id=pk)
+    worktask = get_object_or_404(WorkTask, id=pk)
     member = get_user_model().objects.get(id=request.user.id)
 
     if worktask.participants.filter(pk=member.pk).exists():
