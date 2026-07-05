@@ -9,7 +9,12 @@ from django.contrib.auth.mixins import (
 )
 from django.contrib.auth.models import Permission
 from django.db.models import Prefetch, Exists, OuterRef, Q
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import (
+    HttpRequest,
+    HttpResponse,
+    HttpResponseRedirect,
+    Http404
+)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
@@ -57,7 +62,10 @@ class ActiveRequiredMixin(PermissionRequiredMixin):
 
 class ManagementRightsRequiredMixin(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.role.management_rights:         # type: ignore
+        if not (
+            request.user.is_authenticated
+            and request.user.role.management_rights         # type: ignore
+            ):
             return render(
                 request,
                 "club/403.html",
@@ -416,6 +424,14 @@ class MemberCreateView(FormLoggedUserMixin, generic.CreateView):
     form_class = MemberCreationForm
     model = get_user_model()
 
+    def dispatch(self, request, *args, **kwargs):
+        if (
+            request.user.is_authenticated 
+            and not request.user.role.management_rights         #type: ignore
+        ):
+            return redirect("club:profile")
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["custom_fields"] = [
@@ -513,6 +529,9 @@ class MemberResetPasswordView(
     success_url = reverse_lazy("club:member-list")
 
     def dispatch(self, request, *args, **kwargs):
+        if not get_user_model().objects.filter(id=self.kwargs["pk"]).exists():
+            raise Http404("No member found matching the query")
+
         self.member = get_user_model().objects.get(pk=self.kwargs["pk"])
         return super().dispatch(request, *args, **kwargs)
 
@@ -585,14 +604,19 @@ class MemberProfileDeleteView(
 
 @login_required
 def toggle_active_member(request, pk):
-    if request.user.role.management_rights:
-        member = get_user_model().objects.get(pk=pk)
-        permission = Permission.objects.get(codename="active_member")
+    if not request.user.role.management_rights:
+        return render(request, "club/403.html", status=403)
 
-        if member.has_perm("club.active_member"):
-            member.user_permissions.remove(permission)
-            member.save()
-        else:
-            member.user_permissions.add(permission)
-            member.save()
+    if not get_user_model().objects.filter(id=pk).exists():
+        raise Http404("No member found matching the query")
+
+    member = get_user_model().objects.get(pk=pk)
+    permission = Permission.objects.get(codename="active_member")
+
+    if member.has_perm("club.active_member"):
+        member.user_permissions.remove(permission)
+        member.save()
+    else:
+        member.user_permissions.add(permission)
+        member.save()
     return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
