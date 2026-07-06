@@ -1,0 +1,94 @@
+{% extends "bases/base_form.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+
+{% block form_title %}
+  {{ object|yesno:"Edit,Add"}} Boat {{ boat.name }}
+{% endblock form_title%}
+
+{% block form %}
+  <form action="" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+      {% if field.name != "image" %}
+        {% if field.name == "club_owner" %}
+          <div class="form-check pb-2">
+            <input type="checkbox"
+              class="form-check-input"
+              id="{{ form.club_owner.id_for_label }}"
+              name="{{ form.club_owner.name }}"
+              {% if form.club_owner.value %}checked{% endif %}>
+
+            <label class="custom-control-label"
+              for="{{ form.club_owner.id_for_label }}"
+              id="club_owner">Club boat</label>
+          </div>
+
+        {% else %}
+          {{ field|as_crispy_field }}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    <div id="div_id_image" class="form-group">
+      <label for="{{ form.image.id_for_label }}" class="">
+        Image
+      </label>
+
+      {% if object.image %}
+        <div class="ps-1">
+          <p class="m-0">Currently:</p>
+          <a href="{{ boat.image.url }}" class="d-inline-block my-2">
+            {{ boat.image.url|slice:"7:" }}
+          </a> &nbsp;
+          <div class="form-check pb-2 d-inline-block clear-image">
+            <input type="checkbox"
+              class="form-check-input"
+              id="image-clear_id"
+              name="image-clear">
+            <label for="image-clear_id">Clear image</label>
+          </div>
+          <p>Change:</p>
+        </div>
+      {% endif %}
+
+      <div class="custom-file">
+        <input type="file"
+              name="{{ form.image.name }}"
+              class="form-control clearablefileinput"
+              accept="image/*"
+              id="{{ form.image.id_for_label }}">
+      </div>
+    </div>
+
+    <button type="submit" value="submit"
+      class="btn bg-gradient-success rounded-pill px-3 py-1">
+      Submit
+    </button>
+
+    <button type="button" onclick="history.back()"
+      class="btn bg-gradient-secondary rounded-pill px-3 py-1">
+      Cancel
+    </button>
+  </form>
+
+{% endblock form %}
+
+{% block javascripts %}
+
+  {% if user.role.management_rights %}
+    <script src="{% static 'scripts/boat_form.js' %}" id="boat_form"
+      {% if object %}
+        {% if boat.club_owner %}
+          data-club_owner=true
+          data-user_id="{{ user.pk }}"
+        {% else %}
+          data-user_id="{{ boat.owner.pk}}"
+        {% endif %}
+      {% else %}
+        data-user_id="{{ user.pk }}"
+      {% endif %}
+    ></script>
+  {% endif %}
+
+{% endblock javascripts %}

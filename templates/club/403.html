@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+  <header class="header-2">
+    <div class="page-header min-vh-45 relative" style="background-image: url('{% static 'img/bg/lifebuoy.jpg' %}'); background-position: center 60%">
+      {% include 'includes/waves.html' %}
+    </div>
+  </header>
+
+  <section class="pt-3 pb-4 flex-fill">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 z-index-2 border-radius-xl mt-n10 mx-auto py-3 blur shadow-blur">
+          <div class="mx-auto col-lg-9">
+
+            <h4 class="text-center text-danger text-bolder py-7">
+              You don’t have permission to perform this action!
+            </h4>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}

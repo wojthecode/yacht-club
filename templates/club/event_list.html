@@ -1,0 +1,44 @@
+{% extends "bases/base_activity.html" %}
+{% load static %}
+
+
+{% block activity_image %}
+  style="background-image: url('{% static 'img/bg/sunset.jpg' %}'); background-position: center 65%"
+{% endblock activity_image %}
+
+{% block activity_title %}
+  Upcoming Club Events
+{% endblock activity_title %}
+
+{% block activity_content %}
+
+  <div class="col-lg-12 z-index-2 border-radius-xl mt-n9 mx-auto py-5 blur shadow-blur">
+    {% if event_list %}
+      <div class="container">
+        <div class="mx-auto col-lg-9">
+
+          {% for event in event_list %}
+            <h3>{{ event.name}}</h3>
+            <h5>{{ event.date|date:"D, d N Y, H:i" }}</h5>
+            <p>{{ event.description|linebreaksbr|truncatewords:30 }}</p>
+            <a href="{{ event.get_absolute_url }}">Read more >></a>
+            <hr class="horizontal dark last-none py-1 my-4">
+          {% endfor %}
+
+        </div>
+      </div>
+    {% else %}
+      <h4 class="text-center pt-8 pb-8">No events planned yet</h4>
+    {% endif %}
+  </div>
+{% endblock activity_content %}
+
+{% block add_button %}
+
+  {% if user.role.management_rights %}
+    <a href="{% url 'club:event-create' %}" class="btn bg-gradient-secondary position-fixed end-10 bottom-5 rounded-circle btn-circle m-0 py-1 px-3 z-index-3">
+      <span class="m-0 text-white text-bolder text-3xl">+</span>
+    </a>
+  {% endif %}
+
+{% endblock add_button %}

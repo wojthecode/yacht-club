@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+  <header class="header-2">
+    <div class="page-header min-vh-45 relative" style="background-image: url('{% static 'img/bg/crew.jpg' %}'); background-position: center 45%">
+      {% include 'includes/waves.html' %}
+    </div>
+  </header>
+
+  <section class="pt-3 pb-4 flex-fill" id="count-stats">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 z-index-2 border-radius-xl mt-n12 mx-auto py-3 blur shadow-blur position-relative">
+          <div class="mx-auto col-11 col-lg-9">
+
+            {% if user.role.management_rights and user != member %}
+              <div class="form-check form-switch position-absolute start-8">
+                <input type="checkbox"
+                  class="form-check-input"
+                  id="is_active"
+                  name=""
+                  onclick="location.replace('{% url 'club:toggle-active-member' pk=member.id %}')"
+                  {{ member.is_active_member|yesno:"checked," }}
+                >
+                <label class="custom-control-label"
+                  for="is_active"
+                  id="label_is_active">Member is {{ member.is_active_member|yesno:",not " }}active</label>
+              </div>
+              
+              <a href="{% url 'club:member-update' pk=member.id %}" 
+                class="btn bg-gradient-light rounded-circle px-3 py-2 position-absolute end-8 z-index-3">
+                <i class="fa fa-edit py-2"></i>
+              </a>
+              
+            {% endif %}
+
+            <h2 class="text-center pt-lg-3 pt-md-4 pt-5">{{ member }}</h2>
+
+            <div class="d-flex flex-column-reverse flex-md-row w-100 mt-3 mb-3">
+              <div class="w-100 w-md-65 px-4 mt-3">
+                <table class="w-100 text-break">
+                  {% if member == user %}
+                    <tr>
+                      <td class="py-1 w-40">Username:</td>
+                      <td class="py-1">{{ member.username }}</td>
+                    </tr>
+                  {% endif %}
+                  <tr>
+                    <td class="py-1 w-40">Role:</td>
+                    <td class="py-1">{{ member.role }}</td>
+                  </tr>
+                  <tr>
+                    <td class="py-1 w-40">Phone:</td>
+                    <td class="py-1">
+                      {% if phone_visible %}
+                        {{ member.phone }}
+                      {% else %}
+                        - - - 
+                      {% endif %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="py-1 w-40">E-mail:</td>
+                    <td class="py-1 text-wrap">{{ member.email }}</td>
+                  </tr>
+                  <tr>
+                    <td class="py-1 w-40">Sailing<br>permission:</td>
+                    <td class="py-1 align-center">
+                      {% if member.sailing_permission %}
+                        {{ member.sailing_permission.name }}
+                      {% else %}
+                        - - - 
+                      {% endif %}
+                    </td>
+                  </tr>
+
+                  {% if boats_owned %}
+                      <tr>
+                      <td class="py-1 w-40">My boat{{ boats_owned|pluralize:"s" }}:</td>
+                      <td class="py-1">
+                        {% for boat in boats_owned %}
+                          <a href="{{ boat.get_absolute_url }}">{{ boat.name }}</a>
+                          <br>
+                        {% endfor %}
+                      </td>
+                    </tr>
+                  {% endif %}
+
+                  {% if boats_keeped %}
+                      <tr>
+                      <td class="py-1 w-40">Boat{{ boats_keeped|pluralize:"s" }} keeped:</td>
+                      <td class="py-1">
+                        {% for boat in boats_keeped %}
+                          <a href="{{ boat.get_absolute_url }}">{{ boat.name }}</a>
+                          <br>
+                        {% endfor %}
+                      </td>
+                    </tr>
+                  {% endif %}
+                </table>
+              </div>
+
+              <div class="d-flex justify-content-center w-100 w-md-35 px-4 mt-3">
+                  {% if member.avatar %}
+                    <img src="{{ member.avatar.url }}" alt="avatar" class="members_detail-avatar">
+                  {% else %}
+                    <img img src="{% static 'img/placeholder_avatar.png' %}" alt="placeholder avatar" class="members_detail-placeholder">
+                  {% endif %}
+              </div>
+            </div>
+
+            {% if comming_events or comming_worktask %}
+              <hr>
+            {% endif %}
+
+            <div>
+              {% if comming_events %}
+                <h4>Signed to event{{ comming_events|pluralize:"s" }}:</h4>
+                {% for event in comming_events %}
+                  <p>
+                    <a href="{{ event.get_absolute_url }}">
+                      {{ event.name }} <i>@ {{ event.date }}</i>
+                    </a>
+                  </p>
+                {% endfor %}
+              {% endif %}
+            </div>
+
+            <div>
+              {% if comming_worktask %}
+                <h4>Signed to work task{{ comming_worktask|pluralize:"s" }}:</h4>
+                {% for worktask in comming_worktask %}
+                  <p>
+                    <a href="{{ worktask.get_absolute_url }}">
+                      {{ worktask.name }} <i>@ {{ worktask.date }}</i>
+                    </a>
+                  </p>
+                {% endfor %}
+              {% endif %}
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

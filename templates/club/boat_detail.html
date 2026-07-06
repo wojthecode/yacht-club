@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+  <header class="header-2">
+    <div class="page-header min-vh-45 relative" style="background-image: url('{% static 'img/bg/boats.jpg' %}'); background-position: center 70%">
+      {% include 'includes/waves.html' %}
+    </div>
+  </header>
+
+  <section class="pt-3 pb-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 z-index-2 border-radius-xl blur shadow-blur mt-n12 mx-auto py-3">
+          <div class="mx-auto col-11 col-lg-9">
+
+            <h1 class="text-center my-3">{{ boat.name }}</h1>
+            <p class="text-justify lead w-90 w-sm-85 w-md-100 mx-auto">{{ boat.description }}</p>
+
+            <div class="d-flex flex-column-reverse flex-md-row justify-content-md-evenly w-100 py-3">
+              <div class="w-md-40">
+                <div class="w-90 mx-auto">
+
+                  <p><span class="text-bold">Model:</span> {{ boat.model }}</p>
+                  <p><span class="text-bold">Rigging:</span> {{ boat.rigging }}</p>
+                  <p><span class="text-bold">Category:</span> {{ boat.get_category_display }}</p>
+                  <p><span class="text-bold">Length:</span> {{ boat.length }} m</p>
+                  <p><span class="text-bold">Beam:</span> {{ boat.beam }}</p>
+                  <p><span class="text-bold">Draft:</span> {{ boat.draft }}</p>
+                  <p><span class="text-bold">Sail area:</span> {{ boat.sail_area }} m<sup>2</sup></p>
+                  <p><span class="text-bold">Crew:</span> {{ boat.crew_min}} - {{ boat.crew_max }} persons</p> 
+
+                  <p class="pt-2">
+                    {% if boat.club_owner %}
+                      <span class="text-bold d-block pb-3">
+                        Club boat
+                      </span>
+                      {% if boat.keeper.count > 0 %}
+                        <span class="text-bold d-block ps-2"> 
+                          Keeper{{ boat.keeper.count|pluralize:"s" }}:
+                        </span>
+                        {% for keeper in boat.keeper.all %}
+                          <span class="d-block ps-2"> 
+                            {{ keeper }}
+                          </span>
+                        {% endfor %}
+                      {% endif %}
+                    {% else %}
+                      <span class="text-bold d-block pb-1">
+                        Shipowner:
+                      </span>
+                      <span class="d-block ps-2">
+                        {{ boat.owner }}
+                      </span>
+                    {% endif %}
+                  </p>
+                </div>
+              </div>
+
+              <div class="w-md-60 mb-4">
+                <div class="w-90 mx-auto w-xl-80 w-xxl-70">
+
+                  {% if boat.image %}
+                    <img src="{{ boat.image.url }}" alt="boat image" class="boat-detail-image">
+                  {% else %}
+                    <img img src="{% static 'img/placeholder_boat_detail.png' %}" alt="placeholder image" class="boat-detail-image">
+                  {% endif %}
+                  
+                </div>
+              </div>
+            </div>
+
+            {% if user.role.management_rights or boat.owner == user %}
+              <a href="{% url 'club:boat-update' pk=boat.id %}" class="btn bg-gradient-primary rounded-pill py-1 me-2">Edit</a>
+              <a href="{% url 'club:boat-delete' pk=boat.id %}" class="btn bg-gradient-danger rounded-pill py-1">Delete</a>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <header class="header-2">
+    <div class="page-header min-vh-45 relative"
+      {% block activity_image %}{% endblock activity_image %}
+    >
+      {% block activity_header %}
+        <div class="container-fixed">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-9 text-center mx-auto">
+                <h1 class="text-white mt-n6 border_text">
+
+                  {% block activity_title %}{% endblock activity_title %}
+
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endblock activity_header %}
+
+      {% include 'includes/waves.html' %}
+    </div>
+  </header>
+
+  <section class="pt-3 pb-4 flex-fill">
+    <div class="container">
+      <div class="row">
+
+        {% block activity_content %}{% endblock activity_content %}
+
+      </div>
+    </div>
+  </section>
+
+  {% block add_button %}{% endblock add_button %}
+
+{% endblock content %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block content %}
+
+  <header class="header-2">
+    <div class="page-header min-vh-45 relative" style="background-image: url('{% static 'img/bg/boats.jpg' %}'); background-position: center 80%">
+      <div class="container-fixed">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-9 text-center mx-auto">
+              <h1 class="text-white mt-n6 border_text">
+                Our Boats
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% include 'includes/waves.html' %}
+    </div>
+  </header>
+
+  <section class="pt-3 pb-4 flex-fill">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 z-index-2 border-radius-xl mt-n9 mx-auto pt-3 pb-4 blur shadow-blur">
+
+          <div class="mx-auto col-lg-9 mt-lg-3">
+            <form action="" method="get" class="position-relative">
+              {{ search_form|crispy }}
+              <input type="submit" value="&#128270;" class="btn bg-transparent shadow-none position-absolute end-0 top-0 p-2 mt-1 me-1">
+            </form>
+          </div>
+
+          <div class="d-flex flex-column justify-content-center col-lg-9 mx-auto">
+            {% for boat in boat_list %}
+
+              <h3 class="text-center py-2">{{ boat.name}}</h3>
+
+              <div class="d-flex flex-row flex-wrap odd-row-reverse">
+
+                <div class="w-100 w-md-50 py-3 d-flex justify-content-center"> 
+                  {% if boat.image %}
+                    <img src="{{ boat.image.url }}" alt="boat image" class="boat_list__image">
+                  {% else %}
+                    <img src="{% static 'img/placeholder_boat_list.png' %}" alt="placeholder image" class="boat_list__image">
+                  {% endif %}
+                </div>
+
+                <div class="w-100 w-md-30 w-xxl-20 mx-md-auto py-3 ps-5 ps-sm-6 ps-md-0 ">
+                  <p>Category: {{ boat.get_category_display }}</p>
+                  <p>Length {{ boat.length }} m</p>
+                  <p>Sail area: {{ boat.sail_area }} m<sup>2</sup></p>
+                  <p>Crew: {{ boat.crew_min}} - {{ boat.crew_max }} persons</p>
+                  <p>
+                    {% if boat.club_owner %}
+                      Club boat
+                    {% else %}
+                      Shipowner: {{ boat.owner }}
+                    {% endif %}
+                  </p>
+                  <a href="{{ boat.get_absolute_url }}">Read more >></a>
+                </div>
+
+              </div>
+
+              <hr class="horizontal dark w-100 p-1 mt-0 mb-4 last-none">
+
+            {% endfor %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% if user.role %}
+    <a href="{% url 'club:boat-create' %}" class="btn bg-gradient-secondary position-fixed end-10 bottom-5 rounded-circle btn-circle m-0 py-1 px-3 z-index-3">
+      <span class="m-0 text-white text-bolder text-3xl">+</span>
+    </a>
+  {% endif %}
+
+{% endblock content %}

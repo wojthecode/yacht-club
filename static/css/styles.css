@@ -1,0 +1,371 @@
+/* #region General */
+
+.container-fixed {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  min-height: auto;
+  width: 100vw;
+}
+
+.container-fixed.index {
+  margin-top: 5%;
+  margin-bottom: 15%;
+}
+
+.border_text {
+  text-shadow: /* 0 0 2px #015; */
+    -0.1px -0.1px 3px #015,
+    0.1px -0.1px 3px #015,
+    -0.1px 0.1px 3px #015,
+    0.1px 0.1px 3px #015;
+}
+
+.mt-n13 {
+  margin-top: -18rem !important;
+}
+
+@media(max-height: 1024px) and (min-width: 768px) {
+  .page-header.min-vh-75 {
+    min-height: 768px !important;
+  }
+}
+
+@media(max-height: 920px) and (max-width: 767px) {
+  .page-header.min-vh-75 {
+    min-height: 690px !important;
+  }
+}
+
+@media(max-height: 740px) {
+  .page-header.min-vh-45 {
+    min-height: 333px !important;
+  }
+}
+
+.auto-height.dropdown.nav-item .dropdown-menu-animation.show {
+  height: auto;
+}
+
+.btn-circle {
+  width: 50px;
+  height: 50px;
+}
+
+.last-none:last-of-type {
+  display: none;
+}
+
+.odd-row-reverse:nth-of-type(odd) {
+  flex-direction: row-reverse !important;
+}
+
+/* #endregion General*/
+
+/* #region Check Input */
+
+.form-check-input {
+  background-image: linear-gradient(310deg, #627594 0%, #A8B8D8 100%) !important;
+  border-color: #627594 !important;
+}
+
+.form-check-input:checked {
+  background-image: linear-gradient(310deg, #17ad37 0%, #98ec2d 100%) !important;
+  border-color: #4CAF50 !important;
+}
+
+.clear-image .form-check-input:checked {
+  background-image: linear-gradient(310deg, #ea0606 0%, #ff667c 100%) !important;
+  border-color: #ea0606 !important;
+}
+
+/* #endregion Check Input */
+
+/* #region Images */
+
+.boat_list__image {
+  width: 250px;
+  aspect-ratio: 1 / 1;
+  /* object-fit: cover; */
+  border-radius: 250px;
+}
+
+.boat-detail-image {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 25px;
+}
+
+.members_detail-avatar {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border: 5px solid #113D56;
+  border-radius: 100px;
+}
+.members_detail-placeholder {
+  width: 200px;
+  height: 200px;
+  object-fit: fill;
+  border-radius: 100px;
+}
+
+/* #endregion Images */
+
+/* #region Callendar */
+
+.dropdown-menu.calendar-dropdown {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  direction: ltr;
+  gap: 3.5px;
+  width: 100%;
+}
+
+.calendar__day {
+  box-sizing: border-box;
+  display: flex;
+  z-index: 0;
+  padding: 2px;
+  width: calc((100% / 7) - 3px);
+  aspect-ratio: 1 / 1.5;
+  border-radius: 15%;
+  background-color: #8392ab99;
+  color: #344767 !important;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.6s;
+  transition-timing-function: ease;
+  position: relative;
+}
+.calendar__active {
+  background: #8392ab99;
+  box-shadow: inset 0 0 10px #17c1e899;
+}
+.calendar__planned {
+  font-weight: bolder;
+  text-decoration: underline;
+}
+
+.popup {
+  position: absolute;
+  top: 100%;
+  right: -10px;
+  width: 250px;
+  padding: 5px;
+  text-align: center;
+  background-color: #8392ab;
+  border: 1px solid #100b8e;
+  border-radius: 10px;
+  z-index: 3;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s;
+  transition-timing-function: ease-in;
+}
+.popup_link {
+  display: block;
+  font-weight: 600;
+}
+
+.calendar__day:hover {
+  z-index: 2;
+  background-color: #9fb5db99;
+}
+.popup_link:hover{
+  text-decoration: underline;
+}
+.calendar__day:hover .popup { 
+  opacity: 1;
+  visibility: visible;
+}
+
+.calendar--start-day-mon > :first-child {
+  margin-left: 0px;
+}
+.calendar--start-day-mon > :nth-child(7n+6) {
+  color: #8392AB !important;
+}
+.calendar--start-day-mon > :nth-child(7n+7) {
+  color: #ea0606 !important;
+}
+
+.calendar--start-day-tue > :first-child {
+  margin-left: calc(((100% / 7) * 1) + 0.5px);
+}
+.calendar--start-day-tue > :nth-child(7n+5) {
+  color: #8392AB !important;
+}
+.calendar--start-day-tue > :nth-child(7n+6) {
+  color: #ea0606 !important;
+}
+
+.calendar--start-day-wed > :first-child {
+  margin-left: calc(((100% / 7) * 2) + 1px);
+}
+.calendar--start-day-wed > :nth-child(7n+4) {
+  color: #8392AB !important;
+}
+.calendar--start-day-wed > :nth-child(7n+5) {
+  color: #ea0606 !important;
+}
+
+.calendar--start-day-thu > :first-child {
+  margin-left: calc(((100% / 7) * 3) + 1.5px);
+}
+.calendar--start-day-thu > :nth-child(7n+3) {
+  color: #8392AB !important;
+}
+.calendar--start-day-thu > :nth-child(7n+4) {
+  color: #ea0606 !important;
+}
+
+.calendar--start-day-fri > :first-child {
+  margin-left: calc(((100% / 7) * 4) + 2px);
+}
+.calendar--start-day-fri > :nth-child(7n+2) {
+  color: #8392AB !important;
+}
+.calendar--start-day-fri > :nth-child(7n+3) {
+  color: #ea0606 !important;
+}
+
+.calendar--start-day-sat > :first-child {
+  margin-left: calc(((100% / 7) * 5) + 2.5px);
+}
+.calendar--start-day-sat > :nth-child(7n+1) {
+  color: #8392AB !important;
+}
+.calendar--start-day-sat > :nth-child(7n+2) {
+  color: #ea0606 !important;
+}
+
+.calendar--start-day-sun > :first-child {
+  margin-left: calc(((100% / 7) * 6) + 3px);
+}
+.calendar--start-day-sun > :nth-child(7n) {
+  color: #8392AB !important;
+}
+.calendar--start-day-sun > :nth-child(7n+1) {
+  color: #ea0606 !important;
+}
+
+.calendar--month-length-28 > :nth-last-child(-n+3) {
+  visibility: hidden;
+  height: 0;
+  margin-top: -1px;
+}
+.calendar--month-length-29 > :nth-last-child(-n+2) {
+  visibility: hidden;
+  height: 0;
+  margin-top: -1px;
+}
+.calendar--month-length-30 > :nth-last-child(-n+1) {
+  visibility: hidden;
+  height: 0;
+  margin-top: -1px;
+}
+.calendar--month-length-31 > :nth-last-child(-n+0) {
+  visibility: hidden;
+  height: 0;
+  margin-top: -1px;
+}
+.calendar > :nth-child(1)::before {
+  content: "1";
+}
+.calendar > :nth-child(2)::before {
+  content: "2";
+}
+.calendar > :nth-child(3)::before {
+  content: "3";
+}
+.calendar > :nth-child(4)::before {
+  content: "4";
+}
+.calendar > :nth-child(5)::before {
+  content: "5";
+}
+.calendar > :nth-child(6)::before {
+  content: "6";
+}
+.calendar > :nth-child(7)::before {
+  content: "7";
+}
+.calendar > :nth-child(8)::before {
+  content: "8";
+}
+.calendar > :nth-child(9)::before {
+  content: "9";
+}
+.calendar > :nth-child(10)::before {
+  content: "10";
+}
+.calendar > :nth-child(11)::before {
+  content: "11";
+}
+.calendar > :nth-child(12)::before {
+  content: "12";
+}
+.calendar > :nth-child(13)::before {
+  content: "13";
+}
+.calendar > :nth-child(14)::before {
+  content: "14";
+}
+.calendar > :nth-child(15)::before {
+  content: "15";
+}
+.calendar > :nth-child(16)::before {
+  content: "16";
+}
+.calendar > :nth-child(17)::before {
+  content: "17";
+}
+.calendar > :nth-child(18)::before {
+  content: "18";
+}
+.calendar > :nth-child(19)::before {
+  content: "19";
+}
+.calendar > :nth-child(20)::before {
+  content: "20";
+}
+.calendar > :nth-child(21)::before {
+  content: "21";
+}
+.calendar > :nth-child(22)::before {
+  content: "22";
+}
+.calendar > :nth-child(23)::before {
+  content: "23";
+}
+.calendar > :nth-child(24)::before {
+  content: "24";
+}
+.calendar > :nth-child(25)::before {
+  content: "25";
+}
+.calendar > :nth-child(26)::before {
+  content: "26";
+}
+.calendar > :nth-child(27)::before {
+  content: "27";
+}
+.calendar > :nth-child(28)::before {
+  content: "28";
+}
+.calendar > :nth-child(29)::before {
+  content: "29";
+}
+.calendar > :nth-child(30)::before {
+  content: "30";
+}
+.calendar > :nth-child(31)::before {
+  content: "31";
+}
+/* #endregion */

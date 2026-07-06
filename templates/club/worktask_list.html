@@ -1,0 +1,46 @@
+{% extends "bases/base_activity.html" %}
+{% load static %}
+
+
+{% block activity_image %}
+  style="background-image: url('{% static 'img/bg/hull.png' %}'); background-position: center 45%"
+{% endblock activity_image %}
+
+{% block activity_title %}
+  Upcoming Work Tasks
+{% endblock activity_title %}
+
+{% block activity_content %}
+
+  <div class="col-lg-12 z-index-2 border-radius-xl mt-n9 mx-auto py-5 blur shadow-blur">
+
+    {% if worktask_list %}
+      <div class="container">
+        <div class="mx-auto col-lg-9">
+
+          {% for worktask in worktask_list %}
+            <h3>{{ worktask.name}}</h3>
+            <h5>{{ worktask.date|date:"D, d N Y, H:i" }}</h5>
+            <p>{{ worktask.description|linebreaksbr|truncatewords:30 }}</p>
+            <a href="{{ worktask.get_absolute_url }}">Read more >></a>
+            <hr class="horizontal dark last-none py-1 my-4">
+          {% endfor %}
+
+        </div>
+      </div>
+    {% else %}
+      <h4 class="text-center pt-8 pb-8">No work tasks planned yet</h4>
+    {% endif %}
+  </div>
+
+{% endblock activity_content %}
+
+{% block add_button %}
+
+  {% if user.role.management_rights %}
+    <a href="{% url 'club:worktask-create' %}" class="btn bg-gradient-secondary position-fixed end-10 bottom-5 rounded-circle btn-circle m-0 py-1 px-3 z-index-3">
+      <span class="m-0 text-white text-bolder text-3xl">+</span>
+    </a>
+  {% endif %}
+
+{% endblock add_button %}

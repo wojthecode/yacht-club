@@ -1,0 +1,886 @@
+[
+{
+  "model": "club.role",
+  "pk": 1,
+  "fields": {
+    "name": "Commander",
+    "management_rights": true
+  }
+},
+{
+  "model": "club.role",
+  "pk": 2,
+  "fields": {
+    "name": "Vice Commander",
+    "management_rights": true
+  }
+},
+{
+  "model": "club.role",
+  "pk": 3,
+  "fields": {
+    "name": "Member",
+    "management_rights": false
+  }
+},
+{
+  "model": "club.role",
+  "pk": 4,
+  "fields": {
+    "name": "Secretary",
+    "management_rights": false
+  }
+},
+{
+  "model": "club.role",
+  "pk": 5,
+  "fields": {
+    "name": "Treasurer",
+    "management_rights": false
+  }
+},
+{
+  "model": "club.role",
+  "pk": 6,
+  "fields": {
+    "name": "Audit Member",
+    "management_rights": false
+  }
+},
+{
+  "model": "club.sailingpermission",
+  "pk": 1,
+  "fields": {
+    "name": "Inshore Skipper"
+  }
+},
+{
+  "model": "club.sailingpermission",
+  "pk": 2,
+  "fields": {
+    "name": "Offshore Skipper"
+  }
+},
+{
+  "model": "club.sailingpermission",
+  "pk": 3,
+  "fields": {
+    "name": "Master of Sailing Yacht"
+  }
+},
+{
+  "model": "club.member",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$K18a25j6heV0JPpHosgxLx$PMnOr6iHM8VN+5BDeOegjkgZJ6r2o9B+/Un7ZjS4f4Q=",
+    "last_login": "2026-06-10T11:50:28.662Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "Admin",
+    "last_name": "Admin",
+    "email": "admin@admin.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-01-26T14:11:43.044Z",
+    "role": 1,
+    "sailing_permission": null,
+    "phone": null,
+    "phone_visibility": true,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "club.member",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$JClmlOZVp3KpcydN77USgi$F2b0AyffsIclG4KzRWHEfjW3usyU7Abp8qfjbmDxuoQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "sheldon.c",
+    "first_name": "Sheldon",
+    "last_name": "Cooper",
+    "email": "sheldon@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-26T17:04:30.056Z",
+    "role": 3,
+    "sailing_permission": 2,
+    "phone": null,
+    "phone_visibility": true,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.member",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$9V8xxGm8C6scikF30JCydL$pNezxcDZwHhaQJKrXav4PM6wb6LJrMjYjc0dG3F4C7k=",
+    "last_login": "2026-03-26T20:04:37.981Z",
+    "is_superuser": false,
+    "username": "leonard.h",
+    "first_name": "Leonard",
+    "last_name": "Hofstadter",
+    "email": "leonard@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-27T15:02:20.621Z",
+    "role": 3,
+    "sailing_permission": 1,
+    "phone": "+2 345058601",
+    "phone_visibility": false,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.member",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$1CBFwp2HTPQN3lPaQ0Anl9$r1nKecxD0xJMSJ6Uwku5I0bqHQdD8HXjmmiFOpKQdjw=",
+    "last_login": "2026-05-31T18:59:02.957Z",
+    "is_superuser": false,
+    "username": "howard.w",
+    "first_name": "Howard",
+    "last_name": "Wolowitz",
+    "email": "howardw@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-27T15:03:17.730Z",
+    "role": 3,
+    "sailing_permission": 1,
+    "phone": null,
+    "phone_visibility": true,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.member",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$cdtymMp8zbRLKpQPCrKaBu$hP/Y1/PYrzDQN4V1tCbvnjK66/m2jxD8GgouWiyok1o=",
+    "last_login": "2026-03-26T13:02:54.069Z",
+    "is_superuser": false,
+    "username": "penelopy",
+    "first_name": "Penny",
+    "last_name": "Hofstadter",
+    "email": "pennystar@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-27T15:04:15.987Z",
+    "role": 3,
+    "sailing_permission": null,
+    "phone": "+12 1234567 666",
+    "phone_visibility": true,
+    "avatar": "avatars/penelopy/penny.jpeg",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.member",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$oiLv20TEF2OCkKbSzXMAaY$Xd/CKWMrj/eFQGKrybTvFFM3BREhqV2bEtk35TWa8jo=",
+    "last_login": "2026-05-22T09:57:28.277Z",
+    "is_superuser": false,
+    "username": "amyamy",
+    "first_name": "Amy",
+    "last_name": "Fowler",
+    "email": "amyamy@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-27T15:05:23.437Z",
+    "role": 3,
+    "sailing_permission": 1,
+    "phone": "+21 158654886",
+    "phone_visibility": false,
+    "avatar": "avatars/amyamy/Amy-Fowler-Big-Bang-Theory.avif",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.member",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$JFoYltpTLYItgiK5FUlh1V$CBqCsF6qmm6Sj1Xh7iJzUIojKJ1uIlEwzOW4A0GwDRc=",
+    "last_login": "2026-05-31T20:54:05.935Z",
+    "is_superuser": false,
+    "username": "rosstheboss",
+    "first_name": "Ross",
+    "last_name": "Geller",
+    "email": "rosstheboss@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-27T15:06:50.646Z",
+    "role": 1,
+    "sailing_permission": 1,
+    "phone": null,
+    "phone_visibility": true,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.member",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$5BA6lvn7n7oVe9gRHrpL5e$pmICeTtwqgp9h2cLnJOGKuKEyKyE2eSS/8B3axbBVA0=",
+    "last_login": "2026-03-26T20:29:27.234Z",
+    "is_superuser": false,
+    "username": "rahela",
+    "first_name": "Rahel",
+    "last_name": "Green",
+    "email": "rahela@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-27T15:07:36.237Z",
+    "role": 4,
+    "sailing_permission": 2,
+    "phone": "+20554846846",
+    "phone_visibility": true,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.member",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$ZHWAgwwhhKNbugVIbCimhw$aEiFUDT8M4+QduGWM8vILRnnN1Xef8Or2fRrNNyJQKk=",
+    "last_login": "2026-03-26T20:00:48.927Z",
+    "is_superuser": false,
+    "username": "monamon",
+    "first_name": "Monica",
+    "last_name": "Geller",
+    "email": "monamon@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-27T15:08:14.623Z",
+    "role": 5,
+    "sailing_permission": 1,
+    "phone": null,
+    "phone_visibility": true,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.member",
+  "pk": 10,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$S9hTCdlxfBZNq3KHkpe8Le$0LzhH2t4N0DH+mbqIG7YBJ/aFMKlIOwgu+v6Q7mqVSw=",
+    "last_login": "2026-05-31T20:55:28.290Z",
+    "is_superuser": false,
+    "username": "chansie",
+    "first_name": "Chandler",
+    "last_name": "Bing",
+    "email": "chansie@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-27T15:10:17.150Z",
+    "role": 6,
+    "sailing_permission": null,
+    "phone": null,
+    "phone_visibility": true,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.member",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$feBwTWdzbQAJUA6Go7XkZT$+ulbPh9Zlp+pxH8YF3v7t/DF8HFQs5/dsx98w0BVDaI=",
+    "last_login": "2026-02-26T22:50:44.014Z",
+    "is_superuser": false,
+    "username": "mikew",
+    "first_name": "Mike",
+    "last_name": "Wheeler",
+    "email": "mikew@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-27T15:14:19.305Z",
+    "role": 2,
+    "sailing_permission": 1,
+    "phone": null,
+    "phone_visibility": true,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.member",
+  "pk": 12,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$LlHAh6pIcTDXBVI1QOuy7i$dkwNoAjYuzhf7Z0fE07Zo8RWpoa1JWg98wL8s4f4v/k=",
+    "last_login": "2026-03-13T15:27:55.308Z",
+    "is_superuser": false,
+    "username": "joyce",
+    "first_name": "Joyce",
+    "last_name": "Byers",
+    "email": "joyce@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-27T15:15:33.081Z",
+    "role": 6,
+    "sailing_permission": 2,
+    "phone": null,
+    "phone_visibility": true,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.member",
+  "pk": 13,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$BcHg9FxYl9if0D3E10CAwa$nbQzSxF6C0qaruqk9XAAhTHeD86P4cvAtPUhbjQX5+s=",
+    "last_login": "2026-03-28T10:59:10.159Z",
+    "is_superuser": false,
+    "username": "hopp",
+    "first_name": "Jim",
+    "last_name": "Hopper",
+    "email": "hopp@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-27T15:16:57.827Z",
+    "role": 3,
+    "sailing_permission": 3,
+    "phone": null,
+    "phone_visibility": true,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "club.member",
+  "pk": 15,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$oVqkJE1s5hnHHYy77AwaIR$YaTx9JRgDauUFGXpv75rx2AxQ22BV1D/05LcnsjKmD4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "johnny.s",
+    "first_name": "Johnny",
+    "last_name": "Silverhand",
+    "email": "johnnys@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-26T18:02:44.549Z",
+    "role": 3,
+    "sailing_permission": 3,
+    "phone": null,
+    "phone_visibility": true,
+    "avatar": "",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.member",
+  "pk": 16,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$durptvRddfrkWD5nVGUpnV$BVmQF3tKeA8Sy/B5ovUB2aA53+ZJ0hW3popSFtAGsbs=",
+    "last_login": "2026-03-10T14:26:12.894Z",
+    "is_superuser": false,
+    "username": "stuardo",
+    "first_name": "Stuard",
+    "last_name": "Bloom",
+    "email": "stuardo@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-03-09T22:45:18.075Z",
+    "role": 3,
+    "sailing_permission": null,
+    "phone": "+48 793630666",
+    "phone_visibility": true,
+    "avatar": "avatars/stuardo/Stuart-Bloom.webp",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "club.member",
+  "pk": 21,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$v4CkkeuiwuuxjsnKZJ3GeM$BnoaclvlxfcpWBeXelNN9qjX/zqazd4A42vXI930Ha0=",
+    "last_login": "2026-03-26T14:08:44.543Z",
+    "is_superuser": false,
+    "username": "lastjedi",
+    "first_name": "Luke",
+    "last_name": "Skywalker",
+    "email": "lastjedi@mail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-03-26T13:51:06.730Z",
+    "role": 3,
+    "sailing_permission": 3,
+    "phone": "+1 21458 541 554",
+    "phone_visibility": true,
+    "avatar": "avatars/lastjedi/luke.jpg",
+    "groups": [],
+    "user_permissions": [
+      45
+    ]
+  }
+},
+{
+  "model": "club.boat",
+  "pk": 1,
+  "fields": {
+    "name": "Little Duck",
+    "owner": null,
+    "club_owner": true,
+    "model": "Conrad 24",
+    "rigging": "Sloop (Fractional)",
+    "category": "C",
+    "sail_area": "26.00",
+    "length": "7.24",
+    "beam": "2.50",
+    "draft": "1.45",
+    "crew_min": 2,
+    "crew_max": 4,
+    "engine": "Mercury 5HP Outboard",
+    "description": "A legendary racing-oriented boat that demands focus and precision. It’s exceptionally light and fast, requiring a steady hand on the helm to master its agility. Perfectly suited for those looking to sharpen their regatta maneuvers, it offers a raw, authentic sailing experience.",
+    "image": "boats/little_duck.png",
+    "keeper": [
+      9
+    ]
+  }
+},
+{
+  "model": "club.boat",
+  "pk": 2,
+  "fields": {
+    "name": "Unicorn",
+    "owner": null,
+    "club_owner": true,
+    "model": "Dufour 27 Safari",
+    "rigging": "Sloop (Masthead)",
+    "category": "B",
+    "sail_area": "32.50",
+    "length": "8.25",
+    "beam": "2.79",
+    "draft": "1.30",
+    "crew_min": 2,
+    "crew_max": 6,
+    "engine": "Volvo Penta 13HP Inboard",
+    "description": "A high-performance racer-cruiser known for its responsiveness and speed. With its stiff hull and precise handling, it’s the ideal choice for sailors looking to advance their competitive sailing skills. A demanding yet rewarding yacht that excels in both coastal racing and fast-paced cruising.",
+    "image": "boats/unicorn.png",
+    "keeper": [
+      4
+    ]
+  }
+},
+{
+  "model": "club.boat",
+  "pk": 3,
+  "fields": {
+    "name": "Sea-Star",
+    "owner": 2,
+    "club_owner": false,
+    "model": "Hallberg-Rassy 34",
+    "rigging": "Sloop (Masthead)",
+    "category": "A",
+    "sail_area": "62.00",
+    "length": "10.28",
+    "beam": "3.42",
+    "draft": "1.85",
+    "crew_min": 2,
+    "crew_max": 8,
+    "engine": "Volvo Penta 29HP Inboard",
+    "description": "A high-end Scandinavian yacht designed for long-distance cruising. It is remarkably steady and spacious, handling beautifully despite its size. With a focus on crew well-being and effortless passage-making, it provides a true \"home on the water\" feeling for those who want to explore the horizon in style.",
+    "image": "boats/sea-star.png",
+    "keeper": []
+  }
+},
+{
+  "model": "club.boat",
+  "pk": 4,
+  "fields": {
+    "name": "Iron Wind",
+    "owner": 13,
+    "club_owner": false,
+    "model": "Custom Blue Water 38",
+    "rigging": "Cutter",
+    "category": "A",
+    "sail_area": "78.50",
+    "length": "11.60",
+    "beam": "3.65",
+    "draft": "1.95",
+    "crew_min": 4,
+    "crew_max": 8,
+    "engine": "Yanmar 40HP Inboard",
+    "description": "A heavy-duty cutter rig designed for stability and power. Equipped with a large sail area and innovative hull chines, it ensures excellent balance and control even in challenging conditions. Built for long-distance comfort, it is perfectly suited for sailors who value a sturdy, reliable vessel for offshore passages.",
+    "image": "boats/iron_wind.png",
+    "keeper": []
+  }
+},
+{
+  "model": "club.boat",
+  "pk": 5,
+  "fields": {
+    "name": "Blue Fin",
+    "owner": 10,
+    "club_owner": false,
+    "model": "Hanse 315",
+    "rigging": "Sloop (Fractional)",
+    "category": "A",
+    "sail_area": "47.00",
+    "length": "9.62",
+    "beam": "3.35",
+    "draft": "1.85",
+    "crew_min": 2,
+    "crew_max": 6,
+    "engine": "Yanmar 21HP Inboard",
+    "description": "A modern, sleek yacht that perfectly balances performance with effortless handling. The self-tacking jib and intuitive cockpit layout make it ideal for shorthanded sailing or relaxed solo trips. It’s a versatile boat that feels nimble on the water without sacrificing essential sailing comfort.",
+    "image": "boats/blue_fin.png",
+    "keeper": []
+  }
+},
+{
+  "model": "club.boat",
+  "pk": 6,
+  "fields": {
+    "name": "Silver Wake",
+    "owner": 9,
+    "club_owner": false,
+    "model": "Beneteau First 30",
+    "rigging": "Fractional Sloop (7/8)",
+    "category": "C",
+    "sail_area": "52.00",
+    "length": "9.81",
+    "beam": "3.20",
+    "draft": "1.90",
+    "crew_min": 1,
+    "crew_max": 6,
+    "engine": "Yanmar 20 HP",
+    "description": "The Silver Wake isn't some polite, sluggish cruiser for Sunday tourists—it’s a razor-sharp First 30 that begs you to trim the sheets harder. I love the way those twin rudders bite into the water, leaving everyone else in the wake while I feel every ounce of wind through the helm. It’s the perfect machine for fast, sun-drenched sprints where pure speed and a predatory hull design are the only things that matter.",
+    "image": "",
+    "keeper": []
+  }
+},
+{
+  "model": "club.event",
+  "pk": 1,
+  "fields": {
+    "name": "General Meeting",
+    "description": "Dear Members,\r\n\r\nWe are pleased to invite you to the Annual General Meeting to discuss our club's future and strategic goals. This is a vital opportunity for all members to participate in the decision-making process and elect the new board. Your presence and voice are essential for our sailing community’s continued success.\r\n\r\nAgenda:\r\n\r\n1. Opening and approval of the minutes.\r\n\r\n2. Annual financial and board activity reports.\r\n\r\n3. Formal vote on board member discharge.\r\n\r\n4. Election of new board and auditors.\r\n\r\n5. Vote on upcoming season infrastructure investments.\r\n\r\n\r\nWe look forward to seeing you there.\r\n\r\nFair winds,\r\n\r\nThe Board of Directors",
+    "date": "2026-07-21T10:30:00Z",
+    "location": "Seagull restaurant at the marina",
+    "created_by": 7,
+    "participants": [
+      10,
+      12,
+      2,
+      6,
+      9,
+      7,
+      3,
+      13
+    ]
+  }
+},
+{
+  "model": "club.event",
+  "pk": 2,
+  "fields": {
+    "name": "Cast Off! – Season Opening Ceremony",
+    "description": "Dear Sailors,\r\n\r\nThe ice has cleared, the wind is calling, and it is finally time to return to the water! We cordially invite all members and friends to join us for the official 2026 Season Opening Ceremony at the marina. Let’s gather to celebrate the tradition of the first whistle and prepare our fleet for an unforgettable year of sailing.\r\n\r\nEvent Highlights:\r\n\r\n* Ceremonial hoisting of the club flag.\r\n\r\n* Traditional blessing of the fleet.\r\n\r\n* Official opening speech by the Chairperson.\r\n\r\n* Safety briefing for the upcoming season.\r\n\r\n* Inaugural cruise around the bay.\r\n\r\n* Evening barbecue and live sea shanties.\r\n\r\n\r\nPrepare your boat, bring your spirit, and let’s make this season legendary!\r\n\r\nFair winds and following seas,\r\n\r\nThe Board of Directors",
+    "date": "2026-05-01T10:00:00Z",
+    "location": "Sunny Harbor",
+    "created_by": 7,
+    "participants": [
+      12,
+      2,
+      6,
+      9,
+      7,
+      8,
+      3,
+      5,
+      13,
+      11
+    ]
+  }
+},
+{
+  "model": "club.event",
+  "pk": 3,
+  "fields": {
+    "name": "Chart Your Course – Open Astronavigation Workshop",
+    "description": "Dear Sailors and Star-Gazers,\r\n\r\nJoin us for an inspiring session where we trade GPS screens for the timeless beauty of the night sky. This open workshop will introduce you to the fundamental skills of celestial navigation used by explorers for centuries. Whether you are a seasoned offshore sailor or a curious beginner, come learn how to find your way using only the stars.\r\n\r\nProgram:\r\n\r\n* Introduction to sextant handling and maintenance.\r\n\r\n* Practical sun and star sight reduction.\r\n\r\n* Plotting celestial lines of position manually.\r\n\r\nNo prior experience is required—just a passion for the sea and the stars!\r\n\r\nFair winds,\r\n\r\nThe Kraken Yacht Club Team",
+    "date": "2026-05-24T17:30:00Z",
+    "location": "Marina at Sunny Harbor",
+    "created_by": 11,
+    "participants": [
+      10,
+      2,
+      3,
+      13,
+      11
+    ]
+  }
+},
+{
+  "model": "club.event",
+  "pk": 4,
+  "fields": {
+    "name": "Maritime Classics Under the Stars",
+    "description": "An enchanting evening of outdoor cinema set against the backdrop of the evening tide. We will gather on the club's terrace to enjoy a screening of a legendary maritime film, accompanied by themed refreshments and open discussions about nautical cinematography and storytelling.\r\n\r\nKey Meeting Points:\r\n\r\n- Outdoor screening of a classic sea-faring masterpiece on a large professional screen.\r\n\r\n- Themed cocktail hour featuring drinks inspired by famous cinematic voyages.\r\n\r\n- Open-table discussion on the portrayal of sailing in modern culture.\r\n\r\n- Cozy lounge setup with blankets and heaters for a comfortable evening by the water.\r\n\r\n- Midnight snack bar serving traditional seaside delicacies.",
+    "date": "2026-04-05T20:00:00Z",
+    "location": "Marina at Sunny Harbor",
+    "created_by": 11,
+    "participants": [
+      9,
+      5,
+      11
+    ]
+  }
+},
+{
+  "model": "club.event",
+  "pk": 5,
+  "fields": {
+    "name": "The Precision Handling Workshop",
+    "description": "A hands-on technical session focused on mastering the nuances of a responsive vessel. This training on Little Duck emphasizes the synergy between the helm and sail trim, ensuring every maneuver is executed with surgical accuracy and fluid coordination.\r\n\r\nKey Meeting Points:\r\n\r\n* Advanced sail trimming for maximum efficiency in light and moderate winds.\r\n\r\n* Close-quarters maneuvering drills to perfect docking and departure techniques.\r\n\r\n* Spinnaker handling workshop focusing on hoist, gybe, and douse sequences.\r\n\r\n* Tactical weight distribution analysis to optimize the yacht's natural balance.\r\n\r\n* Performance debrief using on-board data to track maneuver speed.",
+    "date": "2026-07-13T17:30:00Z",
+    "location": "Sunny Harbor",
+    "created_by": 7,
+    "participants": [
+      12,
+      7,
+      3,
+      5
+    ]
+  }
+},
+{
+  "model": "club.event",
+  "pk": 6,
+  "fields": {
+    "name": "Masterclass: Advanced Marine Weather & Routing",
+    "description": "A high-level training session for those looking to sharpen their navigational strategy. This workshop moves beyond the basics, focusing on interpreting complex GRIB files, understanding microclimates, and utilizing modern software to ensure safety and efficiency on long-range passages.\r\n\r\nKey Meeting Points:\r\n\r\n- Analysis of real-time weather patterns and pressure systems.\r\n\r\n- Strategic routing workshop using digital navigation tools.\r\n\r\n- Safety briefing on heavy weather avoidance and tactical decision-making.\r\n\r\n- Interactive Q&A with a professional meteorologist.",
+    "date": "2026-03-18T16:00:00Z",
+    "location": "Marina at Sunny Harbor",
+    "created_by": 7,
+    "participants": [
+      10,
+      6,
+      13,
+      4
+    ]
+  }
+},
+{
+  "model": "club.event",
+  "pk": 7,
+  "fields": {
+    "name": "The Anchor & Ember: Beachside Bonfire Social",
+    "description": "A casual, high-energy gathering held at the club’s private beach spot. This event is all about building camaraderie through music, fire-roasted food, and the simple pleasure of being by the water as the sun sets.\r\n\r\nKey Meeting Points:\r\n\r\n- Live acoustic music performance featuring sea-shanties and modern hits.\r\n\r\n- Open-fire catering with traditional maritime comfort food.\r\n\r\n- Stargazing workshop led by a local astronomer to identify celestial markers.\r\n\r\n- Annual Club Photo taken during the \"Golden Hour.\"",
+    "date": "2026-08-14T19:00:00Z",
+    "location": "Sunny Beach",
+    "created_by": 11,
+    "participants": [
+      12,
+      8,
+      3,
+      11
+    ]
+  }
+},
+{
+  "model": "club.event",
+  "pk": 8,
+  "fields": {
+    "name": "Master the Elements: Advanced Heavy Weather Tactics",
+    "description": "Dear Sailors and Storm-Chasers,\r\n\r\nJoin us for an intensive indoor workshop dedicated to the art of sailing when the horizon turns grey. This session is designed to transform anxiety into confidence by mastering the technical tactics required to keep both crew and vessel safe in challenging conditions. From storm sail configurations to strategic wave management, we will dive deep into the skills that define a truly resilient mariner.\r\n\r\nProgram:\r\n\r\n* Storm sail selection: Proper rigging of trysails and storm jibs.\r\n\r\n* Heavy weather maneuvers: Mastering heaving-to and active steering in following seas.\r\n\r\n* Emergency protocols: Rigging sea anchors and drogues for stability.\r\n\r\n* Whether you are preparing for your first offshore passage or want to refine your heavy-weather kit, this session is for you.\r\n\r\nFair winds,\r\n\r\nThe Kraken Yacht Club Team",
+    "date": "2026-04-17T16:30:00Z",
+    "location": "Club Hangar at Marina",
+    "created_by": 7,
+    "participants": [
+      10,
+      12,
+      2,
+      6,
+      8,
+      11
+    ]
+  }
+},
+{
+  "model": "club.event",
+  "pk": 9,
+  "fields": {
+    "name": "The Silent Language: Advanced Marine Communications & Signaling",
+    "description": "Dear Mariners and Tech-Enthusiasts,\r\n\r\nIn an era of satellite phones, the fundamental skills of maritime communication remain the backbone of safety at sea. Join us for a hands-on training session where we bridge the gap between traditional signaling and modern GMDSS technology. This workshop will ensure that you are never out of touch, no matter how far you sail from the coast.\r\n\r\nProgram:\r\n\r\n* VHF Radio Mastery: Perfecting DSC distress alerts and standard voice protocols.\r\n\r\n* Visual Signaling: Practical introduction to international maritime signal flags and Morse code.\r\n\r\n*Electronic Safety Gear: Testing and maintenance of EPIRBs, PLBs, and SART devices.\r\n\r\n*Come and sharpen the skills that ensure your voice is always heard across the waves.\r\n\r\nFair winds,\r\n\r\nThe Kraken Yacht Club Team",
+    "date": "2026-04-25T12:00:00Z",
+    "location": "Marina at Sunny Harbor",
+    "created_by": 7,
+    "participants": [
+      10,
+      7,
+      8,
+      13
+    ]
+  }
+},
+{
+  "model": "club.event",
+  "pk": 10,
+  "fields": {
+    "name": "The Azure Odyssey (Long-Distance Voyage)",
+    "description": "Dear Seekers of the Horizon,\r\n\r\nStep aboard the majestic Unicorn for an 8-day journey that transcends the ordinary. This is an invitation to experience the deep ocean's rhythm from the deck of a vessel built for elegance and endurance. Join us as we harness the power of the winds to reach distant shores, finding serenity in the vast blue and luxury in every nautical mile.\r\n\r\nDuration: 8 Days / 7 Nights\r\nEstimated Cost: €1,200 per person (includes provisioning and mooring fees)\r\n\r\nPlanned Destinations:\r\n\r\n   * The Sapphire Bay: A secluded deep-water anchorage known for its crystal clarity.\r\n\r\n   * Port Tradition: A historic maritime village with centuries of sailing heritage.\r\n\r\n   * The Outer Reefs: Navigating the edge of the continental shelf for open-sea vistas.\r\n\r\n   * Hidden Cove Marina: An exclusive retreat accessible only by sea.\r\n\r\nLeave the shore behind and find your spirit of adventure with us.\r\n\r\nFair winds,\r\n\r\nThe Kraken Yacht Club Team",
+    "date": "2026-05-20T06:00:00Z",
+    "location": "Marina at Sunny Harbor",
+    "created_by": 11,
+    "participants": [
+      2,
+      9,
+      8,
+      5,
+      13
+    ]
+  }
+},
+{
+  "model": "club.event",
+  "pk": 11,
+  "fields": {
+    "name": "Unicorn: Heritage & Hulls (Coastal Exploration)",
+    "description": "Dear Lovers of Tradition and Timber,\r\n\r\nWe invite you to join us on Unicorn for a one-day coastal expedition that celebrates the very soul of sailing. Experience the unique character of our most storied vessel as we navigate secret coves and local landmarks. This voyage is designed for those who appreciate the finer details of yacht construction and the timeless beauty of a perfectly trimmed sail.\r\n\r\nDuration: 1 Day (09:00 – 18:00)\r\nEstimated Cost: €150 per person (includes gourmet lunch on deck)\r\n\r\nPlanned Destinations:\r\n\r\n   * The Sentinel Cliffs: Dramatic limestone formations viewed from the water.\r\n\r\n   * Mermaid’s Inlet: A shallow, turquoise bay perfect for a midday anchor break.\r\n\r\n   * The Old Lighthouse Point: A technical navigation passage through the coastal narrows.\r\n\r\nCome feel the strength of the hull and the magic of the wind.\r\n\r\nFair winds,\r\n\r\nThe Kraken Yacht Club Team",
+    "date": "2026-06-06T08:00:00Z",
+    "location": "Marina at Sunny Harbor",
+    "created_by": 11,
+    "participants": [
+      7,
+      13,
+      4
+    ]
+  }
+},
+{
+  "model": "club.event",
+  "pk": 12,
+  "fields": {
+    "name": "Little Duck: The Sprinter’s Challenge (Performance Sailing)",
+    "description": "Dear Fans of Speed and Precision,\r\n\r\nPrepare for a day of high-energy sailing aboard our most responsive gem, Little Duck. This is a call to all sailors who crave the thrill of the wind in their face and the immediate feedback of a perfectly balanced helm. We will be pushing the limits of technical sailing, focusing on the agility and sport-focused character that makes this yacht a club favorite.\r\n\r\nWhat You Will Learn:\r\n\r\n   * Active Helm Control: How to feel the boat’s 'groove' and react to every gust.\r\n\r\n   * High-Performance Trim: Mastering the synergy between the mainsail and jib for speed.\r\n\r\n   * Kinetic Weight Distribution: Using crew movement to optimize boat balance and heel.\r\n\r\n   * Rapid Maneuvering: Executing flawless, race-style tacks and gybes in tight spaces.\r\n\r\nIf you love the dance between wind and water, Little Duck is waiting for you!\r\n\r\nFair winds,\r\n\r\nThe Kraken Yacht Club Team",
+    "date": "2026-05-07T10:00:00Z",
+    "location": "Marina at Sunny Harbor",
+    "created_by": 11,
+    "participants": [
+      9,
+      8,
+      5
+    ]
+  }
+},
+{
+  "model": "club.worktask",
+  "pk": 1,
+  "fields": {
+    "name": "Hangar Cleaning Day",
+    "description": "All Hands on Deck – Hangar Spring Cleaning!\r\n\r\nOur winter storage needs some serious attention before the season kicks off. We are looking for a team of volunteers to help organize the space, clear out debris, and prepare the racks for the summer.\r\n\r\nTasks:\r\n\r\n* Sorting gear, sweeping floors, and organizing tool stations.\r\n\r\n* Requirements: Comfortable clothes and a pair of working gloves.\r\n\r\n* Reward: Cold drinks and a club barbecue after the work is done!\r\n\r\n\r\nAny help is welcome",
+    "date": "2026-03-28T09:00:00Z",
+    "location": "Club Hangar at Marina",
+    "created_by": 7,
+    "min_crew": 5,
+    "participants": [
+      10,
+      2,
+      7,
+      3,
+      11
+    ]
+  }
+},
+{
+  "model": "club.worktask",
+  "pk": 2,
+  "fields": {
+    "name": "Little Duck - Hull Painting",
+    "description": "Maintenance Alert – Painting the Hull of Little Duck\r\n\r\nIt is time to give Little Duck a fresh look and protection! We are starting the antifouling and hull painting process this weekend. If you want to learn more about boat maintenance or simply help the club, join our painting crew.\r\n\r\nTasks:\r\n\r\n* Sanding, taping, and applying new layers of protective paint.\r\n\r\n* Requirements: Precision, patience, and no fear of getting a bit of paint on your hands.\r\n\r\n* Note: All specialized materials and protective suits will be provided.",
+    "date": "2026-04-11T10:00:00Z",
+    "location": "Sunny Harbor",
+    "created_by": 11,
+    "min_crew": 3,
+    "participants": [
+      12,
+      13,
+      11
+    ]
+  }
+},
+{
+  "model": "club.worktask",
+  "pk": 3,
+  "fields": {
+    "name": "Speedy - Deck Cleaning",
+    "description": "Deck Scrubbing – Let’s Make Speedy Shine!\r\n\r\nAfter the winter break, the deck of Speedy needs a thorough deep clean to restore its glory. We need a few people to help us scrub the surfaces and polish the stainless steel elements.\r\n\r\nTasks:\r\n\r\n* Power washing, scrubbing non-slip surfaces, and polishing the rails.\r\n\r\n* Requirements: Attention to detail and a love for a clean boat!\r\n\r\n* Supplies: We provide eco-friendly boat soaps and all necessary brushes.",
+    "date": "2026-06-06T10:00:00Z",
+    "location": "Sunny Harbor",
+    "created_by": 11,
+    "min_crew": 3,
+    "participants": [
+      2,
+      11
+    ]
+  }
+},
+{
+  "model": "club.worktask",
+  "pk": 4,
+  "fields": {
+    "name": "Office Refresh & Archive Organization",
+    "description": "Dear Members, as we prepare for a busy upcoming season, it is time to ensure our shore-based operations are as efficient and orderly as our fleet. We invite you to join us for an indoor \"Work Task\" session dedicated to refreshing our club office and organizing our maritime archives in a productive, team-oriented atmosphere.\r\n\r\nKey Tasks:\r\n\r\n* Digital & Physical Archive Sorting: Help us preserve and organize the club’s historical records and logs.\r\n\r\n* Workspace Optimization: A collective effort to deep-clean and streamline our administrative hub.\r\n\r\n* Library & Manual Update: Organizing our technical collection to ensure all navigational resources are current.\r\n\r\n* Inventory Review: Checking and restocking club regalia, stationery, and event materials.\r\n\r\n* Crew Catering: A well-deserved pizza and refreshments break to celebrate our hard work.",
+    "date": "2026-07-01T18:00:00Z",
+    "location": "Club Office at Marina",
+    "created_by": 7,
+    "min_crew": 4,
+    "participants": [
+      12,
+      5,
+      11,
+      4
+    ]
+  }
+}
+]

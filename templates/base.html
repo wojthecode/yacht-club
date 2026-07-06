@@ -1,0 +1,71 @@
+<!--
+=========================================================
+* Soft UI Design System - v1.0.9
+=========================================================
+
+* Product Page:  https://www.creative-tim.com/product/soft-ui-design-system 
+* Copyright 2022 Creative Tim (https://www.creative-tim.com)
+* Coded by www.creative-tim.com
+
+ =========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/favicon.png' %}">
+<link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+
+<title>
+  {% block title %} Yacht Club {% endblock title %}
+</title>
+<!--     Fonts and icons     -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+
+<!-- Nucleo Icons -->
+<link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet" />
+<link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet" />
+
+<!-- Font Awesome Icons -->
+<link href="{% static 'css/fontawesome.css' %}" rel="stylesheet" />
+<link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet" />
+
+<!-- CSS Files -->
+<link id="pagestyle" href="{% static 'css/soft-design-system.css' %}" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
+
+<body {% block body %} class="bg-gray-200" {% endblock body %} >
+  <div class="d-flex flex-column min-vh-100">
+    {% block navigation %}
+
+      {% include 'includes/navigation.html' %}
+
+    {% endblock navigation %}
+
+    {% block content %}{% endblock content %}
+
+    {% block pagination %}
+
+      {% include "includes/pagination.html" %}
+
+    {% endblock pagination %}
+
+    {% block footer %}
+    
+      {% include 'includes/footer.html' %}
+
+    {% endblock footer %}
+
+    {% include 'includes/scripts.html' %}
+
+    {% block javascripts %}{% endblock javascripts %}
+  </div>
+</body>
+</html>

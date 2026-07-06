@@ -1,0 +1,65 @@
+{% extends "bases/base_activity.html" %}
+{% load static %}
+
+
+{% block activity_image %}
+  style="background-image: url('{% static 'img/bg/sunset.jpg' %}'); background-position: center 65%"
+{% endblock activity_image %}
+
+{% block activity_header %}{% endblock activity_header %}
+
+{% block activity_content %}
+
+  <div class="col-lg-12 z-index-2 border-radius-xl mt-n12 mx-auto py-3 blur shadow-blur">
+    <div class="container">
+      <div class="mx-auto col-lg-9">
+
+        <h2 class="text-center py-4">{{ event.name }}</h2>
+
+        <div class="d-flex flex-wrap">
+          <p class="w-md-50 w-100 font-italic">Date: {{ event.date|date:"D, d N Y, H:i" }}</p>
+          <p class="w-md-50 w-100 font-italic text-md-end">Location: {{ event.location }}</p>
+
+          {% if user.is_authenticated %}
+            {% if not latest %}
+              {% if user in event.participants.all %}
+
+                <a href="{% url 'club:toggle-event-participation' pk=event.id %}" class="btn bg-gradient-danger rounded-pill px-3 py-1"> Leave event</a>
+              {% else %}
+
+                <a href="{% url 'club:toggle-event-participation' pk=event.id %}" class="btn bg-gradient-success rounded-pill px-3 py-1">Join event</a>
+              {% endif %}
+            {% else %}
+
+              <span class="btn disabled bg-gradient-secondary rounded-pill px-3 py-1">Event passed</span>
+            {% endif %}
+          {% endif %}
+        </div>
+
+        <hr class="horizontal dark py-1 mt-n1">
+
+        <p class="text-justify">{{ event.description|linebreaksbr }}</p>
+
+        <div class="d-flex flex-wrap-reverse flex-sm-nowrap py-2 pt-sm-4">
+          <div class="w-100 w-sm-50">
+            {% if user.role.management_rights %}
+
+              <a href="{% url 'club:event-update' pk=event.id %}" class="btn bg-gradient-primary rounded-pill py-1 my-2 me-2">Edit</a>
+
+              <a href="{% url 'club:event-delete' pk=event.id %}" class="btn bg-gradient-danger rounded-pill py-1 my-2">Delete</a>
+
+            {% endif %}
+          </div>
+          <div class="w-100 w-sm-50">
+
+            <p class="text-end font-italic">
+              invites, {{ event.created_by }}
+            </p>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock activity_content %}

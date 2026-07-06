@@ -1,0 +1,134 @@
+{% extends "bases/base_form.html" %}
+{% load crispy_forms_filters %}
+
+
+{% block form_title %}
+    {% if user.is_authenticated %}
+      {% if user.pk == member.pk %}
+        Update profile
+      {% else %}
+        {{ member|yesno:"Edit member profile,Create User"}}
+      {% endif %}
+    {% else %}
+      Sign Up
+    {% endif %}
+{% endblock form_title%}
+
+{% block form %}
+
+  <form action=""
+        method="post"
+        enctype="multipart/form-data"
+        novalidate>
+
+    {% csrf_token %}
+
+    {% for field in form %}
+      {% if field.name not in custom_fields %}
+
+        {{ field|as_crispy_field }}
+
+
+        {% if field.name == "password2" %}
+        <hr>
+        {% endif %}
+
+      {% else %}
+        {% if field.name == "phone_visibility" %}
+
+          <div class="form-check form-switch">
+            <input type="checkbox"
+              class="form-check-input"
+              id="{{ form.phone_visibility.id_for_label }}"
+              name="{{ form.phone_visibility.name }}"
+              {% if form.phone_visibility.value %}checked{% endif %}>
+            <label class="custom-control-label"
+              for="{{ form.phone_visibility.id_for_label }}"
+              id="id_label_phone_visibility"></label>
+          </div>
+          <hr>
+
+        {% endif %}
+        {% if field.name == "avatar" %}
+
+          <div id="div_id_avatar" class="form-group">
+            <label for="{{ form.avatar.id_for_label }}" class="">
+              Avatar
+            </label>
+
+            {% if object.avatar %}
+              <div class="ps-1">
+                <p class="m-0">Currently:</p>
+                <a href="{{ member.avatar.url }}" class="d-inline-block my-2">
+                  {{ member.avatar.url|slice:"15:" }}
+                </a> &nbsp;
+                <div class="form-check pb-2 d-inline-block clear-image">
+                  <input type="checkbox"
+                    class="form-check-input"
+                    id="image-clear_id"
+                    name="image-clear">
+                  <label for="image-clear_id">Clear image</label>
+                </div>
+                <p>Change:</p>
+              </div>
+            {% endif %}
+
+            <div class="custom-file">
+              <input type="file"
+                    name="{{ form.avatar.name }}"
+                    class="form-control clearablefileinput"
+                    accept="image/*"
+                    id="{{ form.avatar.id_for_label }}">
+            </div>
+
+          </div>
+        {% endif %}
+
+      {% endif %}
+    {% endfor %}
+
+    <div class="d-flex flex-wrap">
+      <div class="w-100 w-sm-40">
+
+        <button type="submit"
+                value="submit"
+                class="btn bg-gradient-success rounded-pill px-3 py-1 me-2">
+          {{ object|yesno:"Update,Create"}} 
+        </button>
+        <button type="button"
+                onclick="history.back()"
+                class="btn bg-gradient-secondary rounded-pill px-3 py-1">
+          Cancel
+        </button>
+
+      </div>
+      <div class="d-flex justify-content-start justify-content-sm-end w-100 w-sm-60">
+
+        {% if member == user %}
+          <a href="{% url 'club:profile-delete' %}"
+            class="btn bg-gradient-danger rounded-pill px-3 py-1">
+            Delete account
+          </a>
+        {% else %}
+          {% if member %}
+            <a href="{% url 'club:reset-password' pk=member.id %}"
+              class="btn bg-gradient-warning rounded-pill px-3 py-1 me-2">
+              Change password
+            </a>
+            <a href="{% url 'club:member-delete' pk=member.id %}"
+              class="btn bg-gradient-danger rounded-pill px-3 py-1">
+              Delete account
+            </a>
+          {% endif %}
+        {% endif %}
+
+      </div>
+    </div>
+
+  </form>
+
+
+    {% load static %}
+    <script src="{% static 'scripts/member_form.js' %}"></script>
+
+{% endblock form %}

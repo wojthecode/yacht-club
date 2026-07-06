@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block content %}
+
+  <header class="header-2">
+    <div class="page-header min-vh-45 relative"style="background-image: url('{% static 'img/bg/crew.jpg' %}'); background-position: center 45%">
+      <div class="container-fixed">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-9 text-center mx-auto">
+              <h1 class="text-white mt-n6 border_text">
+                Our Members
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% include 'includes/waves.html' %}
+
+    </div>
+  </header>
+
+  <section class="pt-3 pb-5 flex-fill">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 z-index-2 border-radius-xl mt-n9 mx-auto pt-3 pb-4 blur shadow-blur">
+
+          <div class="mx-auto col-lg-9 mt-lg-3">
+            <form action="" method="get" class="position-relative">
+              {{ search_form|crispy }}
+              <input type="submit" value="&#128270;" class="btn bg-transparent shadow-none position-absolute end-0 top-0 p-2 mt-1 me-1">
+            </form>
+
+            <table class="w-90 mx-auto">
+              <tr>
+                <th class="py-2">Name</th>
+                <th class="py-2">Role</th>
+                <th class="py-2">Profile</th>
+
+
+                {% if user.role.management_rights %}
+                  <th class="py-2 text-center d-none d-md-table-cell">Active</th>
+                {% endif %}
+
+              </tr>
+
+              {% for member in member_list %}
+                <tr>
+                  <td class="py-2">{{ member}}</td>
+                  <td class="py-2">{{ member.role }}</td>
+                  <td class="py-2">
+                    {% if user == member %}
+                      <a href="{% url 'club:profile' %}">
+                    {% else %}
+                      <a href="{{ member.get_absolute_url }}">
+                    {% endif %}
+                    See profile</a>
+                  </td>
+
+                  {% if user.role.management_rights %}
+                    <td class="py-2 text-center d-none d-md-table-cell">
+                      <a href="javascript:void(0)" onclick="location.replace('{% url 'club:toggle-active-member' pk=member.id %}')">
+                        <i class="fa-solid fa-circle-{{ member.is_active_member|yesno:'check text-success,xmark text-danger' }} text-gradient"></i>
+                      </a>
+                    </td>
+                  {% endif %}
+                </tr>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% if user.role.management_rights %}
+    <a href="{% url 'club:member-create' %}" class="btn bg-gradient-secondary position-fixed end-10 bottom-5 rounded-circle m-0 py-1 px-3 z-index-3">
+      <h3 class="m-0 text-white">+</h3>
+    </a>
+  {% endif %}
+
+
+{% endblock %}
